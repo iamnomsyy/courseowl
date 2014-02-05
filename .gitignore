@@ -2,3 +2,7 @@
 *.pot
 *.pyc
 local_settings.py
+
+# IDE config files
+.idea/
+*.iml

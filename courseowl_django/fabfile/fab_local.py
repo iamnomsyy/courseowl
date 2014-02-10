@@ -1,8 +1,7 @@
-import os
-import datetime
 from django.utils.encoding import force_unicode
 from django.utils.text import slugify
 from fabric.operations import prompt, local
+
 
 def branch():
     """
@@ -27,6 +26,7 @@ def branch():
         return
 
     local('git checkout -b "{0}"'.format(branch_name))
+
 
 def remove_pyc():
     """

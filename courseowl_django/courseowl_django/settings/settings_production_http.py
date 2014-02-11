@@ -8,6 +8,6 @@ DATABASES = {
         'NAME': 'owl',
         'USER': 'owl',
         'PASSWORD': 'qwerty123',
-        'HOST': '107.170.37.33'
+        'HOST': '10.128.233.5'
     }
 }

@@ -1,58 +1,26 @@
-from fabric.operations import run
+from __future__ import with_statement
+import os
+from fabric.api import *
+from fabric.contrib.project import rsync_project
+from fabric.context_managers import settings
 
 
-def bootstrap_db_server():
+def _setup_path():
     """
-    Sets up a fresh Ubuntu 12.04 server to run PostgreSQL.
-    Run with fab -H root@ip.ad.dr.ess bootstrap_db_server
+    Setup path
     """
-    bootstrap_server_common()
-    run("apt-get install --yes postgresql postgresql-contrib")
-    # TODO create database, user, password, privileges
-    # TODO make the database listen on right IP/port
-    print("Not implemented")
+    # Destination site for this push.
+    env.site = env.environment + "." + env.domain
+    # Root directory for project.  Default: {env.home}/www/{env.site}
+    env.root = os.path.join(env.apps_dest, env.site)
+    # Root directory for source code.  Default: {env.root}/{env.project}
+    env.code_root = os.path.join(env.root, env.project)
+    # Remote virtualenv directory. Default: {env.home}/.virtualenvs/{env.site}
+    env.virtualenv_root = os.path.join(os.path.join(env.home, '.virtualenvs'), env.site)
+    # Target project settings file. Default: {env.project}.settings
+    env.settings = '%s.settings' % env.project
 
 
-def bootstrap_http_server():
-    """
-    Sets up a fresh Ubuntu 12.04 server to run uWSGI + Nginx.
-    Run with fab -H root@ip.ad.dr.ess bootstrap_http_server
-    """
-    bootstrap_server_common()
-    run("apt-get install --yes libpq-dev python-dev python-pip")
-    # TODO install uwsgi latest
-    # TODO install nginx latest
-    # TODO set up nginx and uwsgi config files
-    # TODO set up virtualenv
-    # TODO install pip packages
-    run("pip install virtualenv virtualenvwrapper")
-    print("Not implemented")
-
-
-def bootstrap_server_common():
-    """
-    Sets up common things for Ubuntu 12.04 servers.
-    """
-    run("apt-get update")
-    run("apt-get dist-upgrade --yes")
-    run("apt-get install --yes ntp fail2ban monit htop")
-    run("apt-get remove --purge whoopsie apport")
-
-    # Set the timezone to UTC:
-    run('echo "Etc/UTC" > /etc/timezone')
-    run("dpkg-reconfigure -f noninteractive tzdata")
-    run("service ntp restart")
-
-    # Create deploy user:
-    run("useradd -m -s /bin/bash deploy")
-    run('echo "deploy:querty123" | chpasswd')
-
-
-def bootstrap_server_common_postinstall():
-    """
-    Post-install scripts to run.
-    """
-    print("Finished setup.")
-    print("Created user: deploy")
-    print("With password: qwerty123")
-    print("You should change this password to something more secure!")
+def production_http():
+    env.hosts = ['107.170.37.29:22']
+    _setup_path()

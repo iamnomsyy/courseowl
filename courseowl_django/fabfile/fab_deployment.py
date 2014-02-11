@@ -1,26 +1,55 @@
 from __future__ import with_statement
-import os
-from fabric.api import *
+from fabric.api import require
 from fabric.contrib.project import rsync_project
-from fabric.context_managers import settings
+from fabric.operations import prompt, run
+from fabric.state import env
 
 
-def _setup_path():
+RSYNC_EXCLUDE = (
+    '.idea',
+    '.DS_Store',
+    '.hg',
+    '.svn',
+    '.git',
+    '*.pyc',
+    '*.log',
+    '*.example',
+    '*.so',
+    '*.o',
+    'courseowl_django/settings/personal_settings.py',
+)
+
+
+def deploy():
+    """ rsync code to remote host """
+    require('root', provided_by='production_http')
+    extra_opts = '--omit-dir-times'
+    rsync_project(
+        env.root,
+        exclude=RSYNC_EXCLUDE,
+        delete=True,
+        extra_opts=extra_opts,
+    )
+
+    uwsgi_supervisord = 'n'
+    if env.env_var in ['production_http']:
+        uwsgi_supervisord = prompt('Restart uwsgi? (y/N) ', 'n')
+    if uwsgi_supervisord == 'y':
+        uwsgi_supervisord_restart()
+
+
+def uwsgi_supervisord_restart():
     """
-    Setup path
+    Restart uWSGI on remote host
     """
-    # Destination site for this push.
-    env.site = env.environment + "." + env.domain
-    # Root directory for project.  Default: {env.home}/www/{env.site}
-    env.root = os.path.join(env.apps_dest, env.site)
-    # Root directory for source code.  Default: {env.root}/{env.project}
-    env.code_root = os.path.join(env.root, env.project)
-    # Remote virtualenv directory. Default: {env.home}/.virtualenvs/{env.site}
-    env.virtualenv_root = os.path.join(os.path.join(env.home, '.virtualenvs'), env.site)
-    # Target project settings file. Default: {env.project}.settings
-    env.settings = '%s.settings' % env.project
+    require('root', provided_by='production_http')
+    run('sudo /usr/local/bin/supervisorctl restart uwsgi')
 
+
+### HOST DEFINITIONS ###
 
 def production_http():
     env.hosts = ['107.170.37.29:22']
-    _setup_path()
+    env.root = "/var/www"
+    env.user = "deploy"
+    env.env_var = "production_http"

@@ -6,6 +6,7 @@ class Course(models.Model):
     provider = models.ForeignKey(Provider)
     description = models.CharField(max_length=3000)
     similarCourses = models.ManyToManyField('self')
+    instructor = models.CharField(max_length=1000)
 
     def __unicode__(self):
         return self.name
@@ -18,4 +19,7 @@ class Subject(models.Model):
         return self.name
 
 class Provider(models.Model):
+    name = models.CharField(max_length=100)
+
+class Source(models.Model):
     name = models.CharField(max_length=100)

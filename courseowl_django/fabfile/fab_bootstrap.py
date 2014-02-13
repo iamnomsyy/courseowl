@@ -19,7 +19,7 @@ def bootstrap_http_server():
     Run with fab -H root@ip.ad.dr.ess bootstrap_http_server
     """
     bootstrap_server_common()
-    run("apt-get install --yes libpq-dev python-dev python-pip")
+    run("apt-get install --yes libpq-dev python-dev python-pip postgresql-client")
     # TODO install uwsgi latest
     # TODO install nginx latest
     # TODO set up nginx and uwsgi config files

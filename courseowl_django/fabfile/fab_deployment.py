@@ -16,7 +16,7 @@ RSYNC_EXCLUDE = (
     '*.example',
     '*.so',
     '*.o',
-    'courseowl_django/settings/personal_settings.py',
+    'courseowl_django/settings/settings_personal.py',
 )
 
 
@@ -43,7 +43,7 @@ def uwsgi_supervisord_restart():
     Restart uWSGI on remote host
     """
     require('root', provided_by='production_http')
-    run('sudo /usr/local/bin/supervisorctl restart uwsgi')
+    run('sudo /usr/bin/supervisorctl restart courseowl_uwsgi')
 
 
 ### HOST DEFINITIONS ###

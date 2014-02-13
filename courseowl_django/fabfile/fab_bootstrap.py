@@ -20,12 +20,12 @@ def bootstrap_http_server():
     """
     bootstrap_server_common()
     run("apt-get install --yes libpq-dev python-dev python-pip postgresql-client")
-    # TODO install uwsgi latest
     # TODO install nginx latest
     # TODO set up nginx and uwsgi config files
-    # TODO set up virtualenv
     # TODO install pip packages
     run("pip install virtualenv virtualenvwrapper")
+    run("pip install uWSGI==1.9.21.1")
+    # TODO set up virtualenv
     print("Not implemented")
 
 

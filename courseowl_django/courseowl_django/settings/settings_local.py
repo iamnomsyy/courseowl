@@ -1,6 +1,7 @@
 DEBUG = True
 TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
+PREDICTIONIO_IP = "107.170.20.8"
 
 DATABASES = {
     'default': {

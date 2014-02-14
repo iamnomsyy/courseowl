@@ -1,7 +1,7 @@
 DEBUG = False
 TEMPLATE_DEBUG = False
 ALLOWED_HOSTS = [".courseowl.com", ".courseowl.com."]
-PREDICTIONIO_IP = "10.128.230.202"
+PREDICTIONIO_IP = "io.courseowl.com"
 
 DATABASES = {
     'default': {

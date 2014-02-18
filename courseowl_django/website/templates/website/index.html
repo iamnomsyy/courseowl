@@ -1,188 +1,103 @@
 {% load bootstrap3 %}
 {% bootstrap_messages %}
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Courseowl</title>
     <meta charset="utf-8">
-    <!-- Bootstrap -->
-    {#  <link href="css/bootstrap.css" rel="stylesheet" media="screen">#}
-      {% bootstrap_css %} {% bootstrap_javascript %}
-     <style type="text/css">
-      body {
-        padding-top: 20px;
-        padding-bottom: 60px;
-      }
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="akshay" content="">
+    <link rel="shortcut icon" href="../../docs-assets/ico/favicon.png">
 
-      /* Custom container */
-      .container {
-        margin: 0 auto;
-        max-width: 1000px;
-      }
-      .container > hr {
-        margin: 60px 0;
-      }
+    <title>CourseOwl</title>
+    {% bootstrap_css %}
+      {% bootstrap_javascript %}
 
-      /* Main marketing message and sign up button */
-      .jumbotron {
-        margin: 80px 0;
-        text-align: center;
-      }
-      .jumbotron h1 {
-        font-size: 100px;
-        line-height: 1;
-      }
-      .jumbotron .lead {
-        font-size: 24px;
-        line-height: 1.25;
-      }
-      .jumbotron .btn {
-        font-size: 21px;
-        padding: 14px 24px;
-      }
+    <link href="css/bootstrap.css" rel="stylesheet">
 
-      /* Supporting marketing content */
-      .marketing {
-        margin: 60px 0;
-      }
-      .marketing p + h4 {
-        margin-top: 28px;
-      }
+    <!-- Not sure I make changes by friday -->
+    <link href="jumbotron.css" rel="stylesheet">
 
-      /* Customize the navbar links to be fill the entire space of the .navbar */
-      .navbar .navbar-inner {
-        padding: 0;
-      }
-      .navbar .nav {
-        margin: 0;
-        display: table;
-        width: 100%;
-      }
-      .navbar .nav li {
-        display: table-cell;
-        width: 1%;
-        float: none;
-      }
-      .navbar .nav li a {
-        font-weight: bold;
-        text-align: center;
-        border-left: 1px solid rgba(255,255,255,.75);
-        border-right: 1px solid rgba(0,0,0,.1);
-      }
-      .navbar .nav li:first-child a {
-        border-left: 0;
-        border-radius: 3px 0 0 3px;
-      }
-      .navbar .nav li:last-child a {
-        border-right: 0;
-        border-radius: 0 3px 3px 0;
-      }
-    </style>
+
   </head>
+
   <body>
-    <script src="http://code.jquery.com/jquery.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <div class="container">
 
-    <div class="navbar">
-              <div class="navbar-inner">
-                <div class="container">
-
-                  <ul class="nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#">Projects</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Downloads</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Log In</a></li>
-                  </ul>
-                </div>
-              </div>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Home</a>
+             <a class="navbar-brand" href="#">Projects</a>
+             <a class="navbar-brand" href="#">Services</a>
+             <a class="navbar-brand" href="#">About</a>
+             <a class="navbar-brand" href="#">Sign up</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <form class="navbar-form navbar-right" role="form">
+            <div class="form-group">
+              <input type="text" placeholder="Email" class="form-control">
             </div>
-
-  <div class="hero-unit">
-    <h1>CourseOwl</h1>
-    <p>We aim to overcome the obstacle of finding a course through this system that will provide recommendations from massive open online courses to people based on their interests and courses they have taken.</p>
-
-    <a href="#" class="btn btn-large btn-success">Get Started</a>
- </div>
-
- <div class="row">
-    <div class="span4">
-  <ul class="nav nav-list">
-    <li class="nav-header">What we are?</li>
-    <li class="active"><a href="#">Home</a></li>
-    <li><a href="#">Our Clients</a></li>
-    <li><a href="#">Our Services</a></li>
-    <li><a href="https://wiki.engr.illinois.edu/display/cs428sp14/CourseOwl">About Us</a></li>
-    <li><a href="#">Contact Us</a></li>
-</ul>
-  </div>
-<div class="span8">
-<h3>What is CourseOwl ?</h3>
-
-<p>With the abundance of possible classes that one can take online, it is highly unlikely a student will ever get to see or take some of the ones that are most interesting to them. We aim to overcome this obstacle by developing a system that will provide recommendations from massive open online courses to people based on their interests and courses they have taken.</p>
-
-<h3>How do we function ?</h3>
-
-<p>The user will be asked what interests in fields they have and will have the option to select subjects already known/learned. They will then receive recommendations of classes they may like from MOOCs such as Coursera, Udacity, iTunesU, edX, etc..</p>
-</div>
-</div>
-<div class="row">
-<div class="span4">
-        <h4 class="muted text-center">Sites Supported</h4>
-        <p>
-          <ul class="nav nav-list">
-         <li><a href="#">Code Academy</a></li>
-                    <li><a href="#">Courseera</a></li>
-                    <li><a href="#">Khan Academy</a></li>
-                    <li><a href="#">Lynda</a></li>
-                    <li><a href="#">Treehouse</a></li>
-                    <li><a href="#">Udacity</a></li>
-                    <li><a href="#">edx</a></li>
-                  </ul></p>
-        <a href="#" class="btn"><i class="icon-user"></i> Start now</a>
+            <div class="form-group">
+              <input type="password" placeholder="Password" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success">Sign in</button>
+          </form>
+        </div>
+      </div>
     </div>
-    <div class="span4">
-        <h4 class="muted text-center">Frameworks & Languages</h4>
-        <p><ul class="nav nav-list">
-        <li><a href="#"> Python/ Django</a></li>
-        <li><a href="#"> Java</a></li>
-        <li><a href="#"> MySQL</a></li>
-        <li><a href="#"> Prediction.IO</a></li>
-        <li><a href="#"> CSS/HTML/JS</a></li>
-        <li><a href="#"> </a></li>
-        <li><a href="#"> </a></li>
-        <li><a href="#"> </a></li>
-        <li><a href="#"> </a></li>
-        <li><a href="#"> </a></li>
-        <li><a href="#"> </a></li>
-        <li><a href="#"> </a></li>
-        <li><a href="#"> </a></li>
-        <li><a href="#"> </a></li>
-        <li><a href="#"> </a></li>
-      </ul></p>
-        <a href="#" class="btn btn-info">Know more</a>
-    </div>
-      <div class="span4">
-        <h4 class="muted text-center">Know Our Team</h4>
-        <p><ul class="nav nav-list">
-          <li><a href="#">Erik Chen </a></li>
-                    <li><a href="#">Michael Staszel</a></li>
-                    <li><a href="#">Zheng Kang </a></li>
-                    <li><a href="#">Daniel Garcia-Carrillo</a></li>
-                    <li><a href="#">Akshay Singh </a></li>
-                    <li><a href="#">David Eisenberg</a></li>
-                    <li><a href="#"> </a></li>
 
-                    <li><a href="#"> </a></li>
-                    <li><a href="#"> </a></li>
-                    <li><a href="#"> </a></li>
-                  </ul></p>
-        <a href="#" class="btn btn-success"><i class="icon-star icon-white"></i> Contact Us</a>
+
+    <div class="jumbotron">
+      <div class="container">
+        <h1><b>CourseOwl</b></h1>
+        <p>We aim to overcome the obstacle of finding a course through this system that will provide recommendations from massive open online courses to people based on their interests and courses they have taken.</p>
+        <p><a class="btn btn-primary btn-lg" role="button">Learn more &raquo;</a></p>
+      </div>
     </div>
-</div>
-</div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <h2><b>About Us</b></h2>
+          <p> With the abundance of possible classes that one can take online, it is highly unlikely a student will ever get to see or take some of the ones that are most interesting to them. We aim to overcome this obstacle by developing a system that will provide recommendations from massive open online courses to people based on their interests and courses they have taken. </p>
+
+            <p><a class="btn btn-default" href="#" role="button">Know more &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+          <h2><b>Sites Supported</b></h2>
+          <p><ul class="nav nav-list">
+         <li><a href="#"><b>Code Academy</b></a></li>
+                    <li><a href="#"><b>Courseera</b></a></li>
+                    <li><a href="#"><b>Khan Academy</b></a></li>
+                    <li><a href="#"><b>Lynda</b></a></li>
+                  </ul> </p>
+          <p><a class="btn btn-default" href="#" role="button">View more &raquo;</a></p>
+       </div>
+        <div class="col-md-4">
+          <h2><b>Frameworks</b></h2>
+          <p><ul class="nav nav-list">
+        <li><a href="#"> <b>Python/ Django</b></a></li>
+        <li><a href="#"><b> MySQL</b></a></li>
+        <li><a href="#"><b>Prediction.IO</b></a></li>
+        <li><a href="#"> <b>CSS/HTML/JS</b></a></li></ul></p>
+          <p><a class="btn btn-default" href="#" role="button">Learn more &raquo;</a></p>
+        </div>
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>&copy; Copyright © 2014 CourseOwl Inc. All rights reserved.</p>
+      </footer>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
   </body>
 </html>

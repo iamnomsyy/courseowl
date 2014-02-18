@@ -2,7 +2,7 @@
 {% bootstrap_messages %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,80 +17,73 @@
 
     <!-- Not sure I make changes by friday -->
     <link href="jumbotron.css" rel="stylesheet">
-
-
-  </head>
-
-  <body>
-
+</head>
+<body>
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Home</a>
-             <a class="navbar-brand" href="#">Projects</a>
-             <a class="navbar-brand" href="#">Services</a>
-             <a class="navbar-brand" href="#">About</a>
-             <a class="navbar-brand" href="#">Sign up</a>
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Home</a>
+                <a class="navbar-brand" href="#">Providers</a>
+                <a class="navbar-brand" href="#">About</a>
+                <a class="navbar-brand" href="#">Sign up</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <div class="navbar-form navbar-right">
+                    <a href="/accounts/login/" class="btn btn-success">Sign in</a>
+                </div>
+            </div>
         </div>
-        <div class="navbar-collapse collapse">
-
-          <div class="navbar-form navbar-right">
-            <a href="/accounts/login/" class="btn btn-success">Sign in</a>
-          </div>
-        </div>
-      </div>
     </div>
 
-
     <div class="jumbotron">
-      <div class="container">
-        <h1><b>CourseOwl</b></h1>
-        <p>We aim to overcome the obstacle of finding a course through this system that will provide recommendations from massive open online courses to people based on their interests and courses they have taken.</p>
-        <p><a class="btn btn-primary btn-lg" role="button">Learn more &raquo;</a></p>
-      </div>
+        <div class="container">
+            <h1><b>CourseOwl</b></h1>
+            <p>We aim to overcome the obstacle of finding a course through this system that will provide recommendations from massive open online courses to people based on their interests and courses they have taken.</p>
+            <p><a class="btn btn-primary btn-lg" role="button">Learn more &raquo;</a></p>
+        </div>
     </div>
 
     <div class="container">
-      <div class="row">
-        <div class="col-md-4">
-          <h2><b>About Us</b></h2>
-          <p> With the abundance of possible classes that one can take online, it is highly unlikely a student will ever get to see or take some of the ones that are most interesting to them. We aim to overcome this obstacle by developing a system that will provide recommendations from massive open online courses to people based on their interests and courses they have taken. </p>
-
-            <p><a class="btn btn-default" href="#" role="button">Know more &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-          <h2><b>Sites Supported</b></h2>
-          <p><ul class="nav nav-list">
-         <li><a href="#"><b>Code Academy</b></a></li>
-                    <li><a href="#"><b>Courseera</b></a></li>
+        <div class="row">
+            <div class="col-md-4">
+                <h2><b>About Us</b></h2>
+                <p>With the abundance of possible classes that one can take online, it is highly unlikely a student will ever get to see or take some of the ones that are most interesting to them. We aim to overcome this obstacle by developing a system that will provide recommendations from massive open online courses to people based on their interests and courses they have taken.</p>
+                <p><a class="btn btn-default" href="#" role="button">Know more &raquo;</a></p>
+            </div>
+            <div class="col-md-4">
+                <h2><b>Course Providers</b></h2>
+                <ul class="nav nav-list">
+                    <li><a href="#"><b>Codecademy</b></a></li>
+                    <li><a href="#"><b>Coursera</b></a></li>
                     <li><a href="#"><b>Khan Academy</b></a></li>
                     <li><a href="#"><b>Lynda</b></a></li>
-                  </ul> </p>
-          <p><a class="btn btn-default" href="#" role="button">View more &raquo;</a></p>
-       </div>
-        <div class="col-md-4">
-          <h2><b>Frameworks</b></h2>
-          <p><ul class="nav nav-list">
-        <li><a href="#"> <b>Python/ Django</b></a></li>
-        <li><a href="#"><b> MySQL</b></a></li>
-        <li><a href="#"><b>Prediction.IO</b></a></li>
-        <li><a href="#"> <b>CSS/HTML/JS</b></a></li></ul></p>
-          <p><a class="btn btn-default" href="#" role="button">Learn more &raquo;</a></p>
+                    <li><a href="#"><b>And many more</b></a></li>
+                </ul>
+                <p><a class="btn btn-default" href="#" role="button">View more &raquo;</a></p>
+            </div>
+            <div class="col-md-4">
+                <h2><b>Frameworks</b></h2>
+                <ul class="nav nav-list">
+                    <li><a href="#"> <b>Python/Django</b></a></li>
+                    <li><a href="#"><b>PostgreSQL</b></a></li>
+                    <li><a href="#"><b>Prediction.IO</b></a></li>
+                    <li><a href="#"> <b>CSS/HTML/JS</b></a></li>
+                </ul>
+                <p><a class="btn btn-default" href="#" role="button">Learn more &raquo;</a></p>
+            </div>
         </div>
-      </div>
+        <hr>
 
-      <hr>
-
-      <footer>
-        <p>&copy; Copyright © 2014 CourseOwl Inc. All rights reserved.</p>
-      </footer>
+        <footer>
+            <p>&copy; Copyright © 2014 CourseOwl. All rights reserved.</p>
+        </footer>
     </div>
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-  </body>
+</body>
 </html>

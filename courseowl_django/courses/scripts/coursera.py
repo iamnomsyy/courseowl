@@ -11,7 +11,7 @@ def run():
 
     for course in courseraJson:
         c, created = Course.objects.get_or_create(name=course['name'], description=course['short_description'], instructor=course['instructor'])
-        c.provder = courseraProvider
+        c.provider = courseraProvider
         c.source, created = Source.objects.get_or_create(name=course['universities'][0]['name'])
         c.save()
         for categoryId in course['category-ids']:

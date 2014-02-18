@@ -13,9 +13,7 @@
 
     <title>CourseOwl</title>
     {% bootstrap_css %}
-      {% bootstrap_javascript %}
-
-    <link href="css/bootstrap.css" rel="stylesheet">
+    {% bootstrap_javascript %}
 
     <!-- Not sure I make changes by friday -->
     <link href="jumbotron.css" rel="stylesheet">
@@ -41,9 +39,9 @@
              <a class="navbar-brand" href="#">Sign up</a>
         </div>
         <div class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right" role="form">
-            <button type="submit" class="btn btn-success">Sign in</button>
-          </form>
+          <div class="navbar-right">
+            <a href="/accounts/login/" class="btn btn-success">Sign in</a>
+          </div>
         </div>
       </div>
     </div>
@@ -93,6 +91,5 @@
       </footer>
     </div>
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
   </body>
 </html>

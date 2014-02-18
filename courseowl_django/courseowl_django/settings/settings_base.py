@@ -14,7 +14,7 @@ INSTALLED_APPS = (
     'backend',
     'south',
     'django_nose',
-    'user_management',
+    'accounts',
     'bootstrap3'
 )
 

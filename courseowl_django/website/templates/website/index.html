@@ -1,10 +1,14 @@
+{% load bootstrap3 %}
+{% bootstrap_messages %}
+
 <!DOCTYPE html>
 <html>
   <head>
     <title>Courseowl</title>
     <meta charset="utf-8">
     <!-- Bootstrap -->
-    <link href="css/bootstrap.css" rel="stylesheet" media="screen">
+    {#  <link href="css/bootstrap.css" rel="stylesheet" media="screen">#}
+      {% bootstrap_css %} {% bootstrap_javascript %}
      <style type="text/css">
       body {
         padding-top: 20px;

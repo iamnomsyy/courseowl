@@ -14,7 +14,8 @@ INSTALLED_APPS = (
     'backend',
     'south',
     'django_nose',
-    'user_management'
+    'user_management',
+    'bootstrap3'
 )
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'

@@ -6,16 +6,12 @@ import urllib2
 
 def run():
     courseraJsonUrl = 'https://www.coursera.org/maestro/api/topic/list?full=1%20or%20https://www.coursera.org/maestro/api/topic/list2'
-    courseraFile = getJson(courseraJsonUrl)
-    courseraDict = parseJson(courseraFile)
+    courseraDict = getAndParseJson(courseraJsonUrl)
     addCourses(courseraDict)
 
-def getJson(url):
-    courseJsonList = urllib2.urlopen(url)
-    return courseJsonList
-    
-def parseJson(jsonFile):
-    courseraJsonDict = json.loads(jsonFile.read())
+def getAndParseJson(url):
+    courseraJsonList = urllib2.urlopen(url)
+    courseraJsonDict = json.loads(courseraJsonList.read())
     return courseraJsonDict
 
 def addCourses(jsonDict):

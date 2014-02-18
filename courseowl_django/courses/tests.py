@@ -1,6 +1,8 @@
 from django.test import TestCase
 from courses.models import Subject, Provider, Source, Course
 
+from courses.scripts.coursera import getAndParseJson as courseraGetAndPaseJson, addCourses as courseraAddCourses
+
 class SubjectTests(TestCase):
     def test_create_subject(self):
         subject = Subject()

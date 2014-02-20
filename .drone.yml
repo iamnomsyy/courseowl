@@ -1,0 +1,17 @@
+image: python2.7
+env:
+  - OWL_ENV="local"
+script:
+  - cd courseowl_django
+  - psql -c "create database owl;" -U postgres
+  - psql -c "create user owl with password 'qwerty123';" -U postgres
+  - psql -c "alter user owl CREATEDB;" -U postgres
+  - psql -c "grant all privileges on database owl to owl;" -U postgres
+  - pip install -r requirements.txt --use-mirrors
+  - ./manage.py test
+services:
+  - postgresql
+notify:
+  email:
+    recipients:
+      - crimsonredmk@gmail.com

@@ -21,4 +21,25 @@ def login(request):
             pass
         return HttpResponse(content='nope')
     else:
+    # Create a state token to prevent request forgery.
+    # Store it in the session for later validation.
+    #     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
+    #                     for x in xrange(32))
+    #     session['state'] = state
+    #     # Set the Client ID, Token State, and Application Name in the HTML while
+    #     # serving it.
+    #     response = make_response(
+    #         render_template('index.html',
+    #                         CLIENT_ID=CLIENT_ID,
+    #                         STATE=state,
+    #                         APPLICATION_NAME=APPLICATION_NAME))
         return render(request, 'accounts/login.html')
+
+#
+# def google_login(request):
+#     if request.method == 'POST':
+
+
+#
+# def facebook_login(request):
+#     if request.method == 'POST':

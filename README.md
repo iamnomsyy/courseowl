@@ -8,4 +8,4 @@ Wiki: https://wiki.engr.illinois.edu/display/cs428sp14/CourseOwl
 
 ### Installation
 
-Here: https://wiki.engr.illinois.edu/display/cs428sp14/CourseOwl+Development+Environment+Setup
+See: https://wiki.engr.illinois.edu/display/cs428sp14/CourseOwl+Development+Environment+Setup

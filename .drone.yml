@@ -15,3 +15,8 @@ notify:
   email:
     recipients:
       - crimsonredmk@gmail.com
+      - chen320@illinois.edu
+      - zkang3@illinois.edu
+      - aksuniv@gmail.com
+    on_success: false
+    on_failure: true

@@ -1,7 +1,5 @@
 # CourseOwl
 
-[![Build Status](https://drone.io/github.com/crimsonredmk/courseowl/status.png)](https://drone.io/github.com/crimsonredmk/courseowl/latest)
-
 [![Build Status](http://ci.courseowl.com/github.com/crimsonredmk/courseowl/status.png?branch=master)](http://ci.courseowl.com/github.com/crimsonredmk/courseowl)
 
 Home: http://courseowl.com/

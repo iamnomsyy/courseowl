@@ -10,7 +10,7 @@ script:
   - pip install -r requirements.txt --use-mirrors
   - ./manage.py test
 services:
-  - postgresql
+  - postgres
 notify:
   email:
     recipients:

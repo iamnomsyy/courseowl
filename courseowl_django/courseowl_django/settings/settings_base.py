@@ -13,7 +13,7 @@ INSTALLED_APPS = (
     'backend',
     'south',
     'django_nose',
-    'user_management',
+    'accounts',
     'bootstrap3'
 )
 
@@ -26,6 +26,10 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+)
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 TEMPLATE_DIRS = (

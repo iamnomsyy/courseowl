@@ -6,6 +6,10 @@ window.fbAsyncInit = function() {
     cookie     : true, // enable cookies to allow the server to access the session
     xfbml      : false  // Performance waste
   });
+
+  FB.Event.subscribe('auth.login', function(resp) {
+    window.location = '/facebook_login_flow';
+  });
 };
 
 FB.event.subscribe('auth.authResponseChange', function(response) {

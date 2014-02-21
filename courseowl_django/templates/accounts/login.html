@@ -13,20 +13,21 @@
                      <h5>Login to your Account</h5>
                                   <div class="form">
                                       <!-- Login form -->
-                                      <form class="form-horizontal">
+
+                                      <form class="form-horizontal" method="POST" action="/accounts/login/">{% csrf_token %}
                                           <!-- Username -->
                                           <div class="form-group">
 
                                             <label class="control-label col-md-3" for="email">Email</label>
                                             <div class="col-md-6">
-                                              <input type="text" class="form-control" id="email">
+                                              <input type="text" class="form-control" placeholder="Enter email" id="email">
                                             </div>
                                           </div>
                                           <!-- Password -->
                                           <div class="form-group">
                                             <label class="control-label col-md-3" for="email">Password</label>
                                             <div class="col-md-6">
-                                              <input type="password" class="form-control" id="password">
+                                              <input type="password" placeholder="Password" class="form-control" id="password">
                                             </div>
                                           </div>
                                           <div class="form-group">
@@ -47,7 +48,7 @@
                                       </form>
                                              Don't have an account? <a href="https://www.facebook.com"><button class="btn btn-facebook"><i class="fa fa-facebook"></i> </button></a>
                                       <a href = "https://accounts.google.com/ServiceLogin?passive=1209600&continue=https%3A%2F%2Faccounts.google.com%2FManageAccount&followup=https%3A%2F%2Faccounts.google.com%2FManageAccount"><button class="btn btn-google-plus"><i class="fa fa-google-plus"></i></button><br></a>
-
+                                      <a href = "/accounts/signup.html">Sign up using email</a>
                                     </div>
                                   </div>
 

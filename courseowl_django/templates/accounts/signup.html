@@ -1,12 +1,58 @@
 {% include 'header.html' %}
-<div class="jumbotron">
-    <h1>Signup</h1>
-    Enter a valid email:
-    <form method="POST" action="/accounts/signup/">{% csrf_token %}
-        <p>Email: <input type="text" name="email" /></p>
-        <p>Password: <input type="password" name="password" /></p>
-        <p>Re-enter password: <input type="password" name="password_confirm" /></p>
-        <p><input type="submit" value="Create account" /></p>
-    </form>
-</div>
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="stylesheets/social-buttons.css">
+ <link rel="stylesheet" href="stylesheets/stylesheet.css">
+<div class="pagination-centered">
+<div class="col-md-6 col-sm-6">
+            <div class="container">
+                 <div class="row vertical-center-row row-md-offset-4">
+                     <div class="col-lg-12">text
+            <div class="row-md-4 row-md-offset-4 row-sm-4 row-sm-offset-4 row-xs-4 row-xs-offset-4 ">
+                <div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4">
+                  <div class="form">
+                     <h5>Sign up for new Account</h5>
+                                  <div class="form">
+                                      <!-- Login form -->
+                                       <form class="form-horizontal" method="POST" action="/accounts/signup/">{% csrf_token %}
+                                          <!-- Username -->
+                                          <div class="form-group">
+
+                                            <label class="control-label col-md-3" for="email">Email</label>
+                                            <div class="col-md-6">
+                                              <input type="text" class="form-control" placeholder="enter a valid email" id="email">
+                                            </div>
+                                          </div>
+                                          <!-- Password -->
+                                          <div class="form-group">
+                                            <label class="control-label col-md-3" for="email">Password</label>
+                                            <div class="col-md-6">
+                                              <input type="password" class="form-control" placeholder="Password" id="password">
+                                            </div>
+                                          </div>
+
+                                          <div class="form-group">
+                                            <label class="control-label col-md-3" for="email">Re-enter</label>
+                                            <div class="col-md-6">
+                                              <input type="password" class="form-control" placeholder="Re-Enter Password"id="password">
+                                            </div>
+                                          </div>
+
+                                          <!-- Buttons -->
+                                          <div class="form-group">
+                                             <!-- Buttons -->
+											 <div class="col-md-9 col-md-offset-3">
+											<a><button type="submit" class="btn btn-default">Sign up</button></a>
+
+											</div>
+                                          </div>
+                                      </form>
+
+                                    </div>
+                                  </div>
+
+                </div>
+            </div>
+                     </div>
+</div></div></div></div>
+
 {% include 'footer.html' %}

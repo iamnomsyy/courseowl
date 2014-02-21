@@ -1,17 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
-#from courses.models import *
+# from courses.models import *
 
 
-''''class UserProfile(models.Model):
+class UserProfile(models.Model):
     user = models.OneToOneField(User)
-    first_name = models.CharField(max_length=60)
-    last_name = models.CharField(max_length=60)
     gender = models.CharField(max_length=1, default='M')
-    interests = models.ManyToManyField('courses.Subject')
-    providers = models.ManyToManyField('courses.Provider')
-    enrolled = models.ManyToManyField('courses.Course')
-    completed = models.ManyToManyField('courses.Course')
-
-    def __unicode__(self):
-        return self.email'''
+    # interests = models.ManyToManyField('courses.Subject')
+    # providers = models.ManyToManyField('courses.Provider')
+    # enrolled = models.ManyToManyField('courses.Course')
+    # completed = models.ManyToManyField('courses.Course')

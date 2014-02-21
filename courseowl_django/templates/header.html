@@ -13,6 +13,24 @@
 
     <title>CourseOwl</title>
     {% bootstrap_css %}
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.0/jquery.cookie.min.js"></script>
+    <script>
+      // Should add csrf token to all correct ajax requests, keyword: should
+      var csrftoken = $.cookie('csrftoken');
+      function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+      }
+      $.ajaxSetup({
+        crossDomain: false, // obviates need for sameOrigin test
+        beforeSend: function(xhr, settings) {
+          if (!csrfSafeMethod(settings.type)) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          }
+        }
+      });
+    </script>
     {% bootstrap_javascript %}
 
     <!-- Not sure I make changes by friday -->

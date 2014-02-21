@@ -1,4 +1,8 @@
 {% include 'header.html' %}
+{% load socialaccount %}
+{% providers_media_js %}
+
+
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <link rel="stylesheet" href="stylesheets/social-buttons.css">
  <link rel="stylesheet" href="stylesheets/stylesheet.css">
@@ -46,8 +50,8 @@
 											</div>
                                           </div>
                                       </form>
-                                             Don't have an account? <a href="https://www.facebook.com"><button class="btn btn-facebook"><i class="fa fa-facebook"></i> </button></a>
-                                      <a href = "https://accounts.google.com/ServiceLogin?passive=1209600&continue=https%3A%2F%2Faccounts.google.com%2FManageAccount&followup=https%3A%2F%2Faccounts.google.com%2FManageAccount"><button class="btn btn-google-plus"><i class="fa fa-google-plus"></i></button><br></a>
+                                             Don't have an account? <a href="{% provider_login_url "facebook" method="js_sdk" %}"><button class="btn btn-facebook"><i class="fa fa-facebook"></i> </button></a>
+                                      <a href = "{% provider_login_url "google" %}"><button class="btn btn-google-plus"><i class="fa fa-google-plus"></i></button><br></a>
                                       <a href = "/accounts/signup.html">Sign up using email</a>
                                     </div>
                                   </div>

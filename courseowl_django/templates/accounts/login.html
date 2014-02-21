@@ -1,74 +1,6 @@
 {% include 'header.html' %}
-{#{%  load staticfiles %}#}
-{#<script src="{% static "js/facebook_login_flow.js" %}"></script> TODO move into another file#}
-
-<script type="text/javascript">
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '218782404991692', // Courseowl appID
-      status     : true, // check login status
-      cookie     : true, // enable cookies to allow the server to access the session
-      xfbml      : true
-    });
-
-    function finishFacebookFlow(response) {
-      console.dir(response);
-    }
-    FB.Event.subscribe('auth.authResponseChange', function(response) {
-      if (response.status === 'connected') {
-        finishFacebookFlow(response);
-      } else {
-        FB.login({scope: 'email'});
-      }
-    });
-  };
-
-  // Load the SDK asynchronously
-  (function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=218782404991692";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
-</script>
-<script type="text/javascript">
-  // Google login script
-  (function () {
-    var po = document.createElement('script');
-    po.type = 'text/javascript';
-    po.async = true;
-    po.src = 'https://plus.google.com/js/client:plusone.js?onload=start';
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(po, s);
-  })();
-
-  function googleSignInCallback(authResult) {
-    if (authResult['code']) {
-        // Send the code to the server
-      console.dir(authResult);
-      $.ajax({
-        type: 'POST',
-        url: '/accounts/google_login_flow',
-        dataType: 'json',
-        success: function(result) {
-          console.log(result);
-        },
-        processData: false,
-        data: {
-
-          auth_code: authResult['code']
-        }
-      });
-    } else if (authResult['error']) {
-      // There was an error.
-      // Possible error codes:
-      //   "access_denied" - User denied access to your app
-      //   "immediate_failed" - Could not automatially log in the user
-      // console.log('There was an error: ' + authResult['error']);
-    }
-  }
-</script>
+{% load socialaccount %}
+{% providers_media_js %}
 
 <div class="jumbotron">
     <h1>Login</h1>
@@ -79,21 +11,8 @@
         <p><input type="submit" value="Login" /></p>
     </form>
 
-    <!-- Facebook login -->
-    <div id="fb-root"></div>
-    <fb:login-button data-size="xlarge" data-show-faces="false" data-max-rows="1"></fb:login-button>
-
-    <!-- Google login -->
-    <div id="signinButton">
-    <span class="g-signin"
-          data-scope="email https://www.googleapis.com/auth/plus.login"
-          data-clientid="122888856754-0k65eqhag3stth6h9ttmp918useeasq9.apps.googleusercontent.com"
-          data-redirecturi="postmessage"
-          data-accesstype="offline"
-          data-cookiepolicy="single_host_origin"
-          data-callback="googleSignInCallback">
-    </span>
-    </div>
-    <div id="result"></div>
+    <!-- Social login -->
+    <a href="{% provider_login_url "facebook" method="js_sdk" %}">Connect with Facebook</a><br>
+    <a href="{% provider_login_url "google" %}">Connect with Google</a>
 </div>
 {% include 'footer.html' %}

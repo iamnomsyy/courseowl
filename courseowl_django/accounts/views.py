@@ -28,12 +28,12 @@ def login(request):
 
 def logout(request):
     dj_logout(request)
+    return HttpResponse(content='logged out successfully')
 
 
 def email_signup(request):
     if request.method == "POST":
         email = request.POST.get('email')
-        print email
         password = request.POST.get('password')
         password_confirm = request.POST.get('password_confirm')
 

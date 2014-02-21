@@ -1,6 +1,6 @@
 import md5
 from django.contrib.auth import authenticate
-from django.contrib.auth import login as dj_login
+from django.contrib.auth import login as dj_login, logout as dj_logout
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.http import HttpResponse
@@ -26,16 +26,21 @@ def login(request):
         return render(request, 'accounts/login.html')
 
 
+def logout(request):
+    dj_logout(request)
+
+
 def email_signup(request):
     if request.method == "POST":
         email = request.POST.get('email')
+        print email
         password = request.POST.get('password')
         password_confirm = request.POST.get('password_confirm')
 
         if password != password_confirm:
             return render(request, 'accounts/signup.html')
 
-        user = User.objects.create_user(usernameMD5(email), email, password, first_name="", last_name="")
+        user = User.objects.create_user(username_md5(email), email, password, first_name="", last_name="")
         userprofile = UserProfile()
         userprofile.user = user
         user.save()
@@ -45,7 +50,5 @@ def email_signup(request):
         return render(request, 'accounts/signup.html')
 
 
-def usernameMD5(email):
-    username = email
-    username = md5.new(username.lower()).hexdigest()[:30]
-    return username
+def username_md5(email):
+    return md5.new(email.lower()).hexdigest()[:30]

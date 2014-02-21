@@ -3,4 +3,5 @@ import views
 
 urlpatterns = patterns('',
                        url(r'^login', views.login, name='login'),
+                       url(r'^signup', views.email_signup, name='email_signup')
                        )

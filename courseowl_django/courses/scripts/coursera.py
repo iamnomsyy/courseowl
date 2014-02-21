@@ -17,7 +17,7 @@ def getAndParseJson(url):
 def addCourses(jsonDict):
     courseraProvider, created = Provider.objects.get_or_create(name='coursera')
 
-    for course in courseraJson:
+    for course in jsonDict:
         c, created = Course.objects.get_or_create(name=course['name'], description=course['short_description'], instructor=course['instructor'])
         c.provider = courseraProvider
         c.source, created = Source.objects.get_or_create(name=course['universities'][0]['name'])

@@ -40,7 +40,7 @@ def email_signup(request):
         if password != password_confirm:
             return render(request, 'accounts/signup.html')
 
-        user = User.objects.create_user(username_md5(email), email, password, first_name="", last_name="")
+        user = User.objects.create_user(username_md5(email), email, password="1234", first_name="", last_name="")
         userprofile = UserProfile()
         userprofile.user = user
         user.save()

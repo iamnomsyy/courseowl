@@ -4,7 +4,7 @@ from django.contrib.auth import login as dj_login, logout as dj_logout
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from models import UserProfile
 
 
@@ -18,7 +18,7 @@ def login(request):
             user = authenticate(username=temp_user.username, password=password)
             if user is not None:
                 dj_login(request, user)
-                return HttpResponse(content='great success')
+                return redirect('/accounts/profile')
         except ObjectDoesNotExist:
             pass
         return HttpResponse(content='nope')
@@ -45,7 +45,7 @@ def email_signup(request):
         userprofile.user = user
         user.save()
         userprofile.save()
-        return HttpResponse(content='Hi ' + user.email)
+        return redirect('/personalize')
     else:
         return render(request, 'accounts/signup.html')
 

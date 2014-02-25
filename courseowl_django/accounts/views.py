@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from models import UserProfile
+from django.forms import EmailField
+from django.core.exceptions import ValidationError
 
 
 def login(request):
@@ -37,8 +39,15 @@ def email_signup(request):
         password = request.POST.get('password')
         password_confirm = request.POST.get('password_confirm')
 
-        if password != password_confirm:
-            return render(request, 'accounts/signup.html')
+        if not unique_user(email):
+            return HttpResponse(content='USER ALREADY EXISTS')
+
+        if not valid_email_address(email):
+            return HttpResponse(content='Invalid email address')
+
+        valid_pw = check_valid_password(password, password_confirm)
+        if not valid_pw:
+            return HttpResponse(content='Invalid password input. Passwords must match and be >8 characters')
 
         user = User.objects.create_user(username_md5(email), email, password, first_name="", last_name="")
         userprofile = UserProfile()
@@ -50,5 +59,26 @@ def email_signup(request):
         return render(request, 'accounts/signup.html')
 
 
+def check_valid_password(pw, pw_conf):
+    if len(pw) < 8 or pw != pw_conf:
+        return False
+
+
+def unique_user(email):
+    hashedemail = username_md5(email)
+    if User.objects.filter(username=hashedemail).exists():
+        return False
+    else:
+        return True
+
+
 def username_md5(email):
     return md5.new(email.lower()).hexdigest()[:30]
+
+
+def valid_email_address(email):
+    try:
+        EmailField().clean(email)
+        return True
+    except ValidationError:
+        return False

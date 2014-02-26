@@ -62,6 +62,7 @@ def email_signup(request):
 def check_valid_password(pw, pw_conf):
     if len(pw) < 8 or pw != pw_conf:
         return False
+    return True
 
 
 def unique_user(email):

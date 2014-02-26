@@ -1,5 +1,6 @@
 import json
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from accounts.models import UserProfile
 from courses.models import Subject, Course
@@ -19,14 +20,14 @@ def json_courses(request):
     return HttpResponse(json.dumps(course_arr))
 
 
+@login_required
 def json_enrolled_courses(request):
     """
-    Return a JSON array of courses that 'email' is signed up for (make a POST request).
+    Return a JSON array of courses that request.user is signed up for (make a POST request).
     """
     enrolled_arr = []
     if request.method == 'POST':
-        user = User.objects.get(email=request['email'])
-        user_profile = UserProfile.objects.get(user=user)
+        user_profile = UserProfile.objects.get(user=request.user)
 
         for course in user_profile.enrolled.objects.all():
             enrolled_arr.append(course.name)

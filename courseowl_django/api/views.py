@@ -10,14 +10,14 @@ def json_subjects(request):
     subject_arr = []
     for subject in Subject.objects.all():
         subject_arr.append(subject.name)
-    return HttpResponse(json.dumps(subject_arr))
+    return HttpResponse(json.dumps(subject_arr), mimetype='application/json')
 
 
 def json_courses(request):
     course_arr = []
     for course in Course.objects.all():
         course_arr.append(course.name)
-    return HttpResponse(json.dumps(course_arr))
+    return HttpResponse(json.dumps(course_arr), mimetype='application/json')
 
 
 @login_required
@@ -31,4 +31,4 @@ def json_enrolled_courses(request):
 
         for course in user_profile.enrolled.objects.all():
             enrolled_arr.append(course.name)
-    return HttpResponse(json.dumps(enrolled_arr))
+    return HttpResponse(json.dumps(enrolled_arr), mimetype='application/json')

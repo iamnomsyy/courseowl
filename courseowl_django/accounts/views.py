@@ -1,4 +1,4 @@
-import md5
+import hashlib
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as dj_login, logout as dj_logout
 from django.core.exceptions import ObjectDoesNotExist
@@ -73,7 +73,7 @@ def unique_user(email):
 
 
 def username_md5(email):
-    return md5.new(email.lower()).hexdigest()[:30]
+    return hashlib.md5(email.lower()).hexdigest()[:30]
 
 
 def valid_email_address(email):

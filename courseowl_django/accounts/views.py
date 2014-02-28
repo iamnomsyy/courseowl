@@ -26,10 +26,13 @@ def login(request):
             user = authenticate(username=temp_user.username, password=password)
             if user is not None:
                 dj_login(request, user)
+                messages.add_message(request, messages.SUCCESS, 'Login successful!')
                 return redirect('/accounts/profile')
+            messages.add_message(request, messages.ERROR, 'Invalid login credentials!')
+            return redirect('/accounts/login')
         except ObjectDoesNotExist:
             messages.add_message(request, messages.ERROR, 'User does not exist!')
-            return redirect('/accounts/login/#')
+            return redirect('/accounts/login/')
     else:
         return render(request, 'accounts/login.html')
 
@@ -47,20 +50,17 @@ def email_signup(request):
         password_confirm = request.POST.get('password_confirm')
 
         if not unique_user(email):
-            messages.add_message(request, messages.ERROR, 'User does not exist!')
+            messages.add_message(request, messages.ERROR, 'That email is already registered!')
             return redirect('/accounts/signup')
-            # return HttpResponse(content='USER ALREADY EXISTS')
 
         if not valid_email_address(email):
             messages.add_message(request, messages.ERROR, 'Invalid email address')
             return redirect('/accounts/signup')
-            # return HttpResponse(content='Invalid email address')
 
         valid_pw = check_valid_password(password, password_confirm)
         if not valid_pw:
             messages.add_message(request, messages.ERROR, 'Invalid password')
             return redirect('/accounts/signup')
-            # return HttpResponse(content='Invalid password input. Passwords must match and be >8 characters')
 
         user = User.objects.create_user(username_md5(email), email, password, first_name="", last_name="")
         userprofile = UserProfile()

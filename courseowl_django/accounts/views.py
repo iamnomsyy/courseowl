@@ -9,14 +9,9 @@ from models import UserProfile
 from django.forms import EmailField
 from django.core.exceptions import ValidationError
 from django.contrib import messages
-from django.contrib.messages import get_messages
 
 
 def login(request):
-
-    # messages.add_message(request, 'success', 'Login successful!')
-    # storage = get_messages(request)
-
     if request.method == "POST":
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -54,12 +49,12 @@ def email_signup(request):
             return redirect('/accounts/signup')
 
         if not valid_email_address(email):
-            messages.add_message(request, messages.ERROR, 'Invalid email address')
+            messages.add_message(request, messages.ERROR, 'Invalid email address!')
             return redirect('/accounts/signup')
 
         valid_pw = check_valid_password(password, password_confirm)
         if not valid_pw:
-            messages.add_message(request, messages.ERROR, 'Invalid password')
+            messages.add_message(request, messages.ERROR, 'Invalid password!')
             return redirect('/accounts/signup')
 
         user = User.objects.create_user(username_md5(email), email, password, first_name="", last_name="")

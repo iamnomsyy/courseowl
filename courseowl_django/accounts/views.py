@@ -34,8 +34,7 @@ def login(request):
 
 def logout(request):
     dj_logout(request)
-    messages.add_message(request, messages.SUCCESS, 'Logout successful!')
-    return HttpResponse(content='logged out successfully')
+    return redirect('/')
 
 
 def email_signup(request):

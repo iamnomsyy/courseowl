@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect
 from models import UserProfile
 from django.forms import EmailField
 from django.core.exceptions import ValidationError
+from django.contrib import messages
 
 
 def login(request):
@@ -20,16 +21,20 @@ def login(request):
             user = authenticate(username=temp_user.username, password=password)
             if user is not None:
                 dj_login(request, user)
+                messages.add_message(request, messages.SUCCESS, 'Login successful!')
                 return redirect('/accounts/profile')
+            messages.add_message(request, messages.ERROR, 'Invalid login credentials!')
+            return redirect('/accounts/login')
         except ObjectDoesNotExist:
-            pass
-        return HttpResponse(content='nope')
+            messages.add_message(request, messages.ERROR, 'User does not exist!')
+            return redirect('/accounts/login/')
     else:
         return render(request, 'accounts/login.html')
 
 
 def logout(request):
     dj_logout(request)
+    messages.add_message(request, messages.SUCCESS, 'Logout successful!')
     return HttpResponse(content='logged out successfully')
 
 
@@ -40,14 +45,17 @@ def email_signup(request):
         password_confirm = request.POST.get('password_confirm')
 
         if not unique_user(email):
-            return HttpResponse(content='USER ALREADY EXISTS')
+            messages.add_message(request, messages.ERROR, 'That email is already registered!')
+            return redirect('/accounts/signup')
 
         if not valid_email_address(email):
-            return HttpResponse(content='Invalid email address')
+            messages.add_message(request, messages.ERROR, 'Invalid email address!')
+            return redirect('/accounts/signup')
 
         valid_pw = check_valid_password(password, password_confirm)
         if not valid_pw:
-            return HttpResponse(content='Invalid password input. Passwords must match and be >8 characters')
+            messages.add_message(request, messages.ERROR, 'Invalid password!')
+            return redirect('/accounts/signup')
 
         user = User.objects.create_user(username_md5(email), email, password, first_name="", last_name="")
         userprofile = UserProfile()
@@ -60,9 +68,7 @@ def email_signup(request):
 
 
 def check_valid_password(pw, pw_conf):
-    if len(pw) < 8 or pw != pw_conf:
-        return False
-    return True
+    return not (len(pw) < 8 or pw != pw_conf)
 
 
 def unique_user(email):
@@ -78,6 +84,8 @@ def username_md5(email):
 
 
 def valid_email_address(email):
+    if email == "":
+        return False
     try:
         EmailField().clean(email)
         return True

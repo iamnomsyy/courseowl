@@ -5,9 +5,11 @@ import urllib2
 
 
 def run():
+    print "Adding cousera courses...."
     courseraJsonUrl = 'https://www.coursera.org/maestro/api/topic/list?full=1%20or%20https://www.coursera.org/maestro/api/topic/list2'
     courseraDict = getAndParseJson(courseraJsonUrl)
     addCourses(courseraDict)
+    print "Done!"
 
 def getAndParseJson(url):
     courseraJsonList = urllib2.urlopen(url)

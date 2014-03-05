@@ -10,3 +10,8 @@ def index(request):
 def personalize(request):
     context = {}
     return render(request, 'website/personalize.html', context)
+
+def search(request):
+    query = request.GET.get('query')
+    context = {'query': query}
+    return render(request, 'website/search.html', context)

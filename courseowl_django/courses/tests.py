@@ -18,7 +18,7 @@ class SubjectTests(TestCase):
 
         self.assertEquals(only_subject.name, 'CS')
 
-class ScriptTests(TestCase):
+class CourseraScriptTests(TestCase):
     def test_add_course(self):
         '''
         Load a json dict, then test if the course can be added correctly from the json data.
@@ -48,5 +48,4 @@ class ScriptTests(TestCase):
             self.assertEquals(len(the_course_subjects), 2)
             self.assertEquals(the_course_subjects[0].name, 'stats')
             self.assertEquals(the_course_subjects[1].name, 'cs-ai')
-
 

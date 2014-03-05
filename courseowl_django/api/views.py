@@ -43,7 +43,7 @@ def json_liked_subjects(request):
 
         for subject in user_profile.interests.objects.all():
             liked_arr.append(subject.name)
-    return HttpResponse(json.dumps(liked_arr), mimetype='application/json')
+    return HttpResponse(json.dumps(liked_arr), content_type='application/json')
 
 
 @login_required
@@ -59,6 +59,6 @@ def like_subject(request):
             user_profile.interests.objects.add(Subject.objects.get(name=subject_name))
         except:
             success = False
-        return HttpResponse(json.dumps({'success': success}))
+        return HttpResponse(json.dumps({'success': success}), content_type='application/json')
     else:
-        return HttpResponse(json.dumps({'success': False}))
+        return HttpResponse(json.dumps({'success': False}), content_type='application/json')

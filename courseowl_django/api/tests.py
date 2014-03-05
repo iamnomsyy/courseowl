@@ -15,8 +15,17 @@ class TestAPI(TestCase):
         self.assertTrue('Pottery' in response.content)
 
     def test_json_courses(self):
-        temp_subject = Course(name='Advanced Pottery III')
-        temp_subject.save()
+        temp_course = Course(name='Advanced Pottery III')
+        temp_course.save()
         response = self.client.get('/api/courses')
         self.assertEqual(response.status_code, 200)
         self.assertTrue('Advanced Pottery III' in response.content)
+
+    def test_json_enrolled_courses(self):
+        pass  # TODO once Erik and David get the framework for this set up
+
+    def test_json_liked_subject(self):
+        pass  # TODO once Erik and David get the framework for this set up
+
+    def test_json_like_subject(self):
+        pass  # TODO once Erik and David get the framework for this set up

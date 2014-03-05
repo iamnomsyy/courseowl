@@ -10,14 +10,14 @@ class TestAPI(TestCase):
     def test_json_subjects(self):
         temp_subject = Subject(name='Pottery')
         temp_subject.save()
-        response = self.client.get('/api/subjects')
+        response = self.client.get('/api/subjects/')
         self.assertEqual(response.status_code, 200)
         self.assertTrue('Pottery' in response.content)
 
     def test_json_courses(self):
         temp_course = Course(name='Advanced Pottery III')
         temp_course.save()
-        response = self.client.get('/api/courses')
+        response = self.client.get('/api/courses/')
         self.assertEqual(response.status_code, 200)
         self.assertTrue('Advanced Pottery III' in response.content)
 

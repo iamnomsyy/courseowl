@@ -54,4 +54,13 @@ class TestAPI(TestCase):
         self.assertEqual('["Computer Science", "Computer Engineering"]', response.content)
 
     def test_json_like_subject(self):
-        pass  # TODO once Erik and David get the framework for this set up
+        login_successful = self.client.login(username='bob12345', password='bob123456')
+        self.assertTrue(login_successful)
+        temp_subject = Subject(name='Pottery')
+        temp_subject.save()
+        response = self.client.post('/api/like_subject/', data={'liked_subject': 'Pottery'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual('{"success": true}', response.content)
+        response = self.client.post('/api/like_subject/', data={'liked_subject': 'Non-existent subject'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual('{"success": false}', response.content)

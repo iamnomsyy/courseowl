@@ -63,7 +63,7 @@ def like_subject(request):
     """
     if request.method == 'POST':
         success = True
-        subject_name = request['liked_subject']
+        subject_name = request.POST.get('liked_subject')
         user_profile = UserProfile.objects.get(user=request.user)
         try:
             user_profile.interests.add(Subject.objects.get(name=subject_name))

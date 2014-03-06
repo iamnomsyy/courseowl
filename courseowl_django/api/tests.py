@@ -40,7 +40,18 @@ class TestAPI(TestCase):
         self.assertEqual('["Advanced Pottery III"]', response.content)
 
     def test_json_liked_subjects(self):
-        pass  # TODO once Erik and David get the framework for this set up
+        temp_subject = Subject(name='Computer Science')
+        temp_subject.save()
+        temp_subject_two = Subject(name='Computer Engineering')
+        temp_subject_two.save()
+        self.user_profile.interests.add(temp_subject)
+        self.user_profile.interests.add(temp_subject_two)
+        self.user_profile.save()
+        login_successful = self.client.login(username='bob12345', password='bob123456')
+        self.assertTrue(login_successful)
+        response = self.client.get('/api/liked_subjects/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual('["Computer Science", "Computer Engineering"]', response.content)
 
     def test_json_like_subject(self):
         pass  # TODO once Erik and David get the framework for this set up

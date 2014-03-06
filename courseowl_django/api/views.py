@@ -36,7 +36,7 @@ def json_enrolled_courses(request):
     enrolled_arr = []
     user_profile = UserProfile.objects.get(user=request.user)
 
-    for course in user_profile.enrolled.objects.all():
+    for course in user_profile.enrolled.all():
         enrolled_arr.append(course.name)
     return HttpResponse(json.dumps(enrolled_arr), content_type='application/json')
 
@@ -50,7 +50,7 @@ def json_liked_subjects(request):
     liked_arr = []
     user_profile = UserProfile.objects.get(user=request.user)
 
-    for subject in user_profile.interests.objects.all():
+    for subject in user_profile.interests.all():
         liked_arr.append(subject.name)
     return HttpResponse(json.dumps(liked_arr), content_type='application/json')
 
@@ -66,7 +66,7 @@ def like_subject(request):
         subject_name = request['liked_subject']
         user_profile = UserProfile.objects.get(user=request.user)
         try:
-            user_profile.interests.objects.add(Subject.objects.get(name=subject_name))
+            user_profile.interests.add(Subject.objects.get(name=subject_name))
         except:
             success = False
         return HttpResponse(json.dumps({'success': success}), content_type='application/json')

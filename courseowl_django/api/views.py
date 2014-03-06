@@ -72,3 +72,22 @@ def like_subject(request):
         return HttpResponse(json.dumps({'success': success}), content_type='application/json')
     else:
         return HttpResponse(json.dumps({'success': False}), content_type='application/json')
+
+
+def sample_courses_for_subject(request):
+    """
+    POST here with 'subject' to get 3 sample courses and all their information back.
+    Method: POST, {"subject": "name of subject"}
+    Returns: {"Course name": ["course description", "course provider"], "2nd course name": ["2nd desc"...
+    """
+    sample_courses = {}
+    if request.method == 'POST':
+        subject_name = request.POST.get('subject')
+        try:
+            subject_obj = Subject.objects.get(name=subject_name)
+        except:
+            return HttpResponse(json.dumps({}), content_type='application/json')
+        sample_course_list = list(Course.objects.filter(subjects=subject_obj))
+        for i in range(0, 3):
+            sample_courses[sample_course_list[i].name] = [sample_course_list[i].description, sample_course_list[i].provider]
+    return HttpResponse(json.dumps(sample_courses), content_type='application/json')

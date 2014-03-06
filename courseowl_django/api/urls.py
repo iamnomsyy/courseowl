@@ -6,5 +6,6 @@ urlpatterns = patterns('',
                        url(r'^courses', views.json_courses, name='api_courses'),
                        url(r'^enrolled_courses', views.json_enrolled_courses, name='enrolled_courses'),
                        url(r'^liked_subjects', views.json_liked_subjects, name='liked_subjects'),
-                       url(r'^like_subject', views.like_subject, name='like_subject')
+                       url(r'^like_subject', views.like_subject, name='like_subject'),
+                       url(r'^sample_courses', views.sample_courses_for_subject, name='sample_courses')
                        )

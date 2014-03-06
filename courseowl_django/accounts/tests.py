@@ -1,9 +1,31 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
+from django.test.client import Client
 from accounts.views import *
+from courses.models import *
+import urllib, urllib2
 
 
 class AccountsTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+    def create_fake_userprofile(self):
+        email = "abc@xyz.com"
+        password = "qwerty123"
+        user = User.objects.create_user(username_md5(email), email, password, first_name="", last_name="")
+        user.save()
+        user_profile = UserProfile(user=user)
+
+        course_name = "Test course"
+        description = "Test description"
+        c, created = Course.objects.get_or_create(name=course_name, description=description, instructor='instructor')
+
+        user_profile.save()
+        user_profile.enrolled.add(c)
+        user_profile.save()
+        return user_profile
+
     def test_valid_email(self):
         email1 = 'testmail.cu'
         email2 = 'testmail%$#.com'
@@ -42,3 +64,32 @@ class AccountsTest(TestCase):
         user2_unique = unique_user(email2)
         self.assertFalse(user1_not_unique)
         self.assertTrue(user2_unique)
+
+    def test_add_remove_course(self):
+        user_profile = self.create_fake_userprofile()
+
+        # postdata = urllib.urlencode({
+        #     'course_to_add': 'Test course',
+        #     'user': user_profile.user
+        # })
+        # req = urllib2.Request(
+        #     url='/accounts/enroll',
+        #     data=postdata
+        # )
+
+        request = self.client.post('/accounts/enroll/', data={'course_to_add': 'Testcourse'})
+        # request.user = user_profile.user
+
+        # add_course(req)
+        #
+        # all_courses = list(user_profile.enrolled.all())
+        # self.assertEquals(len(all_courses), 1)
+        #
+        # the_course = all_courses[0]
+        # self.assertEquals(the_course.name, "Test course")
+        # self.assertEquals(the_course.description, "Test description")
+
+        # user_profile.enrolled.remove(c)
+        # user_profile.save()
+        # all_courses = list(user_profile.enrolled.all())
+        # self.assertEqual(len(all_courses), 0)

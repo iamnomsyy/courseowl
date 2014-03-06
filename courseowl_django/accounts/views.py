@@ -9,6 +9,7 @@ from models import UserProfile
 from django.forms import EmailField
 from django.core.exceptions import ValidationError
 from django.contrib import messages
+from courses.models import Course
 
 
 def login(request):
@@ -22,7 +23,7 @@ def login(request):
             if user is not None:
                 dj_login(request, user)
                 messages.add_message(request, messages.SUCCESS, 'Login successful!')
-                return redirect('/accounts/profile')
+                return HttpResponse("PROFILE PAGE HERE. SOON. HOPEFULLY")
             messages.add_message(request, messages.ERROR, 'Invalid login credentials!')
             return redirect('/accounts/login')
         except ObjectDoesNotExist:
@@ -35,6 +36,40 @@ def login(request):
 def logout(request):
     dj_logout(request)
     return redirect('/')
+
+
+def add_course(request):
+    if request.method == "POST":
+        try:
+            user_profile = UserProfile.objects.get(user=request.user)
+            course_to_add = request.POST.get('course_to_add')
+            the_course = Course.objects.get(name=course_to_add)
+            user_profile.enrolled.add(the_course)
+            user_profile.save()
+            messages.add_message(request, messages.SUCCESS, 'Course added successfully!')
+            return HttpResponse("PROFILE PAGE HERE. SOON. HOPEFULLY")#redirect('/accounts/profile/')
+        except ObjectDoesNotExist:
+            messages.add_message(request, messages.ERROR, 'Course didn\'t exist! SHOULD NOT BE SEEING THIS')
+            return HttpResponse("ERROR")#render('/accounts/profile/')
+    else:
+        return HttpResponse("PROFILE PAGE HERE. SOON. HOPEFULLY")#render('/accounts/profile/')
+
+
+def drop_course(request):
+    if request.method == "POST":
+        try:
+            user_profile = UserProfile.objects.get(user=request.user)
+            course_to_remove = request.POST.get('course_to_remove')
+            the_course = Course.objects.get(name=course_to_remove)
+            user_profile.enrolled.remove(the_course)
+            user_profile.save()
+            messages.add_message(request, messages.SUCCESS, 'Course added successfully!')
+            return render('/accounts/profile/')
+        except ObjectDoesNotExist:
+            messages.add_message(request, messages.ERROR, 'ERROR DELETING COURSE!')
+            return render('/accounts/profile/')
+    else:
+        return render('/accounts/profile/')
 
 
 def email_signup(request):
@@ -57,9 +92,9 @@ def email_signup(request):
             return redirect('/accounts/signup')
 
         user = User.objects.create_user(username_md5(email), email, password, first_name="", last_name="")
+        user.save()
         userprofile = UserProfile()
         userprofile.user = user
-        user.save()
         userprofile.save()
         return redirect('/personalize')
     else:

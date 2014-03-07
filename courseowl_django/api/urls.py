@@ -9,5 +9,6 @@ urlpatterns = patterns('',
                        url(r'^drop', views.drop_course, name='drop'),
                        url(r'^liked_subjects', views.json_liked_subjects, name='liked_subjects'),
                        url(r'^like_subject', views.like_subject, name='like_subject'),
+                       url(r'^complete_course', views.complete_course, name='complete_course'),
                        url(r'^sample_courses', views.sample_courses_for_subject, name='sample_courses')
                        )

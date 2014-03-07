@@ -62,7 +62,10 @@ def email_signup(request):
         userprofile = UserProfile()
         userprofile.user = user
         userprofile.save()
-        return redirect('/personalize')
+        pas = password
+        auth_user = authenticate(username=username_md5(email), password=pas)
+        dj_login(request, auth_user)
+        return redirect('/subject_preferences')
     else:
         return render(request, 'accounts/signup.html')
 

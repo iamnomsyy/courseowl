@@ -72,16 +72,16 @@ def profile(request):
     currUser = request.user
     userProf = UserProfile.objects.get(user=currUser)
     enrolled_list = list(userProf.enrolled.all())
-    recommend_list = getRecommendedCourses(userProf)
+    recommend_list = get_recommended_courses(userProf)
     return render(request, 'accounts/profile.html', {"email": currUser.email, "enrolled_list": enrolled_list, "recommend_list": recommend_list})
 
 
-def getRecommendedCourses(userProf):
+def get_recommended_courses(user_profile):
     random_courses = list()
-    randCourseOrder = Course.objects.order_by('?')
-    numRandCourses = 5
-    for i in range(numRandCourses):
-        random_courses.append(randCourseOrder[i])
+    random_course_order = Course.objects.order_by('?')
+    number_random_courses = 5
+    for i in range(number_random_courses):
+        random_courses.append(random_course_order[i])
     return random_courses
 
 

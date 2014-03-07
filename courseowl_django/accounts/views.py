@@ -25,12 +25,12 @@ def login(request):
                 messages.add_message(request, messages.SUCCESS, 'Login successful!')
                 return redirect('/accounts/profile/')
             messages.add_message(request, messages.ERROR, 'Invalid login credentials!')
-            return redirect('/accounts/login')
+            return redirect('/accounts/login/')
         except ObjectDoesNotExist:
             messages.add_message(request, messages.ERROR, 'User does not exist!')
             return redirect('/accounts/login/')
     else:
-        return redirect('/accounts/login')
+        return render(request, 'accounts/login.html')
 
 
 def logout(request):
@@ -75,6 +75,7 @@ def profile(request):
     recommend_list = getRecommendedCourses(userProf)
     return render(request, 'accounts/profile.html', {"email": currUser.email, "enrolled_list": enrolled_list, "recommend_list": recommend_list})
 
+
 def getRecommendedCourses(userProf):
     random_courses = list()
     randCourseOrder = Course.objects.order_by('?')
@@ -82,8 +83,6 @@ def getRecommendedCourses(userProf):
     for i in range(numRandCourses):
         random_courses.append(randCourseOrder[i])
     return random_courses
-
-
 
 
 def check_valid_password(pw, pw_conf):

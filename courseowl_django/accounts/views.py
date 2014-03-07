@@ -9,6 +9,7 @@ from models import UserProfile
 from django.forms import EmailField
 from django.core.exceptions import ValidationError
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 
 def login(request):
@@ -65,6 +66,10 @@ def email_signup(request):
     else:
         return render(request, 'accounts/signup.html')
 
+
+@login_required
+def profile(request):
+    return render(request, 'accounts/profile.html')
 
 def check_valid_password(pw, pw_conf):
     return not (len(pw) < 8 or pw != pw_conf)

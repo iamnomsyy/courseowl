@@ -3,7 +3,6 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as dj_login, logout as dj_logout
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from models import UserProfile
 from django.forms import EmailField
@@ -24,14 +23,14 @@ def login(request):
             if user is not None:
                 dj_login(request, user)
                 messages.add_message(request, messages.SUCCESS, 'Login successful!')
-                return redirect('/accounts/profile')
+                return redirect('/accounts/profile/')
             messages.add_message(request, messages.ERROR, 'Invalid login credentials!')
             return redirect('/accounts/login')
         except ObjectDoesNotExist:
             messages.add_message(request, messages.ERROR, 'User does not exist!')
             return redirect('/accounts/login/')
     else:
-        return render(request, 'accounts/login.html')
+        return redirect('/accounts/login')
 
 
 def logout(request):
@@ -59,9 +58,9 @@ def email_signup(request):
             return redirect('/accounts/signup')
 
         user = User.objects.create_user(username_md5(email), email, password, first_name="", last_name="")
+        user.save()
         userprofile = UserProfile()
         userprofile.user = user
-        user.save()
         userprofile.save()
         return redirect('/personalize')
     else:
@@ -83,6 +82,7 @@ def getRecommendedCourses(userProf):
     for i in range(numRandCourses):
         random_courses.append(randCourseOrder[i])
     return random_courses
+
 
 
 

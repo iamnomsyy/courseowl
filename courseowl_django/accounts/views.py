@@ -3,13 +3,11 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as dj_login, logout as dj_logout
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from models import UserProfile
 from django.forms import EmailField
 from django.core.exceptions import ValidationError
 from django.contrib import messages
-from courses.models import Course
 
 
 def login(request):
@@ -30,7 +28,7 @@ def login(request):
             messages.add_message(request, messages.ERROR, 'User does not exist!')
             return redirect('/accounts/login/')
     else:
-        return redirect('accounts/login.html')
+        return redirect('/accounts/login')
 
 
 def logout(request):
@@ -38,38 +36,6 @@ def logout(request):
     return redirect('/')
 
 
-def add_course(request):
-    if request.method == "POST":
-        try:
-            user_profile = UserProfile.objects.get(user=request.user)
-            course_to_add = request.POST.get('course_to_add')
-            the_course = Course.objects.get(name=course_to_add)
-            user_profile.enrolled.add(the_course)
-            user_profile.save()
-            messages.add_message(request, messages.SUCCESS, 'Course added successfully!')
-            return redirect('/accounts/profile/')
-        except ObjectDoesNotExist:
-            messages.add_message(request, messages.ERROR, 'Course does not exist! Should never happen')
-            return redirect('/accounts/profile/')
-    else:
-        return redirect('/accounts/profile/')
-
-
-def drop_course(request):
-    if request.method == "POST":
-        try:
-            user_profile = UserProfile.objects.get(user=request.user)
-            course_to_drop = request.POST.get('course_to_drop')
-            the_course = Course.objects.get(name=course_to_drop)
-            user_profile.enrolled.remove(the_course)
-            user_profile.save()
-            messages.add_message(request, messages.SUCCESS, 'Course dropped successfully!')
-            return redirect('/accounts/profile/')
-        except ObjectDoesNotExist:
-            messages.add_message(request, messages.ERROR, 'Error deleting course!')
-            return redirect('/accounts/profile/')
-    else:
-        return redirect('/accounts/profile/')
 
 
 def email_signup(request):

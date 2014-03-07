@@ -10,6 +10,7 @@ from django.forms import EmailField
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from courses.models import Course
 
 
 def login(request):
@@ -69,7 +70,21 @@ def email_signup(request):
 
 @login_required
 def profile(request):
-    return render(request, 'accounts/profile.html')
+    currUser = request.user
+    userProf = UserProfile.objects.get(user=currUser)
+    enrolled_list = list(userProf.enrolled.all())
+    recommend_list = getRecommendedCourses(userProf)
+    return render(request, 'accounts/profile.html', {"email": currUser.email, "enrolled_list": enrolled_list, "recommend_list": recommend_list})
+
+def getRecommendedCourses(userProf):
+    random_courses = list()
+    randCourseOrder = Course.objects.order_by('?')
+    numRandCourses = 5
+    for i in range(numRandCourses):
+        random_courses.append(randCourseOrder[i])
+    return random_courses
+
+
 
 def check_valid_password(pw, pw_conf):
     return not (len(pw) < 8 or pw != pw_conf)

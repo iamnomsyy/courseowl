@@ -18,7 +18,7 @@
         <div class="container span18">
 
 
-          <p class="pull-right">Logged in as <a href="#">email of person</a></p>
+          <p class="pull-right">Logged in as <a href="#">{{ email }}</a></p>
         </div>
       </div>
     </div>
@@ -41,9 +41,9 @@
               {%for course in enrolled_list %}
                   <tr>
                       <td class='mini-thumbnail'>001</td>
-                      <td class>{% course.name %}</td>
-                      <td>{% course.provider %}</td>
-                      <td>{% course.instructor %}</td>
+                      <td class>{{  course.name }}</td>
+                      <td>{{ course.provider }}</td>
+                      <td>{{  course.instructor }}</td>
                       <td>
                         <div class='btn small success'>Course info</div>
                         <div class='btn small danger'>Delete</div>

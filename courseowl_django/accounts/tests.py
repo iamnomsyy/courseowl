@@ -1,10 +1,10 @@
-from django.test import TestCase, RequestFactory
+from django.test import TestCase
 from django.contrib.auth.models import User
 from django.test.client import Client
 from django.http import HttpRequest, QueryDict
 from accounts.views import *
 from courses.models import *
-
+from django.contrib.messages.storage.fallback import FallbackStorage
 
 class AccountsTest(TestCase):
     def setUp(self):
@@ -52,7 +52,7 @@ class AccountsTest(TestCase):
         self.assertFalse(none)
         self.assertFalse(notmatching1)
         self.assertFalse(notmatching2)
-        self.assertTrue(valid)
+        self.assertTrue(validpw)
 
     def test_unique_user(self):
         email1 = 'test1@xyz.com'
@@ -67,15 +67,6 @@ class AccountsTest(TestCase):
 
     def test_add_remove_course(self):
         user_profile = self.create_fake_userprofile()
-
-        # postdata = urllib.urlencode({
-        #     'course_to_add': 'Test course',
-        #     'user': user_profile.user
-        # })
-        # req = urllib2.Request(
-        #     url='/accounts/enroll',
-        #     data=postdata
-        # )
         self.client.login(username='abc@xyz.com', password='qwerty123')
 
         request = HttpRequest()
@@ -84,6 +75,9 @@ class AccountsTest(TestCase):
         request.user = user_profile.user
         request.method = 'POST'
 
+        setattr(request, 'session', 'session')
+        messages = FallbackStorage(request)
+        setattr(request, '_messages', messages)
 
         add_course(request)
 
@@ -94,8 +88,8 @@ class AccountsTest(TestCase):
         self.assertEquals(the_course.name, "Test course")
         self.assertEquals(the_course.description, "Test description")
 
-        the_course = Course.objects.get(name='Test course')
-        user_profile.enrolled.remove(the_course)
-        user_profile.save()
+        request.POST['course_to_drop'] = 'Test course'
+        drop_course(request)
+
         all_courses = list(user_profile.enrolled.all())
         self.assertEqual(len(all_courses), 0)

@@ -23,14 +23,14 @@ def login(request):
             if user is not None:
                 dj_login(request, user)
                 messages.add_message(request, messages.SUCCESS, 'Login successful!')
-                return HttpResponse("PROFILE PAGE HERE. SOON. HOPEFULLY")
+                return redirect('/accounts/profile/')
             messages.add_message(request, messages.ERROR, 'Invalid login credentials!')
             return redirect('/accounts/login')
         except ObjectDoesNotExist:
             messages.add_message(request, messages.ERROR, 'User does not exist!')
             return redirect('/accounts/login/')
     else:
-        return render(request, 'accounts/login.html')
+        return redirect('accounts/login.html')
 
 
 def logout(request):
@@ -46,30 +46,30 @@ def add_course(request):
             the_course = Course.objects.get(name=course_to_add)
             user_profile.enrolled.add(the_course)
             user_profile.save()
-            # messages.add_message(request, messages.SUCCESS, 'Course added successfully!')
-            return HttpResponse("PROFILE PAGE HERE. SOON. HOPEFULLY") #redirect('/accounts/profile/')
+            messages.add_message(request, messages.SUCCESS, 'Course added successfully!')
+            return redirect('/accounts/profile/')
         except ObjectDoesNotExist:
-            messages.add_message(request, messages.ERROR, 'Course didn\'t exist! SHOULD NOT BE SEEING THIS')
-            return HttpResponse("ERROR") #render('/accounts/profile/')
+            messages.add_message(request, messages.ERROR, 'Course does not exist! Should never happen')
+            return redirect('/accounts/profile/')
     else:
-        return HttpResponse("PROFILE PAGE HERE. SOON. HOPEFULLY") #render('/accounts/profile/')
+        return redirect('/accounts/profile/')
 
 
 def drop_course(request):
     if request.method == "POST":
         try:
             user_profile = UserProfile.objects.get(user=request.user)
-            course_to_remove = request.POST.get('course_to_remove')
-            the_course = Course.objects.get(name=course_to_remove)
+            course_to_drop = request.POST.get('course_to_drop')
+            the_course = Course.objects.get(name=course_to_drop)
             user_profile.enrolled.remove(the_course)
             user_profile.save()
-            messages.add_message(request, messages.SUCCESS, 'Course added successfully!')
-            return render('/accounts/profile/')
+            messages.add_message(request, messages.SUCCESS, 'Course dropped successfully!')
+            return redirect('/accounts/profile/')
         except ObjectDoesNotExist:
-            messages.add_message(request, messages.ERROR, 'ERROR DELETING COURSE!')
-            return render('/accounts/profile/')
+            messages.add_message(request, messages.ERROR, 'Error deleting course!')
+            return redirect('/accounts/profile/')
     else:
-        return render('/accounts/profile/')
+        return redirect('/accounts/profile/')
 
 
 def email_signup(request):

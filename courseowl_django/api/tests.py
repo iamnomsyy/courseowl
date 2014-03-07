@@ -1,8 +1,9 @@
+from django.http import HttpRequest
 from django.test import TestCase
 from django.test.client import Client
-from django.contrib.auth.models import User
-from accounts.models import UserProfile
-from courses.models import Subject, Course
+from api.views import *
+from courses.models import *
+from accounts.views import *
 
 
 class TestAPI(TestCase):
@@ -74,6 +75,19 @@ class TestAPI(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual('{"success": false}', response.content)
 
+    def test_json_complete_course(self):
+        login_successful = self.client.login(username='bob12345', password='bob123456')
+        self.assertTrue(login_successful)
+
+        temp_course = Course(name='Pottery')
+        temp_course.save()
+        response = self.client.post('/api/complete_course/', data={'completed_course': 'Pottery'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual('{"success": true}', response.content)
+        response = self.client.post('/api/complete_course/', data={'completed_course': 'Non-existent subject'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual('{"success": false}', response.content)
+
     def test_json_sample_courses_for_subject(self):
         login_successful = self.client.login(username='bob12345', password='bob123456')
         self.assertTrue(login_successful)
@@ -103,3 +117,44 @@ class TestAPI(TestCase):
         response = self.client.post('/api/sample_courses/', data={'subject': 'Non-existent subject'})
         self.assertEqual(response.status_code, 200)
         self.assertEqual('{}', response.content)
+
+    def create_fake_userprofile(self):
+        email = "abc@xyz.com"
+        password = "qwerty123"
+        user = User.objects.create_user(username_md5(email), email, password, first_name="", last_name="")
+        user.save()
+        user_profile = UserProfile(user=user)
+
+        course_name = "Test course"
+        description = "Test description"
+        c, created = Course.objects.get_or_create(name=course_name, description=description, instructor='instructor')
+
+        user_profile.save()
+        user_profile.enrolled.add(c)
+        user_profile.save()
+        return user_profile
+
+    def test_add_remove_course(self):
+        user_profile = self.create_fake_userprofile()
+        self.client.login(username='abc@xyz.com', password='qwerty123')
+
+        request = HttpRequest()
+        request.POST = request.POST.copy()
+        request.POST['course_to_add'] = 'Test course'
+        request.user = user_profile.user
+        request.method = 'POST'
+
+        add_course(request)
+
+        all_courses = list(user_profile.enrolled.all())
+        self.assertEquals(len(all_courses), 1)
+
+        the_course = all_courses[0]
+        self.assertEquals(the_course.name, "Test course")
+        self.assertEquals(the_course.description, "Test description")
+
+        request.POST['course_to_drop'] = 'Test course'
+        drop_course(request)
+
+        all_courses = list(user_profile.enrolled.all())
+        self.assertEqual(len(all_courses), 0)

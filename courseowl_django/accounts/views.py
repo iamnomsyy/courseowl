@@ -3,12 +3,13 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as dj_login, logout as dj_logout
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from models import UserProfile
 from django.forms import EmailField
 from django.core.exceptions import ValidationError
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from courses.models import Course
 
 
 def login(request):
@@ -22,9 +23,9 @@ def login(request):
             if user is not None:
                 dj_login(request, user)
                 messages.add_message(request, messages.SUCCESS, 'Login successful!')
-                return redirect('/accounts/profile')
+                return redirect('/accounts/profile/')
             messages.add_message(request, messages.ERROR, 'Invalid login credentials!')
-            return redirect('/accounts/login')
+            return redirect('/accounts/login/')
         except ObjectDoesNotExist:
             messages.add_message(request, messages.ERROR, 'User does not exist!')
             return redirect('/accounts/login/')
@@ -57,13 +58,31 @@ def email_signup(request):
             return redirect('/accounts/signup')
 
         user = User.objects.create_user(username_md5(email), email, password, first_name="", last_name="")
+        user.save()
         userprofile = UserProfile()
         userprofile.user = user
-        user.save()
         userprofile.save()
         return redirect('/personalize')
     else:
         return render(request, 'accounts/signup.html')
+
+
+@login_required
+def profile(request):
+    currUser = request.user
+    userProf = UserProfile.objects.get(user=currUser)
+    enrolled_list = list(userProf.enrolled.all())
+    recommend_list = get_recommended_courses(userProf)
+    return render(request, 'accounts/profile.html', {"email": currUser.email, "enrolled_list": enrolled_list, "recommend_list": recommend_list})
+
+
+def get_recommended_courses(user_profile):
+    random_courses = list()
+    random_course_order = Course.objects.order_by('?')
+    number_random_courses = 5
+    for i in range(number_random_courses):
+        random_courses.append(random_course_order[i])
+    return random_courses
 
 
 def check_valid_password(pw, pw_conf):

@@ -1,5 +1,5 @@
 from django.test import TestCase
-from django.contrib.auth.models import User
+
 from accounts.views import *
 
 
@@ -30,7 +30,7 @@ class AccountsTest(TestCase):
         self.assertFalse(none)
         self.assertFalse(notmatching1)
         self.assertFalse(notmatching2)
-        self.assertTrue(valid)
+        self.assertTrue(validpw)
 
     def test_unique_user(self):
         email1 = 'test1@xyz.com'
@@ -42,3 +42,4 @@ class AccountsTest(TestCase):
         user2_unique = unique_user(email2)
         self.assertFalse(user1_not_unique)
         self.assertTrue(user2_unique)
+

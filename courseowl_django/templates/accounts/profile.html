@@ -30,17 +30,17 @@
           <table class='table table-striped'>
               <thead>
                   <tr>
-                      <th class='span2'></th>
+
                       <th class='span4'>Course</th>
                       <th class='span2'>Provider</th>
-                      <th class='span2'>Status</th>
+                      <th class='span2'>Instructor</th>
                       <th class='span4'>Action</th>
                   </tr>
               </thead>
               <tbody>
               {%for course in enrolled_list %}
                   <tr>
-                      <td class='mini-thumbnail'>001</td>
+
                       <td class>{{  course.name }}</td>
                       <td>{{ course.provider }}</td>
                       <td>{{  course.instructor }}</td>
@@ -50,17 +50,7 @@
                       </td>
                   </tr>
               {% endfor %}
-                   <tr>
-                      <td class='mini-thumbnail'>002</td>
-                      <td>Course 2</td>
-                      <td>some months</td>
-                      <td>active</td>
-                      <td>
-                        <div class='btn small success'>Course info</div>
-                        <div class='btn small danger'>Delete</div>
-                      </td>
-                  </tr>
-                  <tr>
+
               </tbody>
           </table>
 
@@ -68,33 +58,26 @@
          <table class='table table-striped'>
               <thead>
                   <tr>
-                      <th class='span2'></th>
+
                       <th class='span4'>Course</th>
-                      <th class='span2'>Duration</th>
+                      <th class='span2'>Provider</th>
+                      <th class='span4'>Instructor</th>
                       <th class='span4'>Action</th>
                   </tr>
               </thead>
               <tbody>
               <!-- Check again -->
                   <tr>
-                      <td class='mini-thumbnail'>001</td>
-                      <td>Course 1</td>
-                      <td>2 months</td>
+                {%for course in recommend_list %}
+                      <td>{{course.name}}</td>
+                      <td>{{course.provider}}</td>
+                      <td>{{course.instructor}}</td>
                       <td>
                         <div class='btn small success'>Course info</div>
                         <div class='btn small danger'>Add Course</div>
                       </td>
                   </tr>
-                   <tr>
-                      <td class='mini-thumbnail'>002.</td>
-                      <td>Course 2</td>
-                      <td>some months</td>
-                      <td>
-                        <div class='btn small success'>Course info</div>
-                        <div class='btn small danger'>Add Course</div>
-                      </td>
-                  </tr>
-                  <tr>
+                    {% endfor %}
               </tbody>
           </table>
         </div><!-- do not modify the tags see zebra-striped , akshay-->

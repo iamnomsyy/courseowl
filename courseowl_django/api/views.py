@@ -32,3 +32,15 @@ def json_enrolled_courses(request):
         for course in user_profile.enrolled.objects.all():
             enrolled_arr.append(course.name)
     return HttpResponse(json.dumps(enrolled_arr), mimetype='application/json')
+
+def json_random_courses(request):
+    """
+    Returns courses that are random for now, but will eventually be recommendations.
+    """
+    random_courses = []
+    if request.method == 'POST':
+        randCourseOrder = Course.objects.order_by('?')
+        numRandCourses = 5
+        for i in range(numRandCourses):
+            random_courses.append(randCourseOrder[i])
+    return HttpResponse(json.dumps(random_courses), mimetype='application/json')

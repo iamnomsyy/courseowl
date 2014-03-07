@@ -1,9 +1,9 @@
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from django.contrib.auth.models import User
 from django.test.client import Client
+from django.http import HttpRequest, QueryDict
 from accounts.views import *
 from courses.models import *
-import urllib, urllib2
 
 
 class AccountsTest(TestCase):
@@ -76,20 +76,26 @@ class AccountsTest(TestCase):
         #     url='/accounts/enroll',
         #     data=postdata
         # )
+        self.client.login(username='abc@xyz.com', password='qwerty123')
 
-        request = self.client.post('/accounts/enroll/', data={'course_to_add': 'Testcourse'})
-        # request.user = user_profile.user
+        request = HttpRequest()
+        request.POST = request.POST.copy()
+        request.POST['course_to_add'] = 'Test course'
+        request.user = user_profile.user
+        request.method = 'POST'
 
-        # add_course(req)
-        #
-        # all_courses = list(user_profile.enrolled.all())
-        # self.assertEquals(len(all_courses), 1)
-        #
-        # the_course = all_courses[0]
-        # self.assertEquals(the_course.name, "Test course")
-        # self.assertEquals(the_course.description, "Test description")
 
-        # user_profile.enrolled.remove(c)
-        # user_profile.save()
-        # all_courses = list(user_profile.enrolled.all())
-        # self.assertEqual(len(all_courses), 0)
+        add_course(request)
+
+        all_courses = list(user_profile.enrolled.all())
+        self.assertEquals(len(all_courses), 1)
+
+        the_course = all_courses[0]
+        self.assertEquals(the_course.name, "Test course")
+        self.assertEquals(the_course.description, "Test description")
+
+        the_course = Course.objects.get(name='Test course')
+        user_profile.enrolled.remove(the_course)
+        user_profile.save()
+        all_courses = list(user_profile.enrolled.all())
+        self.assertEqual(len(all_courses), 0)

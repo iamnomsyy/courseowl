@@ -46,13 +46,13 @@ def add_course(request):
             the_course = Course.objects.get(name=course_to_add)
             user_profile.enrolled.add(the_course)
             user_profile.save()
-            messages.add_message(request, messages.SUCCESS, 'Course added successfully!')
-            return HttpResponse("PROFILE PAGE HERE. SOON. HOPEFULLY")#redirect('/accounts/profile/')
+            # messages.add_message(request, messages.SUCCESS, 'Course added successfully!')
+            return HttpResponse("PROFILE PAGE HERE. SOON. HOPEFULLY") #redirect('/accounts/profile/')
         except ObjectDoesNotExist:
             messages.add_message(request, messages.ERROR, 'Course didn\'t exist! SHOULD NOT BE SEEING THIS')
-            return HttpResponse("ERROR")#render('/accounts/profile/')
+            return HttpResponse("ERROR") #render('/accounts/profile/')
     else:
-        return HttpResponse("PROFILE PAGE HERE. SOON. HOPEFULLY")#render('/accounts/profile/')
+        return HttpResponse("PROFILE PAGE HERE. SOON. HOPEFULLY") #render('/accounts/profile/')
 
 
 def drop_course(request):

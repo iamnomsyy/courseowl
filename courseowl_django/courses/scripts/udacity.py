@@ -1,7 +1,7 @@
 import urllib2
 import json
 from bs4 import BeautifulSoup
-#from ..models import *
+from courses.models import *
 
 def get_urls():
     url = "http://www.udacity.com/wiki/frontpage"

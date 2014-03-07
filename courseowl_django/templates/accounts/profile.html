@@ -1,0 +1,117 @@
+{% include 'header.html' %}
+{% load socialaccount %}
+
+
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="stylesheets/social-buttons.css">
+ <link rel="stylesheet" href="stylesheets/stylesheet.css">
+<div class="pagination-centered">
+<div class="col-md-6 col-sm-6">
+            <div class="container">
+                 <div class="row vertical-center-row row-md-offset-4">
+                  <div class="form">
+                     <h2>Welcome</h2>
+ <body>
+<!-- testing for table / topbar / color, akshay-->
+    <div class="topbar">
+      <div class="fill">
+        <div class="container span18">
+
+
+          <p class="pull-right">Logged in as <a href="#">email of person</a></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="container span18">
+      <div class='cleaner_h40'></div>
+        <div class='span14'>
+          <h2>Active Courses</h2>
+          <table class='table table-striped'>
+              <thead>
+                  <tr>
+                      <th class='span2'></th>
+                      <th class='span4'>Course</th>
+                      <th class='span2'>Provider</th>
+                      <th class='span2'>Status</th>
+                      <th class='span4'>Action</th>
+                  </tr>
+              </thead>
+              <tbody>
+              {%for course in enrolled_list %}
+                  <tr>
+                      <td class='mini-thumbnail'>001</td>
+                      <td class>{% course.name %}</td>
+                      <td>{% course.provider %}</td>
+                      <td>{% course.instructor %}</td>
+                      <td>
+                        <div class='btn small success'>Course info</div>
+                        <div class='btn small danger'>Delete</div>
+                      </td>
+                  </tr>
+              {% endfor %}
+                   <tr>
+                      <td class='mini-thumbnail'>002</td>
+                      <td>Course 2</td>
+                      <td>some months</td>
+                      <td>active</td>
+                      <td>
+                        <div class='btn small success'>Course info</div>
+                        <div class='btn small danger'>Delete</div>
+                      </td>
+                  </tr>
+                  <tr>
+              </tbody>
+          </table>
+
+          <h2>Recommendations</h2>
+         <table class='table table-striped'>
+              <thead>
+                  <tr>
+                      <th class='span2'></th>
+                      <th class='span4'>Course</th>
+                      <th class='span2'>Duration</th>
+                      <th class='span4'>Action</th>
+                  </tr>
+              </thead>
+              <tbody>
+              <!-- Check again -->
+                  <tr>
+                      <td class='mini-thumbnail'>001</td>
+                      <td>Course 1</td>
+                      <td>2 months</td>
+                      <td>
+                        <div class='btn small success'>Course info</div>
+                        <div class='btn small danger'>Add Course</div>
+                      </td>
+                  </tr>
+                   <tr>
+                      <td class='mini-thumbnail'>002.</td>
+                      <td>Course 2</td>
+                      <td>some months</td>
+                      <td>
+                        <div class='btn small success'>Course info</div>
+                        <div class='btn small danger'>Add Course</div>
+                      </td>
+                  </tr>
+                  <tr>
+              </tbody>
+          </table>
+        </div><!-- do not modify the tags see zebra-striped , akshay-->
+      </div></body>
+    </div></div></div></div></div>
+<body>
+    <div class="row vertical-center-row row-md-offset-4">
+            <div class="col-md-4 col-md-offset-4">
+
+        <div class="well span4 sidebar">
+            <div class='cleaner_h10'></div>
+
+            <div class='btn primary large'>Update email</div>
+            <div class='btn primary large'>Update password</div>
+            <p><a href='#'>Personalize (link to david's page)</a></p>
+            <p><a href='#'>Help</a></p>
+        </div><!-- end of sidebar -->
+</div></div>
+  </body>
+{% include 'footer.html' %}

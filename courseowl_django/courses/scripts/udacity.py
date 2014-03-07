@@ -1,7 +1,7 @@
 import urllib2
 import json
 from bs4 import BeautifulSoup
-from ..models import *
+#from ..models import *
 
 def get_urls():
     url = "http://www.udacity.com/wiki/frontpage"
@@ -78,8 +78,10 @@ def get_subj(page):
 
     return good_subj
 
-def get_all_courses():
-    course_urls = get_urls()
+def get_all_courses(urls=None):
+    course_urls = urls
+    if urls == None:
+        course_urls = get_urls()
     all_courses = {}
 
     for url in course_urls:

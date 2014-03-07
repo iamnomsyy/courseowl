@@ -8,4 +8,5 @@ class UserProfile(models.Model):
     gender = models.CharField(max_length=1, default='M')
     interests = models.ManyToManyField('courses.Subject', blank=True)
     providers = models.ManyToManyField('courses.Provider', blank=True)
-    enrolled = models.ManyToManyField('courses.Course', blank=True)
+    enrolled = models.ManyToManyField('courses.Course', blank=True, related_name='enrolled_classes')
+    completed = models.ManyToManyField('courses.Course', blank=True, related_name='complete_classes')

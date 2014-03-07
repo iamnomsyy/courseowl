@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <link rel="shortcut icon" href="">
     <style>
-        body { padding-top: 50px; }
+        body { padding-top: 0; }
         @media screen and (max-width: 768px) {
             body { padding-top: 0; }
         }
@@ -19,21 +19,25 @@
     {% bootstrap_javascript %}
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <li><a class="navbar-brand active" href="/">CourseOwl</a></li>                    
-            </div>
-            
+<div class="navbar navbar-inverse navbar-static-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">CourseOwl</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+            </ul>
             {% if user.is_authenticated %}
-            <div class="col-md-6 col-md-offset-3">
-                <form class="navbar-form" role="search">
+
+            <div class="col-md-6 col-md-offset-1">
+                <form class="navbar-form" role="search" action='/search' method='GET'>
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Search for courses..." name="query" id="query">
                         <div class="input-group-btn">
@@ -43,15 +47,14 @@
                 </form>
             </div>
             {% endif %}
-
-            <div class="navbar-collapse collapse">
-                <div class="navbar-form navbar-right">
-                    {% if user.is_authenticated %}
+            <ul class="nav navbar-nav navbar-right navbar-form">
+                {% if user.is_authenticated %}
+                    <a href="/accounts/profile/" class="btn btn-success">My Courses</a>
                     <a href="/accounts/logout/" class="btn btn-success">Sign out</a>
-                    {% else %}
+                {% else %}
                     <a href="/accounts/login/" class="btn btn-success">Sign in</a>
-                    {% endif %}
-                </div>
-            </div>
+                {% endif %}
+            </ul>
         </div>
-    </nav>
+    </div>
+</div>

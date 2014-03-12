@@ -75,6 +75,19 @@ class TestAPI(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual('{"success": false}', response.content)
 
+    def test_json_dislike_course(self):
+        login_successful = self.client.login(username='bob12345', password='bob123456')
+        self.assertTrue(login_successful)
+
+        temp_course = Course(name='Pottery')
+        temp_course.save()
+        response = self.client.post('/api/dislike_course/', data={'disliked_course': 'Pottery'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual('{"success": true}', response.content)
+        response = self.client.post('/api/dislike_course/', data={'disliked_course': 'Non-existent subject'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual('{"success": false}', response.content)
+
     def test_json_complete_course(self):
         login_successful = self.client.login(username='bob12345', password='bob123456')
         self.assertTrue(login_successful)

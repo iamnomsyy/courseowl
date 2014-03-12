@@ -24,6 +24,7 @@
     <div class="container span18">
       <div class='cleaner_h40'></div>
         <div class='span14'>
+          {% if enrolled_list %}
           <h2>Active Courses</h2>
           <table class='table table-striped'>
               <thead>
@@ -37,21 +38,26 @@
               </thead>
               <tbody>
               {%for course in enrolled_list %}
-                  <tr>
+                  <tr data-id="{{course.id}}">
 
-                      <td class>{{  course.name }}</td>
+                      <td>{{  course.name }}</td>
                       <td>{{ course.provider }}</td>
                       <td>{{  course.instructor }}</td>
                       <td>
                         <div class='btn btn-small btn-info'>Course info</div>
-                        <div class='btn btn-small btn-danger pull-right'>Delete</div>
+                        <div class='btn btn-small btn-danger pull-right dropButton' data-toggle="modal">
+                          Drop course
+                        </div>
                       </td>
                   </tr>
               {% endfor %}
 
               </tbody>
           </table>
-
+        {% else %}
+          <h2>It seems you have no active courses</h2>
+          <input type="button" class="btn btn-success btn-large" value="Add courses">
+        {% endif %}
           <h2>Recommendations</h2>
          <table class='table table-striped'>
               <thead>
@@ -89,8 +95,51 @@
 
             <div class='btn btn-primary btn-large'>Update email</div>
             <div class='btn btn-primary btn-large'>Update password</div>
-            <p><a href='#'>Personalize (link to david's page)</a></p>
+            <p><a href='#'>Add more subjects and courses</a></p>
             <p><a href='#'>Help</a></p>
         </div><!-- end of sidebar -->
 </div></div>
+
+<!-- Drop course confirmation modal -->
+<div class="modal fade" id="dropCourse" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="modalLabel">Dropping Course</h4>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to drop this course?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button id="confirmDrop" type="button" class="btn btn-primary">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Allows dropping courses
+  $(function() {
+    var dropCourseID;
+    // Get course id
+    $('.dropButton').on('click', function(event) {
+      event.preventDefault();
+      var courseID = $(this).closest('tr').data('id');
+      dropCourseID = courseID;
+      $('#dropCourse').modal('show');
+    });
+
+    $('#confirmDrop').on('click', function(event) {
+      $('#dropCourse').modal('hide');
+      $.post(
+        "/api/drop",
+        { course_to_drop: dropCourseID }
+      ).done(function(res) {
+        $('[data-id="' + dropCourseID + '"]').remove();
+      });
+    });
+  });
+</script>
 {% include 'footer.html' %}

@@ -130,7 +130,7 @@ def drop_course(request):
         try:
             user_profile = UserProfile.objects.get(user=request.user)
             course_to_drop = request.POST.get('course_to_drop')
-            the_course = Course.objects.get(name=course_to_drop)
+            the_course = Course.objects.get(id=course_to_drop)
             user_profile.enrolled.remove(the_course)
             user_profile.save()
             return HttpResponse(json.dumps({'success': True}), content_type='application/json')

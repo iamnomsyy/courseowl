@@ -77,6 +77,24 @@ def like_subject(request):
         return HttpResponse(json.dumps({'success': False}), content_type='application/json')
 
 @login_required
+def dislike_subject(request):
+    """
+    POST here when you like a subject with a 'disliked_subject' data property.
+    Method: POST, {'disliked_subject': 'name of subject'}
+    """
+    if request.method == 'POST':
+        success = True
+        subject_name = request.POST.get('disliked_subject')
+        user_profile = UserProfile.objects.get(user=request.user)
+        try:
+            user_profile.disliked.add(Subject.objects.get(name=subject_name))
+        except:
+            success = False
+        return HttpResponse(json.dumps({'success': success}), content_type='application/json')
+    else:
+        return HttpResponse(json.dumps({'success': False}), content_type='application/json')
+
+@login_required
 def complete_course(request):
     """
     POST here when you complete a course with a 'completed_course' data property.

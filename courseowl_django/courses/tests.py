@@ -5,6 +5,7 @@ import os
 
 from courses.scripts.coursera import addCourses as courseraAddCourses
 import courses.scripts.udacity as udacity
+import scripts.edx as edx
 
 
 class SubjectTests(TestCase):
@@ -65,3 +66,20 @@ class UdacityScriptTests(TestCase):
         self.assertEquals(itp['desc'].strip(), 'In this class, you will learn basic skills and concepts of computer programming in an object-oriented approach using Java.')
         # rationale for .strip(): scraper gets white space that doesn't affect display but gets in the way of testing
         self.assertEquals(len(itp['subj']), 0)
+
+class EdxScriptTests(TestCase):
+    def test_populate_lists(self):
+        edx.populate_lists()
+        self.assertEquals(len(edx.subjects), 25)
+        self.assertTrue(len(edx.titleList) > 50)
+        self.assertEquals(len(edx.titleList), len(edx.descList))
+        self.assertEqual(len(edx.titleList), len(edx.intList))
+        self.assertEqual(len(edx.titleList), len(edx.uniList))
+
+    def test_add_to_django(self):
+        edx.populate_lists()
+        edx.add_to_django()
+        self.assertTrue(len(list(Course.objects.all())) > 50)
+        self.assertEquals(len(list(Subject.objects.all())), 25)
+
+

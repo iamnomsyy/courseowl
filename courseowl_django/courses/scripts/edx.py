@@ -42,11 +42,11 @@ subList = list()
 
 
 def run():
-    populateLists()
-    addToDjango()
+    populate_lists()
+    add_to_django()
 
 
-def populateLists():
+def populate_lists():
     print "Adding courses from edx (this will take a minute)..."
     for subject in subjects:
         for i in range(5):
@@ -73,7 +73,7 @@ def populateLists():
                     pass
 
 
-def addToDjango():
+def add_to_django():
     edxProvider, created = Provider.objects.get_or_create(name='edx')
     for i in range(len(titleList)):
         try:

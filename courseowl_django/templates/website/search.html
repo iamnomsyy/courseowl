@@ -16,6 +16,12 @@
         {% for c in courses %}
         <tr>
             <td>{{ c.name }}
+
+                <div class='btn-small btn-success btn'><i class="glyphicon glyphicon-plus"></i> Add</div>
+                <div class='btn-small btn-primary btn'><i class="glyphicon glyphicon-thumbs-up"></i> Taken</div>
+                <div class='btn-small btn-danger btn'><i class="glyphicon glyphicon-thumbs-down"></i> Hide</div>
+
+
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#info">Course Info</a></li>
                     <!-- trying something do not remove  any commented out code -->
@@ -36,6 +42,7 @@
             </td>
 
         <td>{{ c.prov }}</td>
+
         </tr>
         {% endfor %}
 

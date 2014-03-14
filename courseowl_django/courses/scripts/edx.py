@@ -74,7 +74,7 @@ def populate_lists():
 
 
 def add_to_django():
-    edxProvider, created = Provider.objects.get_or_create(name='edx')
+    edxProvider, created = Provider.objects.get_or_create(name='edX')
     for i in range(len(titleList)):
         try:
             print "Adding " + titleList[i] + " course: " + str(i)

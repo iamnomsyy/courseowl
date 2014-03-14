@@ -100,7 +100,7 @@ def get_all_courses(urls=None):
 def run():
     all_courses = get_all_courses()
 
-    udacityProvider, created = Provider.objects.get_or_create(name='udacity')
+    udacityProvider, created = Provider.objects.get_or_create(name='Udacity')
 
     for name, course in all_courses.iteritems():
         c, created = Course.objects.get_or_create(name=course['name'], description=course['desc'], instructor=course['instr'])

@@ -76,6 +76,24 @@ def like_subject(request):
     else:
         return HttpResponse(json.dumps({'success': False}), content_type='application/json')
 
+@login_required
+def complete_course(request):
+    """
+    POST here when you complete a course with a 'completed_course' data property.
+    Method: POST, {'completed_course': 'name of course'}
+    """
+    if request.method == 'POST':
+        success = True
+        course_name = request.POST.get('completed_course')
+        user_profile = UserProfile.objects.get(user=request.user)
+        try:
+            user_profile.completed.add(Course.objects.get(name=course_name))
+        except:
+            success = False
+        return HttpResponse(json.dumps({'success': success}), content_type='application/json')
+    else:
+        return HttpResponse(json.dumps({'success': False}), content_type='application/json')
+
 
 def json_random_courses(request):
     """

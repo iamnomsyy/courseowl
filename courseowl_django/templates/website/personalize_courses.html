@@ -1,0 +1,43 @@
+{% include 'header.html' %}
+
+<div class="jumbotron">
+    <div class="container">
+        <h1><b>One last step</b></h1>
+        <p>Choose courses based on your liked subjects</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <form method="post">
+          {% csrf_token %}
+          <input type="submit" value="Submit preferences" class="btn btn-success">
+          <ul class="list-group">
+          {% for course in courses %}
+            <a class="list-group-item">
+              <input type="checkbox" data-course-id="{{ course.id }}">
+              {{ course.name|capfirst }}
+            </a>
+          {% endfor %}
+          </ul>
+        </form>
+      </div>
+    </div>
+</div>
+
+<script>
+  $(function() {
+    // add a hidden input for the selected subjects
+    $('input[type="submit"]').on('click', function(event) {
+      var ids = [];
+      $checkedBoxes = $(':checked');
+      for (var i=0, length = $checkedBoxes.length; i < length; i++) {
+        ids.push($($checkedBoxes[i]).data('course-id'));
+      }
+      $('form').append($('<input type="hidden" value="' + JSON.stringify(ids) + '" name="course_ids">'));
+    });
+  });
+</script>
+
+{% include 'footer.html' %}

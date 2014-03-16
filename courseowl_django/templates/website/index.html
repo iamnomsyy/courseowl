@@ -1,38 +1,29 @@
 {% include 'header.html' %}
-    <div class="jumbotron" style="padding-left: 7%; height: 350px; background-image: url(http://i.imgur.com/NNgwJhC.jpg); background-size: 100%;">
+    <div class="jumbotron" style="padding-left: 8%; height: 350px; background-image: url('/static/index_header.jpg'); background-size: 100%;">
         <div class="container col-md-5">
             <h1><b style="color: #FFFFFF;">CourseOwl</b></h1>
             <p style="color: #FFFFFF">A recommendation system
                 to <b>track</b> and <b>discover</b> online courses from multiple providers.
             </p>
-{#            <p><a class="btn btn-primary btn-lg pull-right" role="button">Sign up today! &raquo;</a></p>#}
-        </div>
-        <div class="container pull-right" style="padding-top: 5%">
-            <p style="padding-right: 2%"><a href="/accounts/signup/" class="btn btn-primary btn-lg pull-right" role="button">Sign up now! &raquo;</a></p>
+            <p><a href="/accounts/signup/" class="btn btn-primary btn-lg" role="button">Get started! &raquo;</a></p>
         </div>
     </div>
-
     <div class="container">
         <div class="row">
-            <div class="col-md-8">
-                <h2><b>Discover New Courses</b></h2>
-                <p>Ever wanted to learn about photosynthesis or black holes but couldn't find a good place to start learning?
+            <h2><b>Discover New Courses</b></h2>
+            <p>
+                Ever wanted to learn about photosynthesis or black holes but couldn't find a good place to start learning?
                 Look no further! CourseOwl will help you in your quest for knowledge with its large database of courses from all over the world.
-                We have a multitude of courses on topics ranging from animal husbandry to the intricate mechanics of physics, all at your fingertips.
-                </p>
-{#                <p><a class="btn btn-default" href="#" role="button">Know more &raquo;</a></p>#}
-            </div>
-
-            <div class="col-md-4" style="position: static; right: 0;">
-                <h3><b>Providers</b></h3>
-                <ul class="nav nav-list">
-                    <li><a href="#"><b>Coursera</b></a></li>
-                    <li><a href="#"><b>edX</b></a></li>
-                    <li><a href="#"><b>Udacity</b></a></li>
-                </ul>
-            </div>
+                We have a multitude of courses on topics ranging from animal care to the intricate mechanics of physics, all at your fingertips.
+            </p>
+            <h2><b>Providers</b></h2>
+            <h4>Coursera</h4>
+            Over 600 courses from over 100 partners.
+            <h4>edX</h4>
+            Over 150 courses from universities around the world.
+            <h4>Udacity</h4>
+            Specialized courses with videos, exercises, personalized support, and verified certificates.
         </div>
-
     </div>
 
 {% include 'footer.html' %}

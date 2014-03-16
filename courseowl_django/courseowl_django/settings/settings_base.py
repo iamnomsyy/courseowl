@@ -53,7 +53,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 # auth and allauth settings
-LOGIN_REDIRECT_URL = '/' # TODO change to the user's page in future
+LOGIN_REDIRECT_URL = '/'  # TODO change to the user's page in future
 SOCIALACCOUNT_QUERY_EMAIL = True
 SOCIALACCOUNT_PROVIDERS = {
     'facebook': {
@@ -66,7 +66,7 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 # TODO localize Required by allauth, this is based on the id of the database row
-SITE_ID = 3 # localhost
+SITE_ID = 3  # localhost
 
 # Allauth tries to send a verification email
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

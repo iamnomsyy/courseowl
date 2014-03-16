@@ -1,4 +1,5 @@
-{% include 'header.html' %}
+{% extends "base.html" %}
+{% block content %}
     <div class="jumbotron" style="padding-left: 8%; height: 350px; background-image: url('/static/index_header.jpg'); background-size: 100%;">
         <div class="container col-md-5">
             <h1><b style="color: #FFFFFF;">CourseOwl</b></h1>
@@ -26,4 +27,4 @@
         </div>
     </div>
 
-{% include 'footer.html' %}
+{% endblock %}

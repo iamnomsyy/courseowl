@@ -1,6 +1,5 @@
  {% include 'header.html' %}
 
-
     {% if query %}
        <div class="container">
                  <div class="row vertical-center-row row-md-offset-4">
@@ -10,8 +9,7 @@
         <div class="col-md-12">
                 <table class="table table-striped table-bordered">
         <tr>
-            <th><h3><strong>Search Results for : {{ query }}</strong></h3></th>
-
+            <th><h3><strong>Results for {{ query }}</strong></h3></th>
         </tr>
 
         {% for result in page.object_list %}
@@ -20,14 +18,13 @@
 
                 <ul class="nav nav-tabs">
                     <li class = "active"><a data-toggle="tab" href="#info">Course Info</a></li>
-                    <!-- trying something do not remove  any commented out code -->
-                    <li class="text-muted"><a data-toggle="tab" href="#provider"> <strong> Provider : </strong> {{ result.object.provider }}</a></li>
+                    <!-- trying something do not remove any commented out code -->
+                    <li class="text-muted"><a data-toggle="tab" href="#provider"> <strong>Provider: </strong>{{ result.object.provider }}</a></li>
 
                 </ul>
              <div class="tab-content">
                 <div id="info">
-
-                        <p >{{ result.object.description }}</p>
+                        <p>{{ result.object.description }}</p>
                 </div>
             <!-- do not remove for future
                 <div id="instr" class="tab-pane fade">
@@ -44,13 +41,15 @@
 
         </tr>
          {% empty %}
-            <p> No result found !!</p>
+            <p> No results found.</p>
         {% endfor %}
 
         </table>
         </div>
     {% else %}
-        Don't know that to search? Try &lt;random suggestion&gt;
+        <div class="container">
+            To search, type something in the search box above.
+        </div>
     {% endif %}
 
 {% include 'footer.html' %}

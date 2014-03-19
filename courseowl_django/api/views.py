@@ -114,7 +114,7 @@ def add_course(request):
         try:
             user_profile = UserProfile.objects.get(user=request.user)
             course_to_add = request.POST.get('course_to_add')
-            the_course = Course.objects.get(name=course_to_add)
+            the_course = Course.objects.get(id=course_to_add)
             user_profile.enrolled.add(the_course)
             user_profile.save()
             return HttpResponse(json.dumps({'success': True}), content_type='application/json')

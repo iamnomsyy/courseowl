@@ -6,7 +6,11 @@
             <p style="color: #FFFFFF">A recommendation system
                 to <b>track</b> and <b>discover</b> online courses from multiple providers.
             </p>
-            <p><a href="/accounts/signup/" class="btn btn-primary btn-lg" role="button">Get started! &raquo;</a></p>
+            {% if user.is_authenticated %}
+                <p><a href="/accounts/profile/" class="btn btn-success btn-lg" role="button">My Courses &raquo;</a></p>
+            {% else %}
+                <p><a href="/accounts/signup/" class="btn btn-primary btn-lg" role="button">Get started! &raquo;</a></p>
+            {% endif %}
         </div>
     </div>
     <div class="container">

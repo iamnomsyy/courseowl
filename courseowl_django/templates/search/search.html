@@ -1,11 +1,13 @@
+
 {% extends "base.html" %}
+
 {% block content %}
 
     {% if query %}
        <div class="container">
                  <div class="row vertical-center-row row-md-offset-4">
                   <div class="form">
-                     <h2></h2></div></div></div>
+                     </div></div></div>
 
         <div class="col-md-12">
                 <table class="table table-striped table-bordered">
@@ -20,7 +22,7 @@
                 <ul class="nav nav-tabs">
                     <li class = "active"><a data-toggle="tab" href="#info">Course Info</a></li>
                     <!-- trying something do not remove any commented out code -->
-                    <li class="text-muted"><a data-toggle="tab" href="#provider"> <strong>Provider: </strong>{{ result.object.provider }}</a></li>
+                    <li><a class="text-warning"><strong> Provider: </strong>{{ result.object.provider }}</a></li>
 
                 </ul>
              <div class="tab-content">
@@ -30,13 +32,13 @@
             <!-- do not remove for future
                 <div id="instr" class="tab-pane fade">
                     <h4>{{ result.object.instructor }} </h4>
-                </div> -->
+                </div> div/label-->
 
               </div>
-                 <p class="navbar-text pull-right">
-                <div class='btn-small btn-success btn'><i class="glyphicon glyphicon-plus"></i> Add</div>
-                <div class='btn-small btn-primary btn'><i class="glyphicon glyphicon-thumbs-up"></i> Taken</div>
-                <div class='btn-small btn-danger btn'><i class="glyphicon glyphicon-thumbs-down"></i> Hide</div>
+                 <p class="navbar-text">
+                <button class='btn-small btn-success btn'><i class="glyphicon glyphicon-plus"></i> Add</button>
+                <button class='btn-small btn-primary btn'><i class="glyphicon glyphicon-thumbs-up"></i> Taken</button>
+                <button class='btn-small btn-danger btn'><i class="glyphicon glyphicon-thumbs-down"></i> Hide</button>
                 </p>
             </td>
 

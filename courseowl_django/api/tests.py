@@ -153,7 +153,7 @@ class TestAPI(TestCase):
         self.assertEquals(the_course.name, "Test course")
         self.assertEquals(the_course.description, "Test description")
 
-        request.POST['course_to_drop'] = 'Test course'
+        request.POST['course_to_drop'] = the_course.id
         drop_course(request)
 
         all_courses = list(user_profile.enrolled.all())

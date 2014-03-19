@@ -138,9 +138,11 @@ class TestAPI(TestCase):
         user_profile = self.create_fake_userprofile()
         self.client.login(username='abc@xyz.com', password='qwerty123')
 
+        test_course = Course.objects.get(name="Test course")
+
         request = HttpRequest()
         request.POST = request.POST.copy()
-        request.POST['course_to_add'] = 'Test course'
+        request.POST['course_to_add'] = test_course.id
         request.user = user_profile.user
         request.method = 'POST'
 
@@ -150,8 +152,8 @@ class TestAPI(TestCase):
         self.assertEquals(len(all_courses), 1)
 
         the_course = all_courses[0]
-        self.assertEquals(the_course.name, "Test course")
-        self.assertEquals(the_course.description, "Test description")
+        self.assertEquals(the_course.name, test_course.name)
+        self.assertEquals(the_course.description, test_course.description)
 
         request.POST['course_to_drop'] = the_course.id
         drop_course(request)

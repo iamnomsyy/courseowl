@@ -8,8 +8,7 @@ script:
   - psql -c "alter user owl CREATEDB;" -U postgres -h 127.0.0.1
   - psql -c "grant all privileges on database owl to owl;" -U postgres -h 127.0.0.1
   - pip install -r requirements.txt --use-mirrors
-  - ./manage.py rebuild_index
-  - y
+  - ./manage.py update_index
   - ./manage.py test
 services:
   - postgres:9.1

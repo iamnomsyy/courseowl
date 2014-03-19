@@ -1,4 +1,9 @@
 {% include 'header.html' %}
+<style>
+  .list-group-item {
+    cursor: pointer;
+  }
+</style>
 
 <div class="jumbotron">
     <div class="container">
@@ -12,11 +17,19 @@
       <div class="col-md-12">
         <form method="post">
           {% csrf_token %}
-          <input type="submit" value="Proceed to course selection" class="btn btn-primary">
-          <ul class="list-group">
+          <input type="submit" value="Proceed to course selection" class="btn btn-primary pull-right">
+          <h2>Currently liked subjects</h2>
+          <ul class="list-group liked-subjects">
+            {% for sub in liked_subjects %}
+            <a class="list-group-item" data-subject-id="{{ sub.id }}">
+              {{ sub.name|capfirst }}
+            </a>
+            {% endfor %}
+          </ul>
+          <h2>Subjects available</h2>
+          <ul class="list-group other-subjects">
             {% for sub in subjects %}
-              <a class="list-group-item">
-                <input type="checkbox" data-subject-id="{{ sub.id }}">
+              <a class="list-group-item" data-subject-id="{{ sub.id }}">
                 {{ sub.name|capfirst }}
               </a>
             {% endfor %}
@@ -28,12 +41,26 @@
 
 <script>
   $(function() {
+    // Avoids setting onclick listener on each list items via event delegation
+    $('.other-subjects').on('click', '.list-group-item', function(event) {
+      $(this).fadeOut(function() {
+        $(this).appendTo('.liked-subjects');
+        $(this).fadeIn();
+      });
+    });
+    $('.liked-subjects').on('click', '.list-group-item', function(event) {
+      $(this).fadeOut(function() {
+        $(this).appendTo('.other-subjects');
+        $(this).fadeIn();
+      });
+    });
+
     // add a hidden input for the selected subjects
     $('input[type="submit"]').on('click', function(event) {
       var ids = [];
-      $checkedBoxes = $(':checked');
-      for (var i=0, length = $checkedBoxes.length; i < length; i++) {
-        ids.push($($checkedBoxes[i]).data('subject-id'));
+      $likedSubjects = $('.liked-subjects a');
+      for (var i=0, length = $likedSubjects.length; i < length; i++) {
+        ids.push($($likedSubjects[i]).data('subject-id'));
       }
       $('form').append($('<input type="hidden" value="' + JSON.stringify(ids) + '" name="subject_ids">'));
     });

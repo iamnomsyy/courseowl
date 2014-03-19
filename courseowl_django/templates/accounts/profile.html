@@ -56,7 +56,7 @@
           </table>
         {% else %}
           <h2>It seems you have no active courses</h2>
-          <input type="button" class="btn btn-success btn-large" value="Add courses">
+          <a href="/course_preferences" class="btn btn-success btn-large">Add Courses</a>
         {% endif %}
           <h2>Recommendations</h2>
          <table class='table table-striped'>
@@ -95,7 +95,7 @@
 
             <div class='btn btn-primary btn-large'>Update email</div>
             <div class='btn btn-primary btn-large'>Update password</div>
-            <p><a href='#'>Add more subjects and courses</a></p>
+            <p><a href='/personalize'>Add more subjects and courses</a></p>
             <p><a href='#'>Help</a></p>
         </div><!-- end of sidebar -->
 </div></div>
@@ -113,7 +113,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button id="confirmDrop" type="button" class="btn btn-primary">Yes</button>
+        <button id="confirmDrop" type="button" class="btn btn-danger">Yes</button>
       </div>
     </div>
   </div>

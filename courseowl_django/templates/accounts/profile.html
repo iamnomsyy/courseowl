@@ -1,6 +1,6 @@
-{% include 'header.html' %}
+{% extends "base.html" %}
+{% block content %}
 {% load socialaccount %}
-
 
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <link rel="stylesheet" href="stylesheets/social-buttons.css">
@@ -94,4 +94,4 @@
         </div><!-- end of sidebar -->
 </div></div>
   </body>
-{% include 'footer.html' %}
+{% endblock %}

@@ -20,7 +20,7 @@ def login(request):
         try:
             temp_user = User.objects.get(email=email)
             user = authenticate(username=temp_user.username, password=password)
-            if user is not None:
+            if user is not None and user.is_active:
                 dj_login(request, user)
                 messages.add_message(request, messages.SUCCESS, 'Login successful!')
                 return redirect('/accounts/profile/')
@@ -86,6 +86,13 @@ def get_recommended_courses(user_profile):
     for i in range(number_random_courses):
         random_courses.append(random_course_order[i])
     return random_courses
+
+def delete_account(request):
+    currUser = request.user
+    currUser.is_active = False
+    currUser.save()
+    dj_logout(request)
+    return redirect('/')
 
 
 def check_valid_password(pw, pw_conf):

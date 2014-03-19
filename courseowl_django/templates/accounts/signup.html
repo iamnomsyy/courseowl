@@ -1,4 +1,5 @@
-{% include 'header.html' %}
+{% extends "base.html" %}
+{% block content %}
 {% load socialaccount %}
 {% providers_media_js %}
 
@@ -37,4 +38,4 @@
         </div>
     </div>
 
-{% include 'footer.html' %}
+{% endblock %}

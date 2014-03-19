@@ -1,6 +1,6 @@
-{% include 'header.html' %}
+{% extends "base.html" %}
+{% block content %}
 {% load socialaccount %}
-
 
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <link rel="stylesheet" href="stylesheets/social-buttons.css">
@@ -43,8 +43,8 @@
                       <td>{{ course.provider }}</td>
                       <td>{{  course.instructor }}</td>
                       <td>
-                        <div class='btn small success'><i class="glyphicon glyphicon-info-sign"></i> Course info</div>
-                        <div class='btn small danger'><i class="glyphicon glyphicon-trash"></i> Delete</div>
+                        <div class='btn-small btn-success btn'><i class="glyphicon glyphicon-info-sign"></i> Course info</div>
+                        <div class='btn-small btn-danger btn'><i class="glyphicon glyphicon-trash"></i> Delete</div>
                       </td>
                   </tr>
               {% endfor %}
@@ -71,8 +71,8 @@
                       <td>{{course.provider}}</td>
                       <td>{{course.instructor}}</td>
                       <td>
-                        <div class='btn small success'><i class="glyphicon glyphicon-info-sign"></i> Course info</div>
-                        <div class='btn small danger'><i class="glyphicon glyphicon-plus"></i> Add Course</div>
+                        <div class='btn-small btn-success btn'><i class="glyphicon glyphicon-info-sign"></i> Course info</div>
+                        <div class='btn-small btn-danger btn'><i class="glyphicon glyphicon-plus"></i> Add Course</div>
                       </td>
                   </tr>
                     {% endfor %}
@@ -94,4 +94,4 @@
         </div><!-- end of sidebar -->
 </div></div>
   </body>
-{% include 'footer.html' %}
+{% endblock %}

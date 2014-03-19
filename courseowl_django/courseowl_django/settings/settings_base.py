@@ -1,5 +1,5 @@
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 SECRET_KEY = 'hsty0lt%gi2mi58&6xa)(014iwsyl8re29z91*my-!urs86c@s'
 
 INSTALLED_APPS = (
@@ -23,6 +23,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
+    'haystack',
 )
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
@@ -75,7 +76,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, '../templates').replace('\\', '/'),
+    os.path.join(BASE_DIR, 'templates'),
 )
 
 ROOT_URLCONF = 'courseowl_django.urls'
@@ -89,3 +90,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_PROFILE_MODULE = "user_management.UserProfile"
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+    },
+}

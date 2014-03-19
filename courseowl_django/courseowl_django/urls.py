@@ -8,5 +8,6 @@ urlpatterns = patterns('',
                        url(r'^accounts/', include('accounts.urls')),
                        url(r'^api/', include('api.urls')),
                        url(r'^social_accounts/', include('allauth.urls')),
+                       url(r'^search/', include('haystack.urls')),
                        url(r'^', include('website.urls')),
                        )

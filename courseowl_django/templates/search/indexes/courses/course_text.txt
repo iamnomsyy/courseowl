@@ -1,0 +1,6 @@
+ {{object.name}}
+ {{object.subjects.name}}
+ {{object.provider.name}}
+ {{object.description}}
+ {{object.instructor}}
+ {{object.source.name}}

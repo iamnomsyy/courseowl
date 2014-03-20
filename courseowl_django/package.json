@@ -1,0 +1,16 @@
+{
+  "name": "courseowl_django",
+  "version": "0.0.0",
+  "description": "A site for getting recommendations on MOOCs",
+  "private": true,
+  "scripts": {
+    "test": "mocha"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*",
+    "phantomjs": "*",
+    "mocha-phantomjs": "*",
+    "casperjs": "*"
+  }
+}

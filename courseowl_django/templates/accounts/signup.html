@@ -13,17 +13,17 @@
                         <form class="form-horizontal" method="POST" action="/accounts/signup/">{% csrf_token %}
                         <div class="form-group">
                             <div class="col-md-6">
-                                <input type="text" class="form-control" placeholder="Email" name="email">
+                                <input type="text" class="form-control" placeholder="Email" name="email" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-6">
-                                <input type="password" placeholder="Password" class="form-control" name="password">
+                                <input type="password" placeholder="Password" class="form-control" name="password" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-6">
-                                <input type="password" placeholder="Password (confirm)" class="form-control" name="password_confirm">
+                                <input type="password" placeholder="Password (confirm)" class="form-control" name="password_confirm" required>
                             </div>
                         </div>
                             Sign Up using:

@@ -17,7 +17,7 @@
       <div class="col-md-12">
         <form method="post">
           {% csrf_token %}
-          <input type="submit" value="Proceed to course selection" class="btn btn-primary pull-right">
+          <input type="submit" id="submit-subjects" value="Proceed to course selection" class="btn btn-primary pull-right">
           <h2>Currently liked subjects</h2>
           <ul class="list-group liked-subjects">
             {% for sub in liked_subjects %}

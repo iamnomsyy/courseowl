@@ -17,7 +17,7 @@
       <div class="col-md-12">
         <form method="post">
           {% csrf_token %}
-          <input type="submit" value="Submit preferences" class="btn btn-success pull-right">
+          <input type="submit" id="submit-courses" value="Submit preferences" class="btn btn-success pull-right">
           <h2>Selected courses</h2>
           <ul class="list-group enrolled-courses">
             {% for course in enrolled %}

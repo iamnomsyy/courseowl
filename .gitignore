@@ -9,3 +9,6 @@ local_settings.py
 
 # Mac OS X:
 .DS_Store
+
+# Node lib folder
+node_modules/

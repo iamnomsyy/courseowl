@@ -68,10 +68,10 @@ class TestAPI(TestCase):
 
         temp_subject = Subject(name='Pottery')
         temp_subject.save()
-        response = self.client.post('/api/like_subject/', data={'liked_subject': 'Pottery'})
+        response = self.client.post('/api/like_subject/', data={'liked_subject': temp_subject.id})
         self.assertEqual(response.status_code, 200)
         self.assertEqual('{"success": true}', response.content)
-        response = self.client.post('/api/like_subject/', data={'liked_subject': 'Non-existent subject'})
+        response = self.client.post('/api/like_subject/', data={'liked_subject': 1234567890})
         self.assertEqual(response.status_code, 200)
         self.assertEqual('{"success": false}', response.content)
 
@@ -81,10 +81,10 @@ class TestAPI(TestCase):
 
         temp_course = Course(name='Pottery')
         temp_course.save()
-        response = self.client.post('/api/dislike_course/', data={'disliked_course': 'Pottery'})
+        response = self.client.post('/api/dislike_course/', data={'disliked_course': temp_course.id})
         self.assertEqual(response.status_code, 200)
         self.assertEqual('{"success": true}', response.content)
-        response = self.client.post('/api/dislike_course/', data={'disliked_course': 'Non-existent subject'})
+        response = self.client.post('/api/dislike_course/', data={'disliked_course': 1234567890})
         self.assertEqual(response.status_code, 200)
         self.assertEqual('{"success": false}', response.content)
 
@@ -94,42 +94,12 @@ class TestAPI(TestCase):
 
         temp_course = Course(name='Pottery')
         temp_course.save()
-        response = self.client.post('/api/complete_course/', data={'completed_course': 'Pottery'})
+        response = self.client.post('/api/complete_course/', data={'completed_course': temp_course.id})
         self.assertEqual(response.status_code, 200)
         self.assertEqual('{"success": true}', response.content)
-        response = self.client.post('/api/complete_course/', data={'completed_course': 'Non-existent subject'})
+        response = self.client.post('/api/complete_course/', data={'completed_course': 1234567890})
         self.assertEqual(response.status_code, 200)
         self.assertEqual('{"success": false}', response.content)
-
-    def test_json_sample_courses_for_subject(self):
-        login_successful = self.client.login(username='bob12345', password='bob123456')
-        self.assertTrue(login_successful)
-
-        temp_subject = Subject(name='Pottery')
-        temp_subject.save()
-        temp_course = Course(name='Advanced Pottery I', description='Learn pottery I like you never imagined possible.',
-                             instructor='Bob Smith')
-        temp_course.save()
-        temp_course.subjects.add(temp_subject)
-        temp_course.save()
-        temp_course_two = Course(name='Advanced Pottery II', description='Learn pottery II like you never imagined possible.',
-                                 instructor='Carol Smith')
-        temp_course_two.save()
-        temp_course_two.subjects.add(temp_subject)
-        temp_course_two.save()
-        temp_course_three = Course(name='Advanced Pottery III', description='Learn pottery III like you never imagined possible.',
-                                   instructor='Eve Smith')
-        temp_course_three.save()
-        temp_course_three.subjects.add(temp_subject)
-        temp_course_three.save()
-
-        response = self.client.post('/api/sample_courses/', data={'subject': 'Pottery'})
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual('{"Advanced Pottery III": ["Learn pottery III like you never imagined possible.", null], "Advanced Pottery II": ["Learn pottery II like you never imagined possible.", null], "Advanced Pottery I": ["Learn pottery I like you never imagined possible.", null]}', response.content)
-
-        response = self.client.post('/api/sample_courses/', data={'subject': 'Non-existent subject'})
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual('{}', response.content)
 
     def create_fake_userprofile(self):
         email = "abc@xyz.com"

@@ -11,5 +11,4 @@ urlpatterns = patterns('',
                        url(r'^like_subject', views.like_subject, name='like_subject'),
                        url(r'^dislike_course', views.dislike_course, name='dislike_course'),
                        url(r'^complete_course', views.complete_course, name='complete_course'),
-                       url(r'^sample_courses', views.sample_courses_for_subject, name='sample_courses')
                        )

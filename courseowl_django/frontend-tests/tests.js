@@ -1,4 +1,4 @@
-var siteUrl = 'http://127.0.0.1:8000/'; // not sure how to deal with production vs dev
+var siteUrl = 'http://www.courseowl.com/'; // not sure how to deal with production vs dev
 
 casper.test.begin('Homepage works', function suite(test) {
   casper.start(siteUrl, function() {

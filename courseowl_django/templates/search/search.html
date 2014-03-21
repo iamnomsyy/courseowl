@@ -16,7 +16,7 @@
         </tr>
 
         {% for result in page.object_list %}
-        <tr>
+        <tr data-course-id="{{ result.object.id }}">
             <td><h4> <strong>{{ result.object.name }}</strong></h4>
 
                 <ul class="nav nav-tabs">
@@ -36,9 +36,9 @@
 
               </div>
                  <p class="navbar-text">
-                <button class='btn-small btn-success btn'><i class="glyphicon glyphicon-plus"></i> Add</button>
-                <button class='btn-small btn-primary btn'><i class="glyphicon glyphicon-thumbs-up"></i> Taken</button>
-                <button class='btn-small btn-danger btn'><i class="glyphicon glyphicon-thumbs-down"></i> Hide</button>
+                <button class='btn-small btn-success btn add-button'><i class="glyphicon glyphicon-plus"></i> Add</button>
+                <button class='btn-small btn-primary btn taken-button'><i class="glyphicon glyphicon-thumbs-up"></i> Taken</button>
+                <button class='btn-small btn-danger btn hide-button'><i class="glyphicon glyphicon-thumbs-down"></i> Hide</button>
                 </p>
             </td>
 
@@ -54,5 +54,44 @@
             To search, type something in the search box above.
         </div>
     {% endif %}
+<script>
+    $(function() {
+        $('.add-button').on('click', function(event) {
+            var courseID = $(this).closest('tr').data('course-id');
+            var $button = $(this);
+            $.post(
+                '/api/enroll',
+                {'course_to_add': courseID}
+            ).done(function(res) {
+                $button.closest('tr').fadeOut();
+            });
+        });
 
+        $('.hide-button').on('click', function(event) {
+            var $button = $(this);
+            var $result = $button.closest('tr');
+            var courseID = $result.data('course-id');
+
+            $.post(
+                '/api/complete_course',
+                {'completed_course': courseID}
+            ).done(function(res) {
+                $result.fadeOut();
+            });
+        });
+
+        $('.taken-button').on('click', function(event) {
+            var $button = $(this);
+            var $result = $button.closest('tr');
+            var courseID = $result.data('course-id');
+
+            $.post(
+                '/api/dislike_course',
+                {'disliked_course': courseID}
+            ).done(function(res) {
+                $result.fadeOut();
+            });
+        })
+    });
+</script>
 {% endblock %}

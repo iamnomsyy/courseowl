@@ -66,10 +66,10 @@ def like_subject(request):
     """
     if request.method == 'POST':
         success = True
-        subject_name = request.POST.get('liked_subject')
+        subject_id = request.POST.get('liked_subject')
         user_profile = UserProfile.objects.get(user=request.user)
         try:
-            user_profile.interests.add(Subject.objects.get(name=subject_name))
+            user_profile.interests.add(Subject.objects.get(id=subject_id))
         except:
             success = False
         return HttpResponse(json.dumps({'success': success}), content_type='application/json')
@@ -84,10 +84,10 @@ def dislike_course(request):
     """
     if request.method == 'POST':
         success = True
-        course_name = request.POST.get('disliked_course')
+        course_id = request.POST.get('disliked_course')
         user_profile = UserProfile.objects.get(user=request.user)
         try:
-            user_profile.disliked.add(Course.objects.get(name=course_name))
+            user_profile.disliked.add(Course.objects.get(id=course_id))
         except:
             success = False
         return HttpResponse(json.dumps({'success': success}), content_type='application/json')
@@ -102,10 +102,10 @@ def complete_course(request):
     """
     if request.method == 'POST':
         success = True
-        course_name = request.POST.get('completed_course')
+        course_id = request.POST.get('completed_course')
         user_profile = UserProfile.objects.get(user=request.user)
         try:
-            user_profile.completed.add(Course.objects.get(name=course_name))
+            user_profile.completed.add(Course.objects.get(id=course_id))
         except:
             success = False
         return HttpResponse(json.dumps({'success': success}), content_type='application/json')
@@ -119,10 +119,10 @@ def json_random_courses(request):
     """
     random_courses = []
     if request.method == 'POST':
-        randCourseOrder = Course.objects.order_by('?')
-        numRandCourses = 5
-        for i in range(numRandCourses):
-            random_courses.append(randCourseOrder[i])
+        rand_course_order = Course.objects.order_by('?')
+        num_rand_courses = 5
+        for i in range(num_rand_courses):
+            random_courses.append(rand_course_order[i])
     return HttpResponse(json.dumps(random_courses), mimetype='application/json')
 
 

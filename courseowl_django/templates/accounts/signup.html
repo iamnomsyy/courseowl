@@ -26,11 +26,22 @@
                                 <input type="password" placeholder="Password (confirm)" class="form-control" name="password_confirm">
                             </div>
                         </div>
+                            Sign Up using:
+                        <a href="{% provider_login_url "facebook" method="js_sdk" %}">
+                            <button class="btn btn-facebook">
+                                <i class="fa fa-facebook"></i>
+                            </button>
+                        </a>
+                        <a href = "{% provider_login_url "google" %}">
+                            <button class="btn btn-google-plus">
+                                <i class="fa fa-google-plus"></i></button><br>
+                        </a>
+                          <p>
                         <div class="form-group">
                             <div class="col-md-9 col-md-offset-3">
                                 <button type="submit" class="btn btn-default">Sign up</button>
                             </div>
-                        </div>
+                        </div></p>
                         </form>
                     </div>
                 </div>

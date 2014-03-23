@@ -11,7 +11,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from courses.models import Course
 from django.dispatch import receiver
-from allauth.socialaccount.signals import social_account_added
+from allauth.account.signals import user_signed_up
 
 
 def login(request):
@@ -72,10 +72,11 @@ def email_signup(request):
         return render(request, 'accounts/signup.html')
 
 
-@receiver(social_account_added)
+@receiver(user_signed_up)
 def create_user_profile_for_socialaccount(sender, **kwargs):
-    userprofile = UserProfile()
-    userprofile.user = kwargs['request'].user
+    user = kwargs['user']
+    user.username = username_md5(user.email)
+    userprofile = UserProfile(user=user)
     userprofile.save()
 
 
@@ -98,9 +99,9 @@ def get_recommended_courses(user_profile):
 
 
 def delete_account(request):
-    currUser = request.user
-    currUser.is_active = False
-    currUser.save()
+    current_user = request.user
+    current_user.is_active = False
+    current_user.save()
     dj_logout(request)
     return redirect('/')
 

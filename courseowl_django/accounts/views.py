@@ -10,6 +10,8 @@ from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from courses.models import Course
+from django.dispatch import receiver
+from allauth.socialaccount.signals import social_account_added
 
 
 def login(request):
@@ -70,13 +72,20 @@ def email_signup(request):
         return render(request, 'accounts/signup.html')
 
 
+@receiver(social_account_added)
+def create_user_profile_for_socialaccount(sender, **kwargs):
+    userprofile = UserProfile()
+    userprofile.user = kwargs['request'].user
+    userprofile.save()
+
+
 @login_required
 def profile(request):
-    currUser = request.user
-    userProf = UserProfile.objects.get(user=currUser)
-    enrolled_list = list(userProf.enrolled.all())
-    recommend_list = get_recommended_courses(userProf)
-    return render(request, 'accounts/profile.html', {"email": currUser.email, "enrolled_list": enrolled_list, "recommend_list": recommend_list})
+    current_user = request.user
+    user_profile = UserProfile.objects.get(user=current_user)
+    enrolled_list = list(user_profile.enrolled.all())
+    recommend_list = get_recommended_courses(user_profile)
+    return render(request, 'accounts/profile.html', {"email": current_user.email, "enrolled_list": enrolled_list, "recommend_list": recommend_list})
 
 
 def get_recommended_courses(user_profile):
@@ -86,6 +95,7 @@ def get_recommended_courses(user_profile):
     for i in range(number_random_courses):
         random_courses.append(random_course_order[i])
     return random_courses
+
 
 def delete_account(request):
     currUser = request.user

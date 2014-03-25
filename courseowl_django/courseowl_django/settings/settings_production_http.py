@@ -1,5 +1,5 @@
-DEBUG = True
-TEMPLATE_DEBUG = True
+DEBUG = False
+TEMPLATE_DEBUG = False
 ALLOWED_HOSTS = [".courseowl.com", ".courseowl.com."]
 PREDICTIONIO_IP = "io.courseowl.com"
 STATIC_ROOT = "/var/www/courseowl_static/"

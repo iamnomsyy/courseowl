@@ -35,6 +35,7 @@ def login(request):
         return render(request, 'accounts/login.html')
 
 
+@login_required
 def logout(request):
     dj_logout(request)
     return redirect('/')
@@ -98,7 +99,8 @@ def get_recommended_courses(user_profile):
     return random_courses
 
 
-def delete_account(request):
+@login_required
+def deactivate_account(request):
     current_user = request.user
     current_user.is_active = False
     current_user.save()

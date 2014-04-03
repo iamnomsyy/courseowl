@@ -117,6 +117,21 @@ def unique_user(email):
     else:
         return True
 
+@login_required
+def change_password(request):
+    current_user = request.user
+    password = request.POST.get('password')
+    password_confirm = request.POST.get('password_confirm')
+
+    if not check_valid_password(password, password_confirm):
+        messages.add_message(request, messages.ERROR, 'Invalid password!')
+    else:
+        current_user.set_password(password)
+        current_user.save()
+        messages.add_message(request, messages.SUCCESS, 'Password updated!')
+    
+    return redirect('/accounts/profile')
+
 
 def username_md5(email):
     return hashlib.md5(email.lower()).hexdigest()[:30]

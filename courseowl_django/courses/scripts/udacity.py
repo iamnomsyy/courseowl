@@ -48,8 +48,8 @@ def get_name(page):
 def get_instr(page):
     instr = []
 
-    anchor_x = page.index('Course Instructors')
-    anchor_y = page.index('What We Offer')
+    anchor_x = page.index('Instructors & Partners')
+    anchor_y = page.index('Ways to Take This Course')
 
     for i in range(anchor_x, anchor_y):
         if page[i] == 'Instructor':
@@ -58,7 +58,7 @@ def get_instr(page):
     return ', '.join(instr)
 
 def get_desc(page):
-    anchor = page.index('Class Summary')
+    anchor = page.index('Course Summary')
     return page[anchor+1]
 
 def get_subj(page):

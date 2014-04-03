@@ -69,17 +69,14 @@ class UdacityScriptTests(TestCase):
 
 class EdxScriptTests(TestCase):
     def test_populate_lists(self):
-        edx.populate_lists()
-        self.assertEquals(len(edx.subjects), 25)
-        self.assertTrue(len(edx.titleList) > 50)
-        self.assertEquals(len(edx.titleList), len(edx.descList))
-        self.assertEqual(len(edx.titleList), len(edx.intList))
-        self.assertEqual(len(edx.titleList), len(edx.uniList))
+        edx.populate_lists(['business-management'])
+        self.assertEquals(len(edx.all_subjects), 25)
+        self.assertTrue('The Analytics Edge' in edx.titleList)
 
     def test_add_to_django(self):
-        edx.populate_lists()
+        edx.populate_lists(['business-management'])
         edx.add_to_django()
-        self.assertTrue(len(list(Course.objects.all())) > 50)
-        self.assertEquals(len(list(Subject.objects.all())), 25)
+        edge_course = Course.objects.filter(name='The Analytics Edge')
+        self.assertTrue(edge_course.exists())
 
 

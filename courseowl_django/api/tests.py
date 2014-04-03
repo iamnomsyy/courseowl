@@ -9,7 +9,8 @@ from accounts.views import *
 class TestAPI(TestCase):
     def setUp(self):
         self.client = Client()
-        self.user = User.objects.create_user(username='bob12345', email='bob@bob.com', password='bob123456', first_name='', last_name='')
+        self.user = User.objects.create_user(username='bob12345', email='bob@bob.com', password='bob123456',
+                                             first_name='', last_name='')
         self.user.save()
         self.user_profile = UserProfile(user=self.user)
         self.user_profile.save()
@@ -143,3 +144,25 @@ class TestAPI(TestCase):
 
         all_courses = list(user_profile.enrolled.all())
         self.assertEqual(len(all_courses), 0)
+
+    def test_course_info(self):
+        login_successful = self.client.login(username='bob12345', password='bob123456')
+        self.assertTrue(login_successful)
+
+        temp_provider = Provider(name='Test provider')
+        temp_provider.save()
+        temp_course = Course(name='Pottery', description="Test description", provider=temp_provider,
+                             instructor="Test instructor")
+        temp_course.save()
+
+        course_info = {'description': 'Test description', 'provider': 'Test provider',
+                       'instructor': 'Test instructor', 'name': 'Pottery'}
+        expected_content = {'success': True, 'info': course_info}
+
+        response = self.client.post('/api/course_info/', data={'course_id': temp_course.id})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(json.dumps(expected_content), response.content)
+
+        response = self.client.post('/api/complete_course/', data={'course_id': 1234567890})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual('{"success": false}', response.content)

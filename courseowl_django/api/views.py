@@ -76,6 +76,7 @@ def like_subject(request):
     else:
         return HttpResponse(json.dumps({'success': False}), content_type='application/json')
 
+
 @login_required
 def dislike_course(request):
     """
@@ -93,6 +94,7 @@ def dislike_course(request):
         return HttpResponse(json.dumps({'success': success}), content_type='application/json')
     else:
         return HttpResponse(json.dumps({'success': False}), content_type='application/json')
+
 
 @login_required
 def complete_course(request):

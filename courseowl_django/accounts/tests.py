@@ -1,9 +1,16 @@
 from django.test import TestCase
-
+from django.test.client import Client
 from accounts.views import *
 
 
 class AccountsTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(username='bob12345', email='bob@bob.com', password='bob123456', first_name='', last_name='')
+        self.user.save()
+        self.user_profile = UserProfile(user=self.user)
+        self.user_profile.save()
+
     def test_valid_email(self):
         email1 = 'testmail.cu'
         email2 = 'testmail%$#.com'
@@ -43,3 +50,11 @@ class AccountsTest(TestCase):
         self.assertFalse(user1_not_unique)
         self.assertTrue(user2_unique)
 
+    def test_deactivate_account(self):
+        login_successful = self.client.login(username='bob12345', password='bob123456')
+        self.assertTrue(login_successful)
+
+        response = self.client.get('/accounts/deactivate_account/')
+
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(self.client.login(username='bob12345', password='bob123456'))  # make sure user cannot log in

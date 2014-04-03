@@ -155,7 +155,7 @@
         $recommended = $('tr[data-id="' + courseID + '"]');
         $recommended.fadeOut(function() {
           $dropButton = $('<div>', {
-            'class': 'btn btn-small btn-danger pull-right drop-button',
+            'class': 'btn btn-small btn-danger drop-button',
             'data-toggle': 'modal'
           }).text('Drop course');
           $recommended.find('.add-course').replaceWith($dropButton);

@@ -20,7 +20,7 @@ def login(request):
         password = request.POST.get('password')
 
         try:
-            temp_user = User.objects.get(email=email)
+            temp_user = User.objects.get(username=username_md5(email))
             user = authenticate(username=temp_user.username, password=password)
             if user is not None and user.is_active:
                 dj_login(request, user)

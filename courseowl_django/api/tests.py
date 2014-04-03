@@ -159,10 +159,10 @@ class TestAPI(TestCase):
                        'instructor': 'Test instructor', 'name': 'Pottery'}
         expected_content = {'success': True, 'info': course_info}
 
-        response = self.client.post('/api/course_info/', data={'course_to_get_info_for': temp_course.id})
+        response = self.client.post('/api/course_info/', data={'course_id': temp_course.id})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(json.dumps(expected_content), response.content)
 
-        response = self.client.post('/api/complete_course/', data={'course_to_get_info_for': 1234567890})
+        response = self.client.post('/api/complete_course/', data={'course_id': 1234567890})
         self.assertEqual(response.status_code, 200)
         self.assertEqual('{"success": false}', response.content)

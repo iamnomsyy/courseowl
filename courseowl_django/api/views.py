@@ -162,7 +162,7 @@ def drop_course(request):
 def course_info(request):
     if request.method == "POST":
         try:
-            course_id = request.POST.get('course_to_get_info_for')
+            course_id = request.POST.get('course_id')
             the_course = Course.objects.get(id=course_id)
             course_info = {'description': the_course.description, 'provider': the_course.provider.name,
                            'instructor': the_course.instructor, 'name': the_course.name}

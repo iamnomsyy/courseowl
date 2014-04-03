@@ -156,3 +156,18 @@ def drop_course(request):
             return HttpResponse(json.dumps({'success': False}), content_type='application/json')
     else:
         return HttpResponse(json.dumps({'success': False}), content_type='application/json')
+
+
+@login_required
+def course_info(request):
+    if request.method == "POST":
+        try:
+            course_id = request.POST.get('course_id')
+            the_course = Course.objects.get(id=course_id)
+            course_info = {'description': the_course.description, 'provider': the_course.provider.name,
+                           'instructor': the_course.instructor, 'name': the_course.name}
+            return HttpResponse(json.dumps({'success': True, 'info': course_info}), content_type='application/json')
+        except ObjectDoesNotExist:
+            return HttpResponse(json.dumps({'success': False}), content_type='application/json')
+    else:
+        return HttpResponse(json.dumps({'success': False}), content_type='application/json')

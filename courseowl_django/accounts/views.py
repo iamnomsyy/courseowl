@@ -13,7 +13,7 @@ from courses.models import Course
 from django.dispatch import receiver
 from allauth.account.signals import user_signed_up
 
-#import courses.recommender as recommender
+import courses.recommender as recommender
 
 
 def login(request):
@@ -93,8 +93,9 @@ def profile(request):
 
 
 def get_recommended_courses(user_profile):
-    user_based_rec = recommender.get_all_user_recommendations()
-    subject_based_rec = recommender.get_all_subject_recommendations()
+    current_user = user_profile.user
+    user_based_rec = recommender.get_all_user_recommendations(current_user)
+    subject_based_rec = recommender.get_all_subject_recommendations(current_user)
     
     # start with an empty list
     recommendations = []
@@ -104,7 +105,7 @@ def get_recommended_courses(user_profile):
         recommendations.append(course)
 
     # add subject based recommendation next
-    for course in subject_based_rec
+    for course in subject_based_rec:
         recommendations.append(course)
 
     num_random_needed = 5 - len(recommendations)
@@ -113,7 +114,7 @@ def get_recommended_courses(user_profile):
         for course in random_courses:
             recommendations.append(course)
 
-    return recommendations
+    return recommendations[:5]
 
 def get_random_courses(num):
     random_courses = list()

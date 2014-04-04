@@ -1,7 +1,7 @@
 import urllib2
-import json
 from bs4 import BeautifulSoup
 from courses.models import *
+
 
 def get_urls():
     url = "http://www.udacity.com/wiki/frontpage"
@@ -20,6 +20,7 @@ def get_urls():
         list_course_urls.append('https://www.udacity.com/course/' + course_str[4:9])
 
     return list_course_urls
+u
 
 def get_page(url):
     # get the page
@@ -41,9 +42,11 @@ def get_page(url):
 
     return page_text_list
 
+
 def get_name(page):
     anchor = page.index('View Trailer')
     return page[anchor+1]
+
 
 def get_instr(page):
     instr = []
@@ -57,9 +60,11 @@ def get_instr(page):
 
     return ', '.join(instr)
 
+
 def get_desc(page):
     anchor = page.index('Course Summary')
     return page[anchor+1]
+
 
 def get_subj(page):
     subj = []
@@ -78,18 +83,19 @@ def get_subj(page):
 
     return good_subj
 
+
 def get_all_courses(urls=None):
     course_urls = urls
-    if urls == None:
+    if urls is None:
         course_urls = get_urls()
     all_courses = {}
 
     for url in course_urls:
         page = get_page(url)
-        name = get_name(page) # string
-        instr = get_instr(page) # list of strings
-        desc  = get_desc(page)  # string
-        subj  = get_subj(page)  # list of strings
+        name = get_name(page)  # string
+        instr = get_instr(page)  # list of strings
+        desc = get_desc(page)  # string
+        subj = get_subj(page)  # list of strings
 
         all_courses[name] = {'name': name, 'instr': instr, 'desc': desc, 'subj': subj}
 
@@ -97,22 +103,22 @@ def get_all_courses(urls=None):
 
     return all_courses
 
+
 def run():
     all_courses = get_all_courses()
 
-    udacityProvider, created = Provider.objects.get_or_create(name='Udacity')
+    udacity_provider, created = Provider.objects.get_or_create(name='Udacity')
 
     for name, course in all_courses.iteritems():
         c, created = Course.objects.get_or_create(name=course['name'], description=course['desc'], instructor=course['instr'])
-        c.provider = udacityProvider
+        c.provider = udacity_provider
         # source university not easily available in udacity
         # c.source, created = ....
         c.save()
-        for categoryId in course['subj']:
-            subject, created = Subject.objects.get_or_create(name=categoryId)
+        for category_id in course['subj']:
+            subject, created = Subject.objects.get_or_create(name=category_id)
             c.subjects.add(subject)
         c.save()
 
 if __name__ == '__main__':
     run()
-

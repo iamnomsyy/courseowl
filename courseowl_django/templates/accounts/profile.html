@@ -93,24 +93,8 @@
     </div></div>
     <div class="row vertical-center-row row-md-offset-4"></div>
 
-<!-- Drop course confirmation modal -->
-<div class="modal fade" id="dropCourse" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="modalLabel">Dropping Course</h4>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to drop this course?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button id="confirmDrop" type="button" class="btn btn-danger">Yes</button>
-      </div>
-    </div>
-  </div>
-</div>
+{% include "accounts/drop_course_modal.html" %}
+{% include "accounts/credentials_modal.html" %}
 
 <!-- Deactivate account confirmation modal -->
 <div class="modal fade" id="deactivate-account" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
@@ -126,38 +110,6 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         <a id="confirmDeactivate" type="button" class="btn btn-danger" href="/accounts/deactivate_account">Yes</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Change credentials modal -->
-<div class="modal fade" id="change-credentials" tabindex="-1" role="dialog" aria-labelledby="cred-modal-label" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="cred-modal-label">Update credentials</h4>
-      </div>
-      <div class="modal-body">
-        <form role="form" id="email-form" method="POST" action="/accounts/change_email/">{% csrf_token %}
-          <div class="form-group">
-            <label for="credential-email">Email address</label>
-            <input type="email" class="form-control" name="new_email" placeholder="Enter new email"><br/>
-            <button id="confirm-email-update" class="btn btn-primary" type="submit">Update Email</button>
-          </div>
-        </form>
-        <form role="form" id="password-form" method="POST" action="/accounts/change_password/">{% csrf_token %}
-          <div class="form-group">
-            <label for="credential-password">Password</label>
-            <input type="password" class="form-control" name="password" placeholder="New password"><br/>
-            <input type="password" class="form-control" name="password_confirm" placeholder="Confirm new password"><br/>
-            <button id="confirm-password-update" class="btn btn-primary" type="submit">Update Password</button>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>
@@ -203,7 +155,10 @@
         "/api/drop",
         { course_to_drop: dropCourseID }
       ).done(function(res) {
-        $('[data-id="' + dropCourseID + '"]').remove();
+        var $courseRow = $('[data-id="' + dropCourseID + '"]');
+        $($courseRow).fadeOut(function() {
+          $($courseRow).remove();
+        });
       });
     });
 

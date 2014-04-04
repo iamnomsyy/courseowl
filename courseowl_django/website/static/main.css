@@ -1,0 +1,12 @@
+body {
+	padding-top: 0;
+}
+@media screen and (max-width: 768px) {
+  body { 
+    padding-top: 0; 
+  }
+}
+
+form .list-group-item {
+    cursor: pointer;
+}

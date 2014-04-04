@@ -1,10 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-<style>
-  .list-group-item {
-    cursor: pointer;
-  }
-</style>
 <div class="jumbotron">
     <div class="container">
         <h1><b>One last step</b></h1>
@@ -39,28 +34,17 @@
     </div>
 </div>
 
+<script src="/static/js/personalize_helper.js"></script>
 <script>
   $(function() {
-    $('.other-courses').on('click', '.list-group-item', function(event) {
-      $(this).fadeOut(function() {
-        $(this).appendTo('.enrolled-courses');
-        $(this).fadeIn();
-      });
-    });
-    $('.enrolled-courses').on('click', '.list-group-item', function(event) {
-      $(this).fadeOut(function() {
-        $(this).appendTo('.other-courses');
-        $(this).fadeIn();
-      });
-    });
-    // add a hidden input for the selected subjects
-    $('input[type="submit"]').on('click', function(event) {
-      var ids = [];
-      $enrolledCourses = $('.enrolled-courses a');
-      for (var i=0, length = $enrolledCourses.length; i < length; i++) {
-        ids.push($($enrolledCourses[i]).data('course-id'));
-      }
-      $('form').append($('<input type="hidden" value="' + JSON.stringify(ids) + '" name="course_ids">'));
+    // Sets animations/listeners for moving items between lists on click
+    setSwitchActions('.other-courses', '.enrolled-courses');
+
+    bundleSelectionsOnSubmit({
+      'buttonID': '#submit-courses',
+      'selectedItemsSelector': '.enrolled-courses a',
+      'dataID': 'course-id',
+      'inputName': 'course_ids'
     });
   });
 </script>

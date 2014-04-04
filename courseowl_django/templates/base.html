@@ -14,11 +14,10 @@
         {% bootstrap_javascript %}
         <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.0/jquery.cookie.min.js"></script>
-        <script src="http://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.2/typeahead.bundle.min.js"></script>
         <script>
             // This script element sets up csrf token passing for jquery ajax requests
             var csrfToken = $.cookie('csrftoken');
-            console.log(csrfToken);
             function csrfSafeMethod(method) {
                 // these HTTP methods do not require CSRF protection
                 return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
@@ -31,9 +30,6 @@
                     }
                 }
             });
-        </script>
-        <script type="text/javascript">
-
         </script>
     </head>
     <body>
@@ -52,7 +48,7 @@
                     {% if user.is_authenticated %}
                         <div class="col-md-6 col-md-offset-1">
                             <form class="navbar-form" role="search" action='/search' method='GET'>
-                                <div class="input-group">
+                                <div class="input-group" id="search-box">
                                 <input type="text" class="form-control typeahead" placeholder="Search for courses, providers, universities..." name="q" id="q">
                                     <div class="input-group-btn">
                                         <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
@@ -60,6 +56,37 @@
                                 </div>
                             </form>
                         </div>
+                        <script type="text/javascript">
+                            var states;
+                            $.getJSON("/api/courses/", function(json){
+                                states = json;
+                                console.log(json);
+                                var states2 = new Bloodhound({
+                              datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+                              queryTokenizer: Bloodhound.tokenizers.whitespace,
+                              // `states` is an array of state names defined in "The Basics"
+                              local: $.map(states, function(state) { return { value: state }; })
+                            });
+
+                            // kicks off the loading/processing of `local` and `prefetch`
+                            states2.initialize();
+
+                            $('#search-box .typeahead').typeahead({
+                              hint: true,
+                              highlight: true,
+                              minLength: 1
+                            },
+                            {
+                              name: 'states2',
+                              displayKey: 'value',
+                              // `ttAdapter` wraps the suggestion engine in an adapter that
+                              // is compatible with the typeahead jQuery plugin
+                              source: states2.ttAdapter()
+                            });
+                            });
+{#                            console.log(states);#}
+
+                        </script>
                     {% endif %}
                     <ul class="nav navbar-nav navbar-right navbar-form">
                         {% if user.is_authenticated %}

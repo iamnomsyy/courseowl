@@ -97,10 +97,23 @@ def get_recommended_courses(user_profile):
     subject_based_rec = recommender.get_all_subject_recommendations()
     
     # start with an empty list
-    recommendation = []
+    recommendations = []
 
     # add user based recommendations first
-    recommendation 
+    for course in user_based_rec:
+        recommendations.append(course)
+
+    # add subject based recommendation next
+    for course in subject_based_rec
+        recommendations.append(course)
+
+    num_random_needed = 5 - len(recommendations)
+    if (num_random_needed > 0):
+        random_courses = get_random_courses(num_random_needed)
+        for course in random_courses:
+            recommendations.append(course)
+
+    return recommendations
 
 def get_random_courses(num):
     random_courses = list()

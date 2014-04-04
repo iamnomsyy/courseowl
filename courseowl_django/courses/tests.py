@@ -3,7 +3,7 @@ from courses.models import Subject, Provider, Source, Course
 import json
 import os
 
-from courses.scripts.coursera import addCourses as courseraAddCourses
+from courses.scripts.coursera import add_courses as coursera_add_courses
 import courses.scripts.udacity as udacity
 import scripts.edx as edx
 
@@ -21,17 +21,18 @@ class SubjectTests(TestCase):
 
         self.assertEquals(only_subject.name, 'CS')
 
+
 class CourseraScriptTests(TestCase):
     def test_add_course(self):
-        '''
+        """
         Load a json dict, then test if the course can be added correctly from the json data.
-        '''
+        """
 
-        filePath = os.path.join(os.path.dirname(__file__), 'testCourse.json')
+        file_path = os.path.join(os.path.dirname(__file__), 'testCourse.json')
 
-        with open(filePath) as f:
-            jsonDict = json.loads(f.read())
-            courseraAddCourses(jsonDict)
+        with open(file_path) as f:
+            json_dict = json.loads(f.read())
+            coursera_add_courses(json_dict)
 
             # there is one course in the test file
             all_courses = Course.objects.all()
@@ -52,6 +53,7 @@ class CourseraScriptTests(TestCase):
             self.assertEquals(the_course_subjects[0].name, 'stats')
             self.assertEquals(the_course_subjects[1].name, 'cs-ai')
 
+
 class UdacityScriptTests(TestCase):
     def test_get_urls(self):
         l = udacity.get_urls()
@@ -60,12 +62,13 @@ class UdacityScriptTests(TestCase):
     def test_get_all_courses(self):
         urls = ['https://www.udacity.com/course/cs046']
         all_courses = udacity.get_all_courses(urls)
-        itp = all_courses['Intro to Programming'] # itp for 'Intro to Programming'
+        itp = all_courses['Intro to Programming']  # itp for 'Intro to Programming'
         self.assertEquals(itp['name'], 'Intro to Programming')
         self.assertEquals(itp['instr'], 'Cay Horstmann')
         self.assertEquals(itp['desc'].strip(), 'In this class, you will learn basic skills and concepts of computer programming in an object-oriented approach using Java.')
         # rationale for .strip(): scraper gets white space that doesn't affect display but gets in the way of testing
         self.assertEquals(len(itp['subj']), 0)
+
 
 class EdxScriptTests(TestCase):
     def test_populate_lists(self):
@@ -78,5 +81,3 @@ class EdxScriptTests(TestCase):
         edx.add_to_django()
         edge_course = Course.objects.filter(name='The Analytics Edge')
         self.assertTrue(edge_course.exists())
-
-

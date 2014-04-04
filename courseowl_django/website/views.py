@@ -51,7 +51,7 @@ def course_preferences(request):
 
     liked_subjects = UserProfile.objects.get(user=request.user).interests.all()
     context = {
-        'courses': Course.objects.filter(subjects__in=liked_subjects).distinct(),
-        'enrolled': user_profile.enrolled.all()
+        'courses': Course.objects.filter(subjects__in=liked_subjects).distinct().order_by('name'),
+        'enrolled': user_profile.enrolled.all().order_by('name')
     }
     return render(request, 'website/personalize_courses.html', context)

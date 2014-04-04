@@ -87,31 +87,17 @@
       <h2>Settings</h2>
         <a href='/personalize' class='btn btn-success btn-large'>Add more subjects and courses</a>
         <br /><br />
-        <a class="btn btn-danger deactivate-button" data-toggle="drop-modal" onclick="$('#deactivateAccount').modal('show');">Deactivate account</a>
+        <a class="btn btn-default change-credentials-button" data-toggle="drop-modal" onclick="$('#change-credentials').modal('show');">Change your email or password</a>
+        <br /><br />
+        <a class="btn btn-danger deactivate-button" data-toggle="drop-modal" onclick="$('#deactivate-account').modal('show');">Deactivate account</a>
     </div></div>
     <div class="row vertical-center-row row-md-offset-4"></div>
 
-<!-- Drop course confirmation modal -->
-<div class="modal fade" id="dropCourse" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="modalLabel">Dropping Course</h4>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to drop this course?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button id="confirmDrop" type="button" class="btn btn-danger">Yes</button>
-      </div>
-    </div>
-  </div>
-</div>
+{% include "accounts/drop_course_modal.html" %}
+{% include "accounts/credentials_modal.html" %}
 
 <!-- Deactivate account confirmation modal -->
-<div class="modal fade" id="deactivateAccount" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+<div class="modal fade" id="deactivate-account" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -124,35 +110,6 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         <a id="confirmDeactivate" type="button" class="btn btn-danger" href="/accounts/deactivate_account">Yes</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Change credentials modal -->
-<div class="modal fade" id="change-credentials" tabindex="-1" role="dialog" aria-labelledby="cred-modal-label" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="cred-modal-label">Update credentials</h4>
-      </div>
-      <div class="modal-body">
-        <form role="form" id="credentials-form">
-          <div class="form-group">
-            <label for="credential-email">Email address</label>
-            <input type="email" class="form-control" id="credential-email" placeholder="Enter new email">
-          </div>
-          <div class="form-group">
-            <label for="credential-password">Password</label>
-            <input type="password" class="form-control" id="credential-password" placeholder="New password">
-            <input type="password" class="form-control" id="credential-confirm-password" placeholder="Confirm new password">
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
-        <button id="confirm-cred-update" class="btn btn-primary" data-dismiss="modal" type="button">Update</button>
       </div>
     </div>
   </div>
@@ -198,7 +155,10 @@
         "/api/drop",
         { course_to_drop: dropCourseID }
       ).done(function(res) {
-        $('[data-id="' + dropCourseID + '"]').remove();
+        var $courseRow = $('[data-id="' + dropCourseID + '"]');
+        $($courseRow).fadeOut(function() {
+          $($courseRow).remove();
+        });
       });
     });
 

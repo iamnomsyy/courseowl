@@ -139,26 +139,47 @@ def check_valid_password(pw, pw_conf):
 
 
 def unique_user(email):
-    hashedemail = username_md5(email)
-    if User.objects.filter(username=hashedemail).exists():
+    hashed_email = username_md5(email)
+    if User.objects.filter(username=hashed_email).exists():
         return False
     else:
         return True
 
 @login_required
 def change_password(request):
-    current_user = request.user
-    password = request.POST.get('password')
-    password_confirm = request.POST.get('password_confirm')
+    if request.method == 'POST':
+        current_user = request.user
+        password = request.POST.get('password')
+        password_confirm = request.POST.get('password_confirm')
 
-    if not check_valid_password(password, password_confirm):
-        messages.add_message(request, messages.ERROR, 'Invalid password!')
-    else:
-        current_user.set_password(password)
-        current_user.save()
-        messages.add_message(request, messages.SUCCESS, 'Password updated!')
+        if not check_valid_password(password, password_confirm):
+            messages.add_message(request, messages.ERROR, 'Invalid password!')
+        else:
+            current_user.set_password(password)
+            current_user.save()
+            messages.add_message(request, messages.SUCCESS, 'Password updated!')
     
-    return redirect('/accounts/profile')
+    return redirect('/accounts/profile/')
+
+
+@login_required
+def change_email(request):
+    if request.method == 'POST':
+        current_user = request.user
+        new_email = request.POST.get('new_email')
+
+        if not valid_email_address(new_email):
+            messages.add_message(request, messages.ERROR, 'Invalid email!')
+        elif not unique_user(new_email):
+            print(User.objects.filter(username=username_md5(new_email)))
+            messages.add_message(request, messages.ERROR, 'Email already exists!')
+        else:
+            current_user.email = new_email
+            current_user.username = username_md5(new_email)
+            current_user.save()
+            messages.add_message(request, messages.SUCCESS, 'Email updated!')
+
+    return redirect('/accounts/profile/')
 
 
 def username_md5(email):

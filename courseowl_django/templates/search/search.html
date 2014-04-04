@@ -56,42 +56,27 @@
     {% endif %}
 <script>
     $(function() {
-        $('.add-button').on('click', function(event) {
-            var courseID = $(this).closest('tr').data('course-id');
-            var $button = $(this);
-            $.post(
-                '/api/enroll',
-                {'course_to_add': courseID}
-            ).done(function(res) {
-                $button.closest('tr').fadeOut();
+        function setActionListener(actionSelector, apiEndpoint, dataKey) {
+            $(actionSelector).on('click', function(event) {
+                var $button = $(this);
+                var $result = $button.closest('tr');
+                var data = {};
+                data[dataKey] = $result.data('course-id');
+
+                $.post(
+                    apiEndpoint,
+                    data
+                ).done(function(res) {
+                    console.log(res);
+                    if (!!res.success) {
+                        $result.fadeOut();
+                    }
+                });
             });
-        });
-
-        $('.hide-button').on('click', function(event) {
-            var $button = $(this);
-            var $result = $button.closest('tr');
-            var courseID = $result.data('course-id');
-
-            $.post(
-                '/api/complete_course',
-                {'completed_course': courseID}
-            ).done(function(res) {
-                $result.fadeOut();
-            });
-        });
-
-        $('.taken-button').on('click', function(event) {
-            var $button = $(this);
-            var $result = $button.closest('tr');
-            var courseID = $result.data('course-id');
-
-            $.post(
-                '/api/dislike_course',
-                {'disliked_course': courseID}
-            ).done(function(res) {
-                $result.fadeOut();
-            });
-        })
+        }
+        setActionListener('.add-button', '/api/enroll', 'course_to_add');
+        setActionListener('.hide-button', '/api/complete_course', 'completed_course');
+        setActionListener('.taken-button', '/api/dislike_course', 'disliked_course');
     });
 </script>
 {% endblock %}

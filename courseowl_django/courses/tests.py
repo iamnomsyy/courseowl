@@ -15,6 +15,7 @@ class SubjectTests(TestCase):
         subject.save()
 
         all_subjects = Subject.objects.all()
+
         self.assertEquals(len(all_subjects), 1)
         only_subject = all_subjects[0]
         self.assertEquals(only_subject, subject)
@@ -81,5 +82,8 @@ class EdxScriptTests(TestCase):
         edx.add_to_django()
         self.assertTrue(len(list(Course.objects.all())) > 50)
         self.assertEquals(len(list(Subject.objects.all())), 25)
+
+class RecommenderTests(TestCase):
+
 
 

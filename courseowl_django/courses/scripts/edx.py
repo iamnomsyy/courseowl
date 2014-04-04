@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 import re
 
 
-subjects = [
+all_subjects = [
     'business-management',
     'chemistry',
     'communication',
@@ -34,6 +34,8 @@ subjects = [
     'statistics-data-analysis'
     ]
 
+
+
 intList = list()
 uniList = list()
 titleList = list()
@@ -46,7 +48,7 @@ def run():
     add_to_django()
 
 
-def populate_lists():
+def populate_lists(subjects=all_subjects):
     print "Adding courses from edx (this will take a minute)..."
     for subject in subjects:
         for i in range(5):

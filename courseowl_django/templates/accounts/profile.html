@@ -3,7 +3,6 @@
 {% load socialaccount %}
 
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
- <link rel="stylesheet" href="stylesheets/stylesheet.css">
 <div class="pagination-centered">
 <div class="col-md-6 col-sm-6">
             <div class="container">
@@ -38,9 +37,9 @@
               {%for course in enrolled_list %}
                   <tr data-id="{{course.id}}">
 
-                      <td>{{  course.name }}</td>
+                      <td>{{ course.name }}</td>
                       <td>{{ course.provider }}</td>
-                      <td>{{  course.instructor }}</td>
+                      <td>{{ course.instructor }}</td>
                       <td>
                         <div class='btn btn-small btn-info'>Course info</div>
                         <div class='btn btn-small btn-danger drop-button' data-toggle="drop-modal">
@@ -84,18 +83,37 @@
           </table>
         </div><!-- do not modify the tags see zebra-striped , akshay-->
       </div>
-    </div></div></div></div></div>
-    <div class="row vertical-center-row row-md-offset-4">
-            <div class="col-md-4 col-md-offset-4">
-
-        <div class="well span4 sidebar">
-            <div class='cleaner_h10'></div>
-            <div><a href='/personalize' class='btn btn-success btn-large'>Add more subjects and courses</a></div><br>
-        </div><!-- end of sidebar -->
-</div></div>
+    </div></div></div>
+      <h2>Settings</h2>
+        <a href='/personalize' class='btn btn-success btn-large'>Add more subjects and courses</a>
+        <br /><br />
+        <a class="btn btn-default change-credentials-button" data-toggle="drop-modal" onclick="$('#change-credentials').modal('show');">Change your email or password</a>
+        <br /><br />
+        <a class="btn btn-danger deactivate-button" data-toggle="drop-modal" onclick="$('#deactivate-account').modal('show');">Deactivate account</a>
+    </div></div>
+    <div class="row vertical-center-row row-md-offset-4"></div>
 
 {% include "accounts/drop_course_modal.html" %}
 {% include "accounts/credentials_modal.html" %}
+
+<!-- Deactivate account confirmation modal -->
+<div class="modal fade" id="deactivate-account" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="modalLabel">Deactivate Account</h4>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to deactivate your CourseOwl account?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <a id="confirmDeactivate" type="button" class="btn btn-danger" href="/accounts/deactivate_account">Yes</a>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
   function setAddCourseListener() {

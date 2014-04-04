@@ -20,7 +20,7 @@ def login(request):
         password = request.POST.get('password')
 
         try:
-            temp_user = User.objects.get(email=email)
+            temp_user = User.objects.get(username=username_md5(email))
             user = authenticate(username=temp_user.username, password=password)
             if user is not None and user.is_active:
                 dj_login(request, user)
@@ -35,6 +35,7 @@ def login(request):
         return render(request, 'accounts/login.html')
 
 
+@login_required
 def logout(request):
     dj_logout(request)
     return redirect('/')
@@ -98,7 +99,8 @@ def get_recommended_courses(user_profile):
     return random_courses
 
 
-def delete_account(request):
+@login_required
+def deactivate_account(request):
     current_user = request.user
     current_user.is_active = False
     current_user.save()
@@ -116,6 +118,21 @@ def unique_user(email):
         return False
     else:
         return True
+
+@login_required
+def change_password(request):
+    current_user = request.user
+    password = request.POST.get('password')
+    password_confirm = request.POST.get('password_confirm')
+
+    if not check_valid_password(password, password_confirm):
+        messages.add_message(request, messages.ERROR, 'Invalid password!')
+    else:
+        current_user.set_password(password)
+        current_user.save()
+        messages.add_message(request, messages.SUCCESS, 'Password updated!')
+    
+    return redirect('/accounts/profile')
 
 
 def username_md5(email):

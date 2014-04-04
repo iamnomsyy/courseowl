@@ -72,7 +72,7 @@ def get_subj(page):
     try:
         anchor_x = page.index('This Course is a Part Of')
         anchor_y = page.index('Course Instructors')
-        subj = page[anchor_x+1 : anchor_y]
+        subj = page[anchor_x+1: anchor_y]
     except ValueError:
         subj = []
 

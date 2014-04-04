@@ -51,10 +51,9 @@ def get_name(page):
 def get_instr(page):
     instr = []
 
-    anchor_x = page.index('Instructors & Partners')
-    anchor_y = page.index('Ways to Take This Course')
+    anchor = page.index('Instructors & Partners')
 
-    for i in range(anchor_x, anchor_y):
+    for i in range(anchor, len(page)):
         if page[i] == 'Instructor':
             instr.append(page[i-1])
 

@@ -1,10 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-<style>
-  .list-group-item {
-    cursor: pointer;
-  }
-</style>
 <div class="jumbotron">
     <div class="container">
         <h1><b>Tell us about yourself</b></h1>
@@ -39,30 +34,17 @@
     </div>
 </div>
 
+<script src="/static/js/personalize_helper.js"></script>
 <script>
   $(function() {
-    // Avoids setting onclick listener on each list items via event delegation
-    $('.other-subjects').on('click', '.list-group-item', function(event) {
-      $(this).fadeOut(function() {
-        $(this).appendTo('.liked-subjects');
-        $(this).fadeIn();
-      });
-    });
-    $('.liked-subjects').on('click', '.list-group-item', function(event) {
-      $(this).fadeOut(function() {
-        $(this).appendTo('.other-subjects');
-        $(this).fadeIn();
-      });
-    });
+    // Sets listeners/animations for switching between liked and other
+    setSwitchActions('.other-subjects', '.liked-subjects');
 
-    // add a hidden input for the selected subjects
-    $('input[type="submit"]').on('click', function(event) {
-      var ids = [];
-      $likedSubjects = $('.liked-subjects a');
-      for (var i=0, length = $likedSubjects.length; i < length; i++) {
-        ids.push($($likedSubjects[i]).data('subject-id'));
-      }
-      $('form').append($('<input type="hidden" value="' + JSON.stringify(ids) + '" name="subject_ids">'));
+    bundleSelectionsOnSubmit({
+      'buttonID': '#submit-subjects',
+      'selectedItemsSelector': '.liked-subjects a',
+      'dataID': 'subject-id',
+      'inputName': 'subject_ids'
     });
   });
 </script>

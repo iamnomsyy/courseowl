@@ -71,7 +71,7 @@ class EdxScriptTests(TestCase):
     def test_populate_lists(self):
         edx.populate_lists(['business-management'])
         self.assertEquals(len(edx.all_subjects), 25)
-        self.assertTrue('The Analytics Edge' in edx.titleList)
+        self.assertTrue('The Analytics Edge' in edx.title_list)
 
     def test_add_to_django(self):
         edx.populate_lists(['business-management'])

@@ -87,7 +87,9 @@
       <h2>Settings</h2>
         <a href='/personalize' class='btn btn-success btn-large'>Add more subjects and courses</a>
         <br /><br />
-        <a class="btn btn-danger deactivate-button" data-toggle="drop-modal" onclick="$('#deactivateAccount').modal('show');">Deactivate account</a>
+        <a class="btn btn-default change-credentials-button" data-toggle="drop-modal" onclick="$('#change-credentials').modal('show');">Change your email or password</a>
+        <br /><br />
+        <a class="btn btn-danger deactivate-button" data-toggle="drop-modal" onclick="$('#deactivate-account').modal('show');">Deactivate account</a>
     </div></div>
     <div class="row vertical-center-row row-md-offset-4"></div>
 
@@ -111,7 +113,7 @@
 </div>
 
 <!-- Deactivate account confirmation modal -->
-<div class="modal fade" id="deactivateAccount" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+<div class="modal fade" id="deactivate-account" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -138,21 +140,24 @@
         <h4 class="modal-title" id="cred-modal-label">Update credentials</h4>
       </div>
       <div class="modal-body">
-        <form role="form" id="credentials-form">
+        <form role="form" id="email-form" method="POST" action="/accounts/change_email/">{% csrf_token %}
           <div class="form-group">
             <label for="credential-email">Email address</label>
-            <input type="email" class="form-control" id="credential-email" placeholder="Enter new email">
+            <input type="email" class="form-control" name="new_email" placeholder="Enter new email"><br/>
+            <button id="confirm-email-update" class="btn btn-primary" type="submit">Update Email</button>
           </div>
+        </form>
+        <form role="form" id="password-form" method="POST" action="/accounts/change_password/">{% csrf_token %}
           <div class="form-group">
             <label for="credential-password">Password</label>
-            <input type="password" class="form-control" id="credential-password" placeholder="New password">
-            <input type="password" class="form-control" id="credential-confirm-password" placeholder="Confirm new password">
+            <input type="password" class="form-control" name="password" placeholder="New password"><br/>
+            <input type="password" class="form-control" name="password_confirm" placeholder="Confirm new password"><br/>
+            <button id="confirm-password-update" class="btn btn-primary" type="submit">Update Password</button>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
-        <button id="confirm-cred-update" class="btn btn-primary" data-dismiss="modal" type="button">Update</button>
       </div>
     </div>
   </div>

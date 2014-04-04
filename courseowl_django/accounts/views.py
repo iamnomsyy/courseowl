@@ -113,8 +113,8 @@ def check_valid_password(pw, pw_conf):
 
 
 def unique_user(email):
-    hashedemail = username_md5(email)
-    if User.objects.filter(username=hashedemail).exists():
+    hashed_email = username_md5(email)
+    if User.objects.filter(username=hashed_email).exists():
         return False
     else:
         return True
@@ -144,7 +144,7 @@ def change_email(request):
 
         if not valid_email_address(new_email):
             messages.add_message(request, messages.ERROR, 'Invalid email!')
-        elif User.objects.filter(username=username_md5(new_email)).count() != 0:
+        elif not unique_user(new_email):
             print(User.objects.filter(username=username_md5(new_email)))
             messages.add_message(request, messages.ERROR, 'Email already exists!')
         else:

@@ -15,6 +15,7 @@ class SubjectTests(TestCase):
         subject.save()
 
         all_subjects = Subject.objects.all()
+
         self.assertEquals(len(all_subjects), 1)
         only_subject = all_subjects[0]
         self.assertEquals(only_subject, subject)
@@ -78,5 +79,9 @@ class EdxScriptTests(TestCase):
         edx.add_to_django()
         edge_course = Course.objects.filter(name='The Analytics Edge')
         self.assertTrue(edge_course.exists())
+
+class RecommenderTests(TestCase):
+
+
 
 

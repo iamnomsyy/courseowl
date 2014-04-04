@@ -81,7 +81,7 @@ class EdxScriptTests(TestCase):
         self.assertTrue(edge_course.exists())
 
 class RecommenderTests(TestCase):
-
+    pass
 
 
 

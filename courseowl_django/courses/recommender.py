@@ -54,7 +54,7 @@ def get_enrolled_subjects(user):
 
 def get_all_subject_recommendations(user):
     """
-    Gets all subject-based course recommendations
+    Entry point to get all subject-based recommendations
     """
     all_user_subjects = set()
     all_user_subjects.update(get_interest_subjects(user))
@@ -139,6 +139,9 @@ def get_similar_user_completed(user):
 
 
 def get_most_similar_user(user):
+    '''
+    Computes scores and returns the user most similar to you
+    '''
     user_scores = defaultdict(int)
     similar_user, score = get_similar_user_interests(user)
     user_scores[similar_user] += score
@@ -158,7 +161,15 @@ def get_most_similar_user(user):
 
 
 def get_all_user_recommendations(user):
+    '''
+    Entry point to get all user-based recommendations
+    '''
     best_user = get_most_similar_user(user)
     recommended_list = set()
     recommended_list.update(set(best_user.enrolled.all()))
     recommended_list.update(set(best_user.completed.all()))
+
+    #Might as well get interest recommendation from this guy
+    recommended_list.update(get_recs_from_subjects(set(best_user.interests.all())))
+
+    return recommended_list

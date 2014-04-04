@@ -20,7 +20,7 @@ def get_urls():
         list_course_urls.append('https://www.udacity.com/course/' + course_str[4:9])
 
     return list_course_urls
-u
+
 
 def get_page(url):
     # get the page

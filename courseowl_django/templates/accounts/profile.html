@@ -23,7 +23,6 @@
       <tbody class="enrolled-courses">
         {%for course in enrolled_list %}
         <tr data-id="{{course.id}}">
-
           <td>{{ course.name }}</td>
           <td>{{ course.provider }}</td>
           <td>{{ course.instructor }}</td>
@@ -35,7 +34,6 @@
           </td>
         </tr>
         {% endfor %}
-
       </tbody>
     </table>
     {% else %}

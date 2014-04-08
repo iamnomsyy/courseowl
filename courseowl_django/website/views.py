@@ -2,11 +2,15 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from courses.models import Subject, Course
 from accounts.models import UserProfile
+from django.http import HttpResponse
 import json
 
 
 def index(request):
     return render(request, 'website/index.html')
+
+def error404(request):
+    return HttpResponse('<h1>The webpage fetching robot can\'t find what you\'re looking for and exploded.</h1>')
 
 
 @login_required

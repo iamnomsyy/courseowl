@@ -1,6 +1,6 @@
 DEBUG = True
 TEMPLATE_DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 PREDICTIONIO_IP = "io.courseowl.com"
 
 DATABASES = {

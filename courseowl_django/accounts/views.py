@@ -16,6 +16,9 @@ import courses.recommender as recommender
 
 
 def login(request):
+    """
+    Log the user in on POST or error. On GET, render the login page.
+    """
     if request.method == "POST":
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -37,11 +40,17 @@ def login(request):
 
 @login_required
 def logout(request):
+    """
+    Log the user out and redirect to the home page.
+    """
     dj_logout(request)
     return redirect('/')
 
 
 def email_signup(request):
+    """
+    On POST, create a User and UserProfile for the user, or error. On GET, render the sign up page.
+    """
     if request.method == "POST":
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -72,6 +81,9 @@ def email_signup(request):
 
 @receiver(user_signed_up)
 def create_user_profile_for_socialaccount(sender, **kwargs):
+    """
+    Create a UserProfile object for users created by the social auth application.
+    """
     user = kwargs['user']
     user.username = username_md5(user.email)
     user_profile = UserProfile(user=user)
@@ -80,6 +92,9 @@ def create_user_profile_for_socialaccount(sender, **kwargs):
 
 @login_required
 def profile(request):
+    """
+    Render the user profile page.
+    """
     current_user = request.user
     user_profile = UserProfile.objects.get(user=current_user)
     enrolled_list = list(user_profile.enrolled.all())
@@ -89,20 +104,15 @@ def profile(request):
 
 
 def get_recommended_courses(user_profile):
+    """
+    Get recommended courses for a UserProfile.
+    """
     current_user = user_profile.user
     user_based_rec = recommender.get_all_user_recommendations(current_user)
     subject_based_rec = recommender.get_all_subject_recommendations(current_user)
     
-    # start with an empty list
-    recommendations = []
-
-    # add user based recommendations first
-    for course in user_based_rec:
-        recommendations.append(course)
-
-    # add subject based recommendation next
-    for course in subject_based_rec:
-        recommendations.append(course)
+    # concatenate user and subject based recommendations:
+    recommendations = user_based_rec + subject_based_rec
 
     num_random_needed = 5 - len(recommendations)
     if num_random_needed > 0:
@@ -114,16 +124,22 @@ def get_recommended_courses(user_profile):
 
 
 def get_random_courses(num):
-    random_courses = list()
-    random_course_order = Course.objects.order_by('?')
-    number_random_courses = num
-    for i in range(number_random_courses):
-        random_courses.append(random_course_order[i])
+    """
+    Get num random courses.
+    """
+    random_courses = []
+    random_course_ordered = Course.objects.order_by('?')
+    for i in range(num):
+        # Course.objects.order_by() returns a QuerySet, not a list - do lazy evaluation to avoid getting all Courses
+        random_courses.append(random_course_ordered[i])
     return random_courses
 
 
 @login_required
 def deactivate_account(request):
+    """
+    Deactivate the request.user's account and redirect to the home page.
+    """
     current_user = request.user
     current_user.is_active = False
     current_user.save()
@@ -132,16 +148,24 @@ def deactivate_account(request):
 
 
 def check_valid_password(pw, pw_conf):
-    return not (len(pw) < 8 or pw != pw_conf)
+    """
+    Check whether pw is longer than 8 characters and matches pw_conf.
+    """
+    return len(pw) >= 8 and pw == pw_conf
 
 
 def unique_user(email):
-    hashed_email = username_md5(email)
-    return not User.objects.filter(username=hashed_email).exists()
+    """
+    Check whether the email is unique, i.e. not used by another user.
+    """
+    return not User.objects.filter(username=username_md5(email)).exists()
 
 
 @login_required
 def change_password(request):
+    """
+    On POST, change the request.user's password. On GET, do nothing, just redirect to the profile page.
+    """
     if request.method == 'POST':
         current_user = request.user
         password = request.POST.get('password')
@@ -159,6 +183,9 @@ def change_password(request):
 
 @login_required
 def change_email(request):
+    """
+    On POST, validate the email and change it. On GET, do nothing, just redirect to the profile page.
+    """
     if request.method == 'POST':
         current_user = request.user
         new_email = request.POST.get('new_email')
@@ -178,12 +205,16 @@ def change_email(request):
 
 
 def username_md5(email):
+    """
+    MD5 hash the email address and return the first 30 characters of it - used for Django's username field.
+    """
     return hashlib.md5(email.lower()).hexdigest()[:30]
 
 
 def valid_email_address(email):
-    if email == '':
-        return False
+    """
+    Check the validity of an email address.
+    """
     try:
         EmailField().clean(email)
         return True

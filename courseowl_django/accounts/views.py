@@ -12,7 +12,6 @@ from django.contrib.auth.decorators import login_required
 from courses.models import Course
 from django.dispatch import receiver
 from allauth.account.signals import user_signed_up
-
 import courses.recommender as recommender
 
 
@@ -26,12 +25,11 @@ def login(request):
             user = authenticate(username=temp_user.username, password=password)
             if user is not None and user.is_active:
                 dj_login(request, user)
-                messages.add_message(request, messages.SUCCESS, 'Login successful!')
+                messages.add_message(request, messages.SUCCESS, 'Login successful.')
                 return redirect('/accounts/profile/')
-            messages.add_message(request, messages.ERROR, 'Invalid login credentials!')
-            return redirect('/accounts/login/')
+            raise ObjectDoesNotExist()
         except ObjectDoesNotExist:
-            messages.add_message(request, messages.ERROR, 'User does not exist!')
+            messages.add_message(request, messages.ERROR, 'Invalid email or password. Try again.')
             return redirect('/accounts/login/')
     else:
         return render(request, 'accounts/login.html')
@@ -50,25 +48,22 @@ def email_signup(request):
         password_confirm = request.POST.get('password_confirm')
 
         if not unique_user(email):
-            messages.add_message(request, messages.ERROR, 'That email is already registered!')
+            messages.add_message(request, messages.ERROR, 'That email is already registered.')
             return redirect('/accounts/signup')
 
         if not valid_email_address(email):
-            messages.add_message(request, messages.ERROR, 'Invalid email address!')
+            messages.add_message(request, messages.ERROR, 'Invalid email address.')
             return redirect('/accounts/signup')
 
         valid_pw = check_valid_password(password, password_confirm)
         if not valid_pw:
-            messages.add_message(request, messages.ERROR, 'Invalid password!')
+            messages.add_message(request, messages.ERROR, 'Invalid password.')
             return redirect('/accounts/signup')
 
-        user = User.objects.create_user(username_md5(email), email, password, first_name="", last_name="")
-        user.save()
-        userprofile = UserProfile()
-        userprofile.user = user
-        userprofile.save()
-        pas = password
-        auth_user = authenticate(username=username_md5(email), password=pas)
+        user = User.objects.create_user(username_md5(email), email, password)
+        user_profile = UserProfile(user=user)
+        user_profile.save()
+        auth_user = authenticate(username=username_md5(email), password=password)
         dj_login(request, auth_user)
         return redirect('/subject_preferences')
     else:
@@ -79,8 +74,8 @@ def email_signup(request):
 def create_user_profile_for_socialaccount(sender, **kwargs):
     user = kwargs['user']
     user.username = username_md5(user.email)
-    userprofile = UserProfile(user=user)
-    userprofile.save()
+    user_profile = UserProfile(user=user)
+    user_profile.save()
 
 
 @login_required
@@ -89,7 +84,8 @@ def profile(request):
     user_profile = UserProfile.objects.get(user=current_user)
     enrolled_list = list(user_profile.enrolled.all())
     recommend_list = get_recommended_courses(user_profile)
-    return render(request, 'accounts/profile.html', {"email": current_user.email, "enrolled_list": enrolled_list, "recommend_list": recommend_list})
+    return render(request, 'accounts/profile.html', {'email': current_user.email, 'enrolled_list': enrolled_list,
+                                                     'recommend_list': recommend_list})
 
 
 def get_recommended_courses(user_profile):
@@ -109,12 +105,13 @@ def get_recommended_courses(user_profile):
         recommendations.append(course)
 
     num_random_needed = 5 - len(recommendations)
-    if (num_random_needed > 0):
+    if num_random_needed > 0:
         random_courses = get_random_courses(num_random_needed)
         for course in random_courses:
             recommendations.append(course)
 
     return recommendations[:5]
+
 
 def get_random_courses(num):
     random_courses = list()
@@ -140,10 +137,8 @@ def check_valid_password(pw, pw_conf):
 
 def unique_user(email):
     hashed_email = username_md5(email)
-    if User.objects.filter(username=hashed_email).exists():
-        return False
-    else:
-        return True
+    return not User.objects.filter(username=hashed_email).exists()
+
 
 @login_required
 def change_password(request):
@@ -187,7 +182,7 @@ def username_md5(email):
 
 
 def valid_email_address(email):
-    if email == "":
+    if email == '':
         return False
     try:
         EmailField().clean(email)

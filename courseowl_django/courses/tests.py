@@ -84,6 +84,10 @@ class EdxScriptTests(TestCase):
         self.assertEquals(len(list(Subject.objects.all())), 25)
 
 class RecommenderTests(TestCase):
+    math_sub = Subject()
+    sic_sub = Sect()
+
+
 
 
 

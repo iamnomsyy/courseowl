@@ -2,7 +2,6 @@ from django.test import TestCase
 from courses.models import Subject, Provider, Source, Course
 import json
 import os
-
 from courses.scripts.coursera import add_courses as coursera_add_courses
 import courses.scripts.udacity as udacity
 import scripts.edx as edx
@@ -86,4 +85,3 @@ class EdxScriptTests(TestCase):
 
 class RecommenderTests(TestCase):
     pass
-

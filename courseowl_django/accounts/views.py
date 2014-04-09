@@ -1,4 +1,5 @@
 import hashlib
+from itertools import chain
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as dj_login, logout as dj_logout
 from django.core.exceptions import ObjectDoesNotExist
@@ -112,7 +113,7 @@ def get_recommended_courses(user_profile):
     subject_based_rec = recommender.get_all_subject_recommendations(current_user)
     
     # concatenate user and subject based recommendations:
-    recommendations = user_based_rec + subject_based_rec
+    recommendations = list(chain(user_based_rec, subject_based_rec))
 
     num_random_needed = 5 - len(recommendations)
     if num_random_needed > 0:

@@ -2,11 +2,15 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from courses.models import Subject, Course
 from accounts.models import UserProfile
+from django.http import HttpResponse
 import json
 
 
 def index(request):
     return render(request, 'website/index.html')
+
+def error404(request):
+    return HttpResponse('<h1>The webpage fetching robot can\'t find what you\'re looking for and exploded.</h1>')
 
 
 @login_required
@@ -51,7 +55,7 @@ def course_preferences(request):
 
     liked_subjects = UserProfile.objects.get(user=request.user).interests.all()
     context = {
-        'courses': Course.objects.filter(subjects__in=liked_subjects).distinct(),
-        'enrolled': user_profile.enrolled.all()
+        'courses': Course.objects.filter(subjects__in=liked_subjects).distinct().order_by('name'),
+        'enrolled': user_profile.enrolled.all().order_by('name')
     }
     return render(request, 'website/personalize_courses.html', context)

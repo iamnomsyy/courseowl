@@ -3,95 +3,80 @@
 {% load socialaccount %}
 
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-<div class="pagination-centered">
-<div class="col-md-6 col-sm-6">
-            <div class="container">
-                 <div class="row vertical-center-row row-md-offset-4">
-                  <div class="form">
-                     <h2>Welcome </h2>
-                     <p><h4><i class="glyphicon glyphicon-user"></i> {{ email }}</h4></p>
-<!-- testing for table / topbar / color, akshay-->
-    <div class="topbar">
-      <div class="fill">
-        <div class="container span18">
-        </div>
-      </div>
-    </div>
-
-    <div class="container span18">
-      <div class='cleaner_h40'></div>
-        <div class='span14'>
-          {% if enrolled_list %}
-          <h2>Active Courses</h2>
-          <table class='table table-striped'>
-              <thead>
-                  <tr>
-
-                      <th class='span4'>Course</th>
-                      <th class='span2'>Provider</th>
-                      <th class='span2'>Instructor</th>
-                      <th class='span4'>Action</th>
-                  </tr>
-              </thead>
-              <tbody class="enrolled-courses">
-              {%for course in enrolled_list %}
-                  <tr data-id="{{course.id}}">
-
-                      <td>{{ course.name }}</td>
-                      <td>{{ course.provider }}</td>
-                      <td>{{ course.instructor }}</td>
-                      <td>
-                        <div class='btn btn-small btn-info'>Course info</div>
-                        <div class='btn btn-small btn-danger drop-button' data-toggle="drop-modal">
-                          Drop course
-                        </div>
-                      </td>
-                  </tr>
-              {% endfor %}
-
-              </tbody>
-          </table>
-        {% else %}
-          <h2>It seems you have no active courses</h2>
-          <a href="/course_preferences" class="btn btn-success btn-large">Add Courses</a>
-        {% endif %}
-          <h2>Recommendations</h2>
-         <table class='table table-striped'>
-              <thead>
-                  <tr>
-
-                      <th class='span4'>Course</th>
-                      <th class='span2'>Provider</th>
-                      <th class='span4'>Instructor</th>
-                      <th class='span4'>Action</th>
-                  </tr>
-              </thead>
-              <tbody class="recommended-courses">
-              <!-- Check again -->
-                {%for course in recommend_list %}
-                  <tr data-id="{{ course.id }}">
-                      <td>{{course.name}}</td>
-                      <td>{{course.provider}}</td>
-                      <td>{{course.instructor}}</td>
-                      <td>
-                        <div class='btn btn-small btn-info'>Course info</div>
-                        <div class='btn btn-small btn-success add-course'>Add Course</div>
-                      </td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-          </table>
-        </div><!-- do not modify the tags see zebra-striped , akshay-->
-      </div>
-    </div></div></div>
-      <h2>Settings</h2>
-        <a href='/personalize' class='btn btn-success btn-large'>Add more subjects and courses</a>
-        <br /><br />
-        <a class="btn btn-default change-credentials-button" data-toggle="drop-modal" onclick="$('#change-credentials').modal('show');">Change your email or password</a>
-        <br /><br />
-        <a class="btn btn-danger deactivate-button" data-toggle="drop-modal" onclick="$('#deactivate-account').modal('show');">Deactivate account</a>
-    </div></div>
-    <div class="row vertical-center-row row-md-offset-4"></div>
+<div class="container">
+ <div class="row vertical-center-row row-md-offset-4">
+   <h2>Welcome </h2>
+   <h4><i class="glyphicon glyphicon-user"></i> {{ email }}</h4>
+ </div>
+ <div class="row">
+    {% if enrolled_list %}
+    <h2>Active Courses</h2>
+    <table class='table table-striped'>
+      <thead>
+        <tr>
+          <th class="col-sm-4">Course</th>
+          <th class="col-sm-2">Provider</th>
+          <th class="col-sm-3">Instructor</th>
+          <th class="col-sm-3">Action</th>
+        </tr>
+      </thead>
+      <tbody class="enrolled-courses">
+        {%for course in enrolled_list %}
+        <tr data-id="{{course.id}}">
+          <td>{{ course.name }}</td>
+          <td>{{ course.provider }}</td>
+          <td>{{ course.instructor }}</td>
+          <td>
+            <div class='btn btn-small btn-info'>Course info</div>
+            <div class='btn btn-small btn-danger drop-button' data-toggle="drop-modal">
+              Drop course
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <h2>It seems you have no active courses</h2>
+    <a href="/course_preferences" class="btn btn-success btn-large">Add Courses</a>
+    {% endif %}
+  </div>
+  <div class="row">
+    <h2>Recommendations</h2>
+    <table class='table table-striped'>
+      <thead>
+        <tr>
+          <th class="col-sm-4">Course</th>
+          <th class="col-sm-2">Provider</th>
+          <th class="col-sm-3">Instructor</th>
+          <th class="col-sm-3">Action</th>
+        </tr>
+      </thead>
+      <tbody class="recommended-courses">
+        <!-- Check again -->
+        {%for course in recommend_list %}
+        <tr data-id="{{ course.id }}">
+          <td>{{course.name}}</td>
+          <td>{{course.provider}}</td>
+          <td>{{course.instructor}}</td>
+          <td>
+            <div class='btn btn-small btn-info'>Course info</div>
+            <div class='btn btn-small btn-success add-course'>Add Course</div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="row">
+    <h2>Settings</h2>
+    <a href='/personalize' class='btn btn-success btn-large'>Add more subjects and courses</a>
+    <br /><br />
+    <a class="btn btn-default change-credentials-button" data-toggle="drop-modal" onclick="$('#change-credentials').modal('show');">Change your email or password</a>
+    <br /><br />
+    <a class="btn btn-danger deactivate-button" data-toggle="drop-modal" onclick="$('#deactivate-account').modal('show');">Deactivate account</a>
+  </div>
+</div>
 
 {% include "accounts/drop_course_modal.html" %}
 {% include "accounts/credentials_modal.html" %}

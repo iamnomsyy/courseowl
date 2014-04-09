@@ -11,6 +11,11 @@ form .list-group-item {
     cursor: pointer;
 }
 
+div#page-footer {
+	background-color: #F7F9F4;
+	margin-top: 20px;
+}
+
 /* Typeahead styling */
 .twitter-typeahead {
     width: 100%;

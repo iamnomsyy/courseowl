@@ -1,10 +1,10 @@
-from ..models import *
+from courses.models import *
 import json
 import urllib2
 
 
 def run():
-    print("Adding cousera courses....")
+    print("Adding Cousera courses....")
     coursera_json_url = 'https://www.coursera.org/maestro/api/topic/list?full=1%20or%20https://www.coursera.org/maestro/api/topic/list2'
     coursera_dict = get_and_parse_json(coursera_json_url)
     add_courses(coursera_dict)

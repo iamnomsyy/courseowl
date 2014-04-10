@@ -9,15 +9,17 @@ import json
 def index(request):
     return render(request, 'website/index.html')
 
+
 def error404(request):
-    return HttpResponse('<h1>The webpage fetching robot can\'t find what you\'re looking for and exploded.</h1>')
+    return HttpResponse('<h1>The web page fetching robot can\'t find what you\'re looking for and exploded.</h1>')
 
 
 @login_required
 def subject_preferences(request):
-    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
-    if created:
-        user_profile.save()
+    """
+    On POST, save a user's subject preferences. On GET, generate all liked subjects and render the personalize page.
+    """
+    user_profile = UserProfile.objects.get(user=request.user)
 
     if request.method == 'POST':
         subject_ids = json.loads(request.POST.get('subject_ids'))
@@ -27,7 +29,7 @@ def subject_preferences(request):
         # Save subjects to user's profile
         for sub_id in subject_ids:
             subject = Subject.objects.get(id=sub_id)
-            interests = user_profile.interests.add(subject)
+            user_profile.interests.add(subject)
         user_profile.save()
         return redirect('/course_preferences')
 
@@ -43,7 +45,11 @@ def subject_preferences(request):
 
 @login_required
 def course_preferences(request):
+    """
+    On POST, save a user's course preferences. On GET, generate all liked courses and render the personalize page.
+    """
     user_profile = UserProfile.objects.get(user=request.user)
+
     if request.method == 'POST':
         course_ids = json.loads(request.POST.get('course_ids'))
         if user_profile.enrolled:
@@ -51,7 +57,7 @@ def course_preferences(request):
         for course in course_ids:
             user_profile.enrolled.add(Course.objects.get(id=course))
         user_profile.save()
-        return redirect('/accounts/profile')
+        return redirect('/accounts/profile/')
 
     liked_subjects = UserProfile.objects.get(user=request.user).interests.all()
     context = {

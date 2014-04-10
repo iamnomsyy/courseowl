@@ -27,7 +27,7 @@
                 </ul>
              <div class="tab-content">
                 <div id="info">
-                        <p>{{ result.object.description }}</p>
+                        <p>{{ result.object.description }} .....  <a class='info-button' data-toggle="modal" data-target="#courseinfo"> more info.</a></p>
                 </div>
             <!-- do not remove for future
                 <div id="instr" class="tab-pane fade">
@@ -54,6 +54,28 @@
             To search, type something in the search box above.
         </div>
     {% endif %}
+
+    <div class="modal fade" id="courseinfo" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="modalLabel">Course Information</h4>
+      </div>
+      <div class="modal-body" >
+
+       <p><strong>Course : </strong><label id = "course_name"></label></p>
+       <p><strong>Provider : </strong> <label id = "provider"></label> </p>
+       <p><strong>Instructor : </strong><label id = "course_ins"></label></p>
+       <p><strong>Cost : Free</strong></p>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
     $(function() {
         function setActionListener(actionSelector, apiEndpoint, dataKey) {
@@ -67,6 +89,7 @@
                     apiEndpoint,
                     data
                 ).done(function(res) {
+
                     console.log(res);
                     if (!!res.success) {
                         $result.fadeOut();
@@ -78,5 +101,28 @@
         setActionListener('.hide-button', '/api/complete_course', 'completed_course');
         setActionListener('.taken-button', '/api/dislike_course', 'disliked_course');
     });
+
+$(function display_info() {
+      $('.info-button').on('click', function(event) {
+          var courseID = $(this).closest('tr').data('course-id');
+
+          $.post(
+            '/api/course_info',
+                 { course_id : courseID }
+          ).done(function(res){
+              $('#course_name').text(res.info.name);
+              $('#provider').text(res.info.provider);
+              $('#course_ins').text(res.info.instructor);
+
+                console.dir(res);
+
+          });
+
+            display_info();
+
+      });
+   });
+
+
 </script>
 {% endblock %}

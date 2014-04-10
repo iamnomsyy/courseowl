@@ -7,7 +7,6 @@ urlpatterns = patterns('',
                        url(r'^logout', views.logout, name='logout'),
                        url(r'^deactivate_account', views.deactivate_account, name='deactivate_account'),
                        url(r'^profile', views.profile, name='profile'),
-                       url(r'^fail', views.fail, name='fail'),
                        url(r'^change_password', views.change_password, name='change_password'),
                        url(r'^change_email', views.change_email, name='change_email')
                        )

@@ -103,8 +103,6 @@ def profile(request):
     return render(request, 'accounts/profile.html', {'email': current_user.email, 'enrolled_list': enrolled_list,
                                                      'recommend_list': recommend_list})
 
-def fail(request):
-    return render(request, 'accounts/fail.html')
 
 
 def get_recommended_courses(user_profile):

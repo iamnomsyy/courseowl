@@ -11,8 +11,7 @@ def index(request):
 
 
 def error404(request):
-    return HttpResponse('<h1>The web page fetching robot can\'t find what you\'re looking for and exploded.</h1>')
-
+    return render(request, 'website/error404.html')
 
 @login_required
 def subject_preferences(request):
@@ -65,3 +64,6 @@ def course_preferences(request):
         'enrolled': user_profile.enrolled.all().order_by('name')
     }
     return render(request, 'website/personalize_courses.html', context)
+
+
+

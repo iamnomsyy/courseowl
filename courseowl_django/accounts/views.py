@@ -104,6 +104,7 @@ def profile(request):
                                                      'recommend_list': recommend_list})
 
 
+
 def get_recommended_courses(user_profile):
     """
     Get recommended courses for a UserProfile.

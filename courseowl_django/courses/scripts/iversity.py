@@ -1,4 +1,4 @@
-from courses.models import *
+from courses.models import Provider, Course, Subject
 import urllib2
 from bs4 import BeautifulSoup
 
@@ -24,9 +24,8 @@ def create_course(item, provider):
     instructor_description_paragraphs = item.find_all('p')
     instructor = instructor_description_paragraphs[0].text.strip('\n')
     description = instructor_description_paragraphs[1].text.strip('\n')
-    url = item.a.attrs['href']  # TODO: Save the URL!
+    url = item.a.attrs['href']  # TODO: Save the URL into the model!
 
-    # print('===========================================')
     # print('Adding course:')
     # print('Subject: ' + subject)
     # print('Title: ' + title)

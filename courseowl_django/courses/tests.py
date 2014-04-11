@@ -144,7 +144,6 @@ class RecommenderTestsNormalCase(TestCase):
         self.userProf3.completed.add(self.course_english)
         self.userProf3.save()
 
-
     def test_fuzzy_matching_subject(self):
         subject_math3 = Subject()
         subject_math3.name = "math-algebra"

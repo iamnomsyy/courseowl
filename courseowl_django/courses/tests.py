@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 import json
 import os
 from accounts.models import UserProfile
-from courses.scripts.coursera import addCourses as courseraAddCourses
 from courses.recommender import *
 from courses.scripts.coursera import add_courses as coursera_add_courses
 import courses.scripts.udacity as udacity

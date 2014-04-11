@@ -56,8 +56,10 @@ def get_recs_from_subjects(subjects):
     """
     subject_course_recs = set()
     for subject in subjects:
-        for related_sub in get_fuzzy_subject_matching(subject):
-            for course in Course.objects.filter(subjects=subject):
+        matching_subs = get_fuzzy_subject_matching(subject)
+        print "length of set is " + str(len(matching_subs))
+        for related_sub in matching_subs:
+            for course in Course.objects.filter(subjects=related_sub):
                 print "Appending: " + course.name
                 subject_course_recs.add(course)
     return subject_course_recs
@@ -70,7 +72,9 @@ def get_fuzzy_subject_matching(subject):
     sub_set = set()
     base_sub = str(subject.name).split('-')[0]
     related_subs = Subject.objects.filter(name__icontains=base_sub)
+    print "related subs in fuzzy:"
     for subject in related_subs:
+        print subject.name
         sub_set.add(subject)
     return sub_set
 
@@ -153,13 +157,13 @@ def get_similar_user_completed(user):
     most_similar_user = None
 
     prefs = UserProfile.objects.get(user=user)
-    my_dislikes = set(prefs.completed.all())
+    my_completed = set(prefs.completed.all())
     for other_user in UserProfile.objects.all():
         if other_user == prefs:
             continue
-        similar_dislikes = my_dislikes.intersection(set(other_user.completed.all()))
-        if len(similar_dislikes) > max_similar:
-            max_similar = len(similar_dislikes)
+        similar_completed = my_completed.intersection(set(other_user.completed.all()))
+        if len(similar_completed) > max_similar:
+            max_similar = len(my_completed)
             most_similar_user = other_user
     return most_similar_user, max_similar
 

@@ -3,13 +3,10 @@ from courses.models import Subject, Provider, Source, Course
 from django.contrib.auth.models import User
 import json
 import os
-<<<<<<< HEAD
 from accounts.models import UserProfile
 from courses.scripts.coursera import addCourses as courseraAddCourses
 from courses.recommender import *
-=======
 from courses.scripts.coursera import add_courses as coursera_add_courses
->>>>>>> master
 import courses.scripts.udacity as udacity
 import courses.scripts.iversity as iversity
 import courses.scripts.edx as edx
@@ -161,7 +158,3 @@ class IversityScriptTests(TestCase):
 
         # Make sure the course description is set properly:
         self.assertEqual('From Bugatti Veyron to Volkswagen Beetle, from racing to passenger car: study about their acceleration and braking and learn from two applications from automotive mechatronics. ', new_course.description)
-
-
-class RecommenderTests(TestCase):
-    pass

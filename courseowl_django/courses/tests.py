@@ -88,7 +88,7 @@ class EdxScriptTests(TestCase):
 class IversityScriptTests(TestCase):
     def test_add_to_django(self):
         provider, created = Provider.objects.get_or_create(name='iversity')
-        sample_div = "<article class='courses-list-item'><div class='ribbon-content'>Engineering</div></div><div class='course-body'><header><h2 class='truncate'><a href='/courses/vehicle-dynamics-i-accelerating-and-braking'>Vehicle Dynamics I: Accelerating and Braking</a></h2><p class='instructors truncate'>Univ.-Prof. Dr.-Ing. Martin Meywerk</p></header><p class='description'>From Bugatti Veyron to Volkswagen Beetle, from racing to passenger car: study about their acceleration and braking and learn from two applications from automotive mechatronics. </p></div></div></div></div></div></div></div></article>"
+        sample_div = "<article class='courses-list-item'><div class='ribbon-content'>Engineering</div></div><div class='course-body'><header><h2 class='truncate'><a href='https://iversity.org/courses/vehicle-dynamics-i-accelerating-and-braking'>Vehicle Dynamics I: Accelerating and Braking</a></h2><p class='instructors truncate'>Univ.-Prof. Dr.-Ing. Martin Meywerk</p></header><p class='description'>From Bugatti Veyron to Volkswagen Beetle, from racing to passenger car: study about their acceleration and braking and learn from two applications from automotive mechatronics. </p></div></div></div></div></div></div></div></article>"
         sample_div = BeautifulSoup(sample_div)
         iversity.create_course(sample_div, provider)
 
@@ -103,6 +103,9 @@ class IversityScriptTests(TestCase):
 
         # Make sure the course name is set properly:
         self.assertEqual('Vehicle Dynamics I: Accelerating and Braking', new_course.name)
+
+        # Make sure the course URL is set properly:
+        self.assertEqual('https://iversity.org/courses/vehicle-dynamics-i-accelerating-and-braking', new_course.url)
 
         # Make sure the course instructor is set properly:
         self.assertEqual('Univ.-Prof. Dr.-Ing. Martin Meywerk', new_course.instructor)

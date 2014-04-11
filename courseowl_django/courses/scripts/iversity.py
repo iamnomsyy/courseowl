@@ -24,7 +24,7 @@ def create_course(item, provider):
     instructor_description_paragraphs = item.find_all('p')
     instructor = instructor_description_paragraphs[0].text.strip('\n')
     description = instructor_description_paragraphs[1].text.strip('\n')
-    url = item.a.attrs['href']  # TODO: Save the URL into the model!
+    url = item.a.attrs['href']
 
     # print('Adding course:')
     # print('Subject: ' + subject)
@@ -34,7 +34,7 @@ def create_course(item, provider):
     # print('URL: ' + url)
     # print('===========================================')
 
-    course, created = Course.objects.get_or_create(name=title, description=description, instructor=instructor, provider=provider)
+    course, created = Course.objects.get_or_create(name=title, url=url, description=description, instructor=instructor, provider=provider)
     subject, created = Subject.objects.get_or_create(name=subject)
     course.subjects.add(subject)
     course.save()

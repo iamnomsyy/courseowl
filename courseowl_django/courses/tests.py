@@ -161,7 +161,7 @@ class RecommenderTestsNormalCase(TestCase):
         self.assertEqual(subjSet.pop().name, "intro to math")
 
     def test_get_enrolled_subjects(self):
-        self.assertEqual(len(get_enrolled_subjects(self.userProf1)), 2)
+        self.assertEqual(len(get_enrolled_subjects(self.user1)), 2)
 
     def test_get_similar_user_interests(self):
         simUser, numb = get_similar_user_interests(self.user1)

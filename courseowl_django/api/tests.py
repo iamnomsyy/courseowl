@@ -156,7 +156,7 @@ class TestAPI(TestCase):
         temp_course.save()
 
         course_info = {'description': 'Test description', 'provider': 'Test provider',
-                       'instructor': 'Test instructor', 'name': 'Pottery'}
+                       'instructor': 'Test instructor', 'name': 'Pottery', 'url': ''}
         expected_content = {'success': True, 'info': course_info}
 
         response = self.client.post('/api/course_info/', data={'course_id': temp_course.id})

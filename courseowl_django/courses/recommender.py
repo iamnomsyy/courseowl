@@ -1,4 +1,4 @@
-from courses.models import Subject, Provider, Course, Source
+from courses.models import *
 from accounts.models import UserProfile
 from collections import defaultdict
 
@@ -13,9 +13,10 @@ def get_interest_subjects(user):
     my_subjects.extend(prefs.interests.all())
     return my_subjects
 
+
 def get_recs_from_subjects(subjects):
     """
-    Retreives all coureses in fuzzy subject matching set
+    Retrieves all courses in fuzzy subject matching set
     """
     subject_course_recs = set()
     for subject in subjects:
@@ -24,7 +25,6 @@ def get_recs_from_subjects(subjects):
                 print "Appending: " + course.name
                 subject_course_recs.add(course)
     return subject_course_recs
-
 
 
 def get_fuzzy_subject_matching(subject):
@@ -139,9 +139,9 @@ def get_similar_user_completed(user):
 
 
 def get_most_similar_user(user):
-    '''
+    """
     Computes scores and returns the user most similar to you
-    '''
+    """
     user_scores = defaultdict(int)
     similar_user, score = get_similar_user_interests(user)
     user_scores[similar_user] += score
@@ -161,9 +161,9 @@ def get_most_similar_user(user):
 
 
 def get_all_user_recommendations(user):
-    '''
+    """
     Entry point to get all user-based recommendations
-    '''
+    """
     best_user = get_most_similar_user(user)
     recommended_list = set()
     if not best_user:

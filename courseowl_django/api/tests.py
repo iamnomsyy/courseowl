@@ -155,9 +155,9 @@ class TestAPI(TestCase):
                              instructor="Test instructor")
         temp_course.save()
 
-        course_info = {'description': 'Test description', 'provider': 'Test provider',
+        courseinfo = {'description': 'Test description', 'provider': 'Test provider',
                        'instructor': 'Test instructor', 'name': 'Pottery'}
-        expected_content = {'success': True, 'info': course_info}
+        expected_content = {'success': True, 'info': courseinfo}
 
         response = self.client.post('/api/course_info/', data={'course_id': temp_course.id})
         self.assertEqual(response.status_code, 200)

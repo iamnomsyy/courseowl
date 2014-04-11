@@ -45,6 +45,7 @@ def logout(request):
     Log the user out and redirect to the home page.
     """
     dj_logout(request)
+    messages.add_message(request, messages.SUCCESS, 'You have successfully logged out.')
     return redirect('/')
 
 
@@ -143,7 +144,7 @@ def deactivate_account(request):
     Deactivate the request.user's account and redirect to the home page.
     """
     current_user = request.user
-    current_user.is_active = False
+    current_user.is_active = False  # Disable rather than delete to avoid breaking foreign keys if they exist
     current_user.save()
     dj_logout(request)
     return redirect('/')
@@ -215,7 +216,7 @@ def username_md5(email):
 
 def valid_email_address(email):
     """
-    Check the validity of an email address.
+    Verify that the input is in valid email format
     """
     try:
         EmailField().clean(email)

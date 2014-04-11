@@ -64,10 +64,11 @@
       </div>
       <div class="modal-body" >
 
-       <p><strong>Course : </strong><label id = "course_name"></label></p>
-       <p><strong>Provider : </strong> <label id = "provider"></label> </p>
-       <p><strong>Instructor : </strong><label id = "course_ins"></label></p>
-       <p><strong>Cost : Free</strong></p>
+       <p><strong>Course: </strong><label id = "course_name"></label></p>
+       <p><strong>Provider: </strong> <label id = "provider"></label> </p>
+       <p><strong>Instructor: </strong><label id = "course_ins"></label></p>
+       <strong>Description:</strong><p id = "course_desc"></p>
+       <p><strong>Cost: Free</strong></p>
 
       </div>
       <div class="modal-footer">
@@ -113,6 +114,7 @@ $(function display_info() {
               $('#course_name').text(res.info.name);
               $('#provider').text(res.info.provider);
               $('#course_ins').text(res.info.instructor);
+              $('#course_desc').text(res.info.description);
 
                 console.dir(res);
 

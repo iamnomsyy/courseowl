@@ -6,23 +6,26 @@ from accounts.views import *
 class AccountsTest(TestCase):
     def setUp(self):
         self.client = Client()
-        self.demo_user = User.objects.create_user(username='demo_user', email='demo@user.com', password='qwerty123', first_name='', last_name='')
+        self.demo_user = User.objects.create_user(username='demo_user', email='demo@user.com', password='qwerty123',
+                                                  first_name='', last_name='')
         self.demo_user.save()
         self.user_profile = UserProfile(user=self.demo_user)
         self.user_profile.save()
 
     def test_valid_email(self):
-        email1 = 'testmail.cu'
-        email2 = 'testmail%$#.com'
-        email3 = 'test@#.com'
-        email4 = 'test@mail.com'
-
-        self.assertFalse(valid_email_address(email1))
-        self.assertFalse(valid_email_address(email2))
-        self.assertFalse(valid_email_address(email3))
-        self.assertTrue(valid_email_address(email4))
+        """
+        Tests for valid email format
+        """
+        self.assertFalse(valid_email_address(''))
+        self.assertFalse(valid_email_address('testmail.cu'))
+        self.assertFalse(valid_email_address('testmail%$#.com'))
+        self.assertFalse(valid_email_address('test@#.com'))
+        self.assertTrue(valid_email_address('test@mail.com'))
 
     def test_valid_password(self):
+        """
+        Test if password input is sufficient
+        """
         tooshort = 'short'
         blank = ''
         valid = 'qwerty123'
@@ -40,12 +43,17 @@ class AccountsTest(TestCase):
         self.assertTrue(validpw)
 
     def test_unique_user(self):
+        """
+        Test if email to be signed up is unique
+        """
         email1 = 'test1@xyz.com'
         email2 = 'test2@xyz.com'
         password = 'qwerty123'
-        user1 = User.objects.create_user(username_md5(email1), email1, password, first_name="", last_name="")
 
-        user1_not_unique = unique_user(email1)
+        # Create the user in DB with email1
+        User.objects.create_user(username_md5(email1), email1, password, first_name="", last_name="")
+
+        user1_not_unique = unique_user(email1)  # email1 already exists, thus it is not unique
         user2_unique = unique_user(email2)
         self.assertFalse(user1_not_unique)
         self.assertTrue(user2_unique)
@@ -114,11 +122,10 @@ class AccountsTest(TestCase):
         self.client.post('/accounts/change_email/', data={'new_email': 'second@abc.com'})
         self.assertEqual('demo_new@user.com', temp_user.email)
 
-        # cleanup - change the email back to the original and delete the temporary second user
-        self.client.post('/accounts/change_email/', data={'new_email': 'demo@user.com'})
-        second_user.delete()
-
     def test_deactivate_account(self):
+        """
+        User should not be able to login after deactivation
+        """
         login_successful = self.client.login(username='demo_user', password='qwerty123')
         self.assertTrue(login_successful)
 

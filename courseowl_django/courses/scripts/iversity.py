@@ -18,12 +18,12 @@ def scrape():
 
 
 def create_course(item, provider):
-    subject = item.find('div', class_='ribbon-content').text.strip('\n')
+    subject = item.find('div', class_='ribbon-content').text.strip().lower()  # subjects are stored lowercase in the DB
     course_info = item.find('div', class_='course-body')
     title = course_info.a.text
     instructor_description_paragraphs = item.find_all('p')
-    instructor = instructor_description_paragraphs[0].text.strip('\n')
-    description = instructor_description_paragraphs[1].text.strip('\n')
+    instructor = instructor_description_paragraphs[0].text.strip()
+    description = instructor_description_paragraphs[1].text.strip()
     url = item.a.attrs['href']
 
     # print('Adding course:')

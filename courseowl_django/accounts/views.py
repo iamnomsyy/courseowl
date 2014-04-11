@@ -45,6 +45,7 @@ def logout(request):
     Log the user out and redirect to the home page.
     """
     dj_logout(request)
+    messages.add_message(request, messages.SUCCESS, 'You have successfully logged out.')
     return redirect('/')
 
 
@@ -104,7 +105,6 @@ def profile(request):
                                                      'recommend_list': recommend_list})
 
 
-
 def get_recommended_courses(user_profile):
     """
     Get recommended courses for a UserProfile.
@@ -116,12 +116,17 @@ def get_recommended_courses(user_profile):
     # concatenate user and subject based recommendations:
     recommendations = list(chain(user_based_rec, subject_based_rec))
 
-    num_random_needed = 5 - len(recommendations)
-    if num_random_needed > 0:
-        random_courses = get_random_courses(num_random_needed)
-        for course in random_courses:
-            recommendations.append(course)
+    # generate 10 random courses on the off chance that 
+    # user's already enrolled in 5 of them 
+    random_courses = get_random_courses(num=10)
+    recommendations.extend(random_courses)
 
+    # remove enrolled courses from recommendation
+    # this loses the order! can't guarantee user based recommedations come first anymore.
+    user_enrolled_courses = user_profile.enrolled.all()
+    recommendations = list(set(recommendations) - set(user_enrolled_courses))
+
+    # return only five
     return recommendations[:5]
 
 
@@ -143,7 +148,7 @@ def deactivate_account(request):
     Deactivate the request.user's account and redirect to the home page.
     """
     current_user = request.user
-    current_user.is_active = False
+    current_user.is_active = False  # Disable rather than delete to avoid breaking foreign keys if they exist
     current_user.save()
     dj_logout(request)
     return redirect('/')
@@ -215,7 +220,7 @@ def username_md5(email):
 
 def valid_email_address(email):
     """
-    Check the validity of an email address.
+    Verify that the input is in valid email format
     """
     try:
         EmailField().clean(email)

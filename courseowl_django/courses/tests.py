@@ -1,7 +1,10 @@
 from django.test import TestCase
 from courses.models import Subject, Provider, Source, Course
+from django.contrib.auth.models import User
 import json
 import os
+from accounts.models import UserProfile
+from courses.recommender import *
 from courses.scripts.coursera import add_courses as coursera_add_courses
 import courses.scripts.udacity as udacity
 import courses.scripts.iversity as iversity
@@ -84,6 +87,96 @@ class EdxScriptTests(TestCase):
         edge_course = Course.objects.filter(name='The Analytics Edge')
         self.assertTrue(edge_course.exists())
 
+class RecommenderTestsNormalCase(TestCase):
+
+    def setUp(self):
+        #Create three fake users and two fake courses
+        self.subject_math = Subject()
+        self.subject_math.name = "math"
+        self.subject_math.save()
+
+        self.subject_english = Subject()
+        self.subject_english.name = "english"
+        self.subject_english.save()
+
+        self.subject_math2 = Subject()
+        self.subject_math2.name = "math-calculus"
+        self.subject_math2.save()
+
+        self.course_math = Course()
+        self.course_math.name = "intro to math"
+        self.course_math.description = "this is a introduction to math"
+        self.course_math.save()
+        self.course_math.subjects.add(self.subject_math)
+        self.course_math.save()
+
+        self.course_english = Course()
+        self.course_english.name = "Literature 100"
+        self.course_english.description = "Learn how to read!"
+        self.course_english.save()
+        self.course_english.subjects.add(self.subject_english)
+        self.course_english.save()
+
+        self.user1 = User.objects.create(username='user1')
+        self.userProf1 = UserProfile.objects.create(user=self.user1)
+        self.userProf1.save()
+        self.userProf1.interests.add(self.subject_math2)
+        self.userProf1.disliked.add(self.course_math)
+        self.userProf1.disliked.add(self.course_english)
+        self.userProf1.completed.add(self.course_math)
+        self.userProf1.completed.add(self.course_english)
+        self.userProf1.save()
+
+        self.user2 = User.objects.create(username="user2")
+        self.userProf2 = UserProfile.objects.create(user=self.user2)
+        self.userProf2.save()
+        self.userProf2.interests.add(self.subject_math2)
+        self.userProf2.disliked.add(self.course_english)
+        self.userProf2.disliked.add(self.course_math)
+        self.userProf2.save()
+
+        self.user3 = User.objects.create(username="user3")
+        self.userProf3 = UserProfile.objects.create(user=self.user3)
+        self.userProf3.save()
+        self.userProf3.interests.add(self.subject_english)
+        self.userProf3.disliked.add(self.course_math)
+        self.userProf3.completed.add(self.course_math)
+        self.userProf3.completed.add(self.course_english)
+        self.userProf3.save()
+
+    def test_fuzzy_matching_subject(self):
+        subject_math3 = Subject()
+        subject_math3.name = "math-algebra"
+        subject_math3.save()
+
+        subject_set = get_fuzzy_subject_matching(subject_math3)
+        self.assertEqual(len(subject_set), 3)
+
+    def test_get_recs_from_subjects(self):
+        test_subs = set()
+        test_subs.add(Subject.objects.get(name="math-calculus"))
+        subjSet = get_recs_from_subjects(test_subs)
+        self.assertEqual(len(subjSet), 1)
+        self.assertEqual(subjSet.pop().name, "intro to math")
+
+    def test_get_enrolled_subjects(self):
+        self.assertEqual(len(get_enrolled_subjects(self.user1)), 2)
+
+    def test_get_similar_user_interests(self):
+        simUser, numb = get_similar_user_interests(self.user1)
+        self.assertEqual(simUser, self.userProf2)
+        self.assertEqual(numb, 1)
+
+    def test_get_similar_user_dislikes(self):
+        simUser, numb = get_similar_user_dislikes(self.user1)
+        self.assertEqual(simUser, self.userProf2)
+        self.assertEqual(numb, 2)
+
+    def test_get_similar_user_completed(self):
+        simUser, numb = get_similar_user_completed(self.user1)
+        print simUser.user.username
+        self.assertEqual(simUser, self.userProf3)
+        self.assertEqual(numb, 2)
 
 class IversityScriptTests(TestCase):
     def test_add_to_django(self):
@@ -93,7 +186,7 @@ class IversityScriptTests(TestCase):
         iversity.create_course(sample_div, provider)
 
         # Make sure the Engineering subject was created:
-        new_subject = Subject.objects.get(name='Engineering')
+        new_subject = Subject.objects.get(name='engineering')
         self.assertIsNotNone(new_subject)
 
         # Make sure the course itself was created:
@@ -111,8 +204,4 @@ class IversityScriptTests(TestCase):
         self.assertEqual('Univ.-Prof. Dr.-Ing. Martin Meywerk', new_course.instructor)
 
         # Make sure the course description is set properly:
-        self.assertEqual('From Bugatti Veyron to Volkswagen Beetle, from racing to passenger car: study about their acceleration and braking and learn from two applications from automotive mechatronics. ', new_course.description)
-
-
-class RecommenderTests(TestCase):
-    pass
+        self.assertEqual('From Bugatti Veyron to Volkswagen Beetle, from racing to passenger car: study about their acceleration and braking and learn from two applications from automotive mechatronics.', new_course.description)

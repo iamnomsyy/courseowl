@@ -92,8 +92,6 @@
                     apiEndpoint,
                     data
                 ).done(function(res) {
-
-                    console.log(res);
                     if (!!res.success) {
                         $result.fadeOut();
                     }
@@ -118,11 +116,7 @@ $(function display_info() {
               $('#course_ins').text(res.info.instructor);
               $('#course_desc').text(res.info.description);
               $('#course_new_url').text(res.info.newurl);
-              $('#address').attr('href',res.info.newurl);
-
-
-                console.dir(res);
-
+              $('#url').attr('href',res.info.newurl);
           });
 
             display_info();

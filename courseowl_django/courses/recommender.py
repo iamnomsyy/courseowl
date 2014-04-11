@@ -18,18 +18,18 @@ def get_all_subject_recommendations(user):
 
 
 def get_all_user_recommendations(user):
-    '''
+    """
     Entry point to get all user-based recommendations
-    '''
-    best_user = get_most_similar_user(user)
+    """
+    best_user_profile = get_most_similar_user(user)
     recommended_list = set()
-    if not best_user:
+    if not best_user_profile:
         return recommended_list
-    recommended_list.update(set(best_user.enrolled.all()))
-    recommended_list.update(set(best_user.completed.all()))
+    recommended_list.update(set(best_user_profile.enrolled.all()))
+    recommended_list.update(set(best_user_profile.completed.all()))
 
     #Might as well get interest recommendation from this guy
-    recommended_list.update(get_recs_from_subjects(set(best_user.interests.all())))
+    recommended_list.update(get_recs_from_subjects(set(best_user_profile.interests.all())))
 
     return recommended_list
 
@@ -97,7 +97,7 @@ def get_similar_user_interests(user):
     Returns the most similar user to you based on shared interests
     """
     max_similar = 0
-    most_similar_user = None
+    most_similar_user_profle = None
 
     prefs = UserProfile.objects.get(user=user)
     my_interests = set(prefs.interests.all())
@@ -107,8 +107,8 @@ def get_similar_user_interests(user):
         similar_subs = my_interests.intersection(set(other_user.interests.all()))
         if len(similar_subs) > max_similar:
             max_similar = len(similar_subs)
-            most_similar_user = other_user
-    return most_similar_user, max_similar
+            most_similar_user_profle = other_user
+    return most_similar_user_profle, max_similar
 
 
 def get_similar_user_dislikes(user):
@@ -116,7 +116,7 @@ def get_similar_user_dislikes(user):
     Returns the most similar user to you based on shared dislikes
     """
     max_similar = 0
-    most_similar_user = None
+    most_similar_user_profile = None
 
     prefs = UserProfile.objects.get(user=user)
     my_dislikes = set(prefs.disliked.all())
@@ -126,8 +126,8 @@ def get_similar_user_dislikes(user):
         similar_dislikes = my_dislikes.intersection(set(other_user.disliked.all()))
         if len(similar_dislikes) > max_similar:
             max_similar = len(similar_dislikes)
-            most_similar_user = other_user
-    return most_similar_user, max_similar
+            most_similar_user_profile = other_user
+    return most_similar_user_profile, max_similar
 
 
 def get_similar_user_enrolled(user):
@@ -135,7 +135,7 @@ def get_similar_user_enrolled(user):
     Returns the most similar user to you based on shared enrolled
     """
     max_similar = 0
-    most_similar_user = None
+    most_similar_user_profile = None
 
     prefs = UserProfile.objects.get(user=user)
     my_dislikes = set(prefs.enrolled.all())
@@ -145,8 +145,8 @@ def get_similar_user_enrolled(user):
         similar_dislikes = my_dislikes.intersection(set(other_user.enrolled.all()))
         if len(similar_dislikes) > max_similar:
             max_similar = len(similar_dislikes)
-            most_similar_user = other_user
-    return most_similar_user, max_similar
+            most_similar_user_profile = other_user
+    return most_similar_user_profile, max_similar
 
 
 def get_similar_user_completed(user):
@@ -154,7 +154,7 @@ def get_similar_user_completed(user):
     Returns the most similar user to you based on shared completed
     """
     max_similar = 0
-    most_similar_user = None
+    most_similar_user_profile = None
 
     prefs = UserProfile.objects.get(user=user)
     my_completed = set(prefs.completed.all())
@@ -164,8 +164,8 @@ def get_similar_user_completed(user):
         similar_completed = my_completed.intersection(set(other_user.completed.all()))
         if len(similar_completed) > max_similar:
             max_similar = len(my_completed)
-            most_similar_user = other_user
-    return most_similar_user, max_similar
+            most_similar_user_profile = other_user
+    return most_similar_user_profile, max_similar
 
 
 def get_most_similar_user(user):
@@ -182,9 +182,9 @@ def get_most_similar_user(user):
     similar_user, score = get_similar_user_completed(user)
     user_scores[similar_user] += score
     max_score = 0
-    best_user = None
+    best_user_profile = None
     for similar_user, score in user_scores.items():
         if score > max_score:
-            best_user = similar_user
+            best_user_profile = similar_user
             max_score = score
-    return best_user
+    return best_user_profile

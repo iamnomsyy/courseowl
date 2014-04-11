@@ -90,7 +90,7 @@ class EdxScriptTests(TestCase):
 class RecommenderTestsNormalCase(TestCase):
 
     def setUp(self):
-        #Create two fake users and fake courses
+        #Create three fake users and two fake courses
         self.subject_math = Subject()
         self.subject_math.name = "math"
         self.subject_math.save()

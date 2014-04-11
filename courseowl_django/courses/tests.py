@@ -1,5 +1,5 @@
 from django.test import TestCase
-from courses.models import *
+from courses.models import Subject, Provider, Source, Course
 import json
 import os
 from courses.scripts.coursera import add_courses as coursera_add_courses

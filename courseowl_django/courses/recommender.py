@@ -1,4 +1,4 @@
-from courses.models import *
+from courses.models import Subject, Provider, Course, Source
 from accounts.models import UserProfile
 from collections import defaultdict
 

@@ -91,12 +91,12 @@
        <strong>Subject: </strong><p id="subject"></p>
        <strong>Instructor: </strong><p id="course_ins"></p>
        <strong>Description: </strong><p id="course_desc"></p>
-       <strong>URL: </strong> <a id="url" target="_blank"><p id="url"></p></a>
+       <strong>URL: </strong> <a id="url" target="_blank" href=""><p id="url"></p></a>
 
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
 
     </div>
@@ -188,6 +188,7 @@
                     $('#course_ins').text(res.info.instructor);
                     $('#course_desc').text(res.info.description);
                     $('#url').text(res.info.url);
+                    $('#url').attr('href', res.info.url);
             });
             display_info();
         });

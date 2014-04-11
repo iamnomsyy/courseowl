@@ -3,7 +3,7 @@
 <div class="jumbotron">
     <div class="container">
         <h1><b>Tell us about yourself</b></h1>
-        <p>Here you can tell us which subjects you like</p>
+        <p>What subjects are you interested in?</p>
     </div>
 </div>
 
@@ -12,8 +12,9 @@
       <div class="col-md-12">
         <form method="post">
           {% csrf_token %}
-          <input type="submit" id="submit-subjects" value="Proceed to course selection" class="btn btn-primary pull-right">
+          <input type="submit" id="submit-subjects" value="Proceed to courses" class="btn btn-primary pull-right">
           <h2>Currently liked subjects</h2>
+            These are subjects you're interested in. Click on a subject to remove it from the list.
           <ul class="list-group liked-subjects">
             {% for sub in liked_subjects %}
             <a class="list-group-item" data-subject-id="{{ sub.id }}">
@@ -22,13 +23,14 @@
             {% endfor %}
           </ul>
           <h2>Subjects available</h2>
-          <ul class="list-group other-subjects">
-            {% for sub in subjects %}
-              <a class="list-group-item" data-subject-id="{{ sub.id }}">
-                {{ sub.name|capfirst }}
-              </a>
-            {% endfor %}
-          </ul>
+            These are the all subjects on CourseOwl. Click on a subject to add it to your list of favorites.
+            <ul class="list-group other-subjects">
+              {% for sub in subjects %}
+                <a class="list-group-item" data-subject-id="{{ sub.id }}">
+                  {{ sub.name|capfirst }}
+                </a>
+              {% endfor %}
+            </ul>
         </form>
       </div>
     </div>

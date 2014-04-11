@@ -9,7 +9,6 @@
    <h4><i class="glyphicon glyphicon-user"></i> {{ email }}</h4>
  </div>
  <div class="row">
-    {% if enrolled_list %}
     <h2>Active Courses</h2>
     <table class='table table-striped'>
       <thead>
@@ -36,10 +35,6 @@
         {% endfor %}
       </tbody>
     </table>
-    {% else %}
-    <h2>It seems you have no active courses</h2>
-    <a href="/course_preferences" class="btn btn-success btn-large">Add Courses</a>
-    {% endif %}
   </div>
   <div class="row">
     <h2>Recommendations</h2>

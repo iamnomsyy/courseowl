@@ -212,6 +212,40 @@ casper.test.begin('Profile page functional', function suite(test) {
     // Check that user can choose from recommended courses
     test.assertExists('.recommended-courses', 'Recommended course table exists');
     test.assertExists('.recommended-courses tr', 'There exist recommended courses');
+
+    test.assertExists('div .add-course', 'Add course button exists');
+    this.click('.add-course');
+    this.wait(500, function() {
+      test.assertElementCount('.enrolled-courses tr', 2, 'User successfully added recommended course');
+
+      // Now we click drop course and cancel
+      test.assertNotVisible('#dropCourse', 'Drop course modal is not visible');
+      this.click('.drop-button');
+      casper.waitUntilVisible('#dropCourse',
+        function() {
+          this.click('.cancel-drop-course');
+          casper.waitWhileVisible('#dropCourse',
+            function() {
+              test.assertElementCount('.enrolled-courses tr', 2, 'No course removed on cancel');
+
+              // this.click('.drop-button');
+              // casper.waitUntilVisible('#dropCourse',
+              //   function() {
+              //     this.click('#confirmDrop');
+              //     casper.waitWhileVisible('#dropCourse',
+              //       function() {
+              //         test.assertElementCount('.enrolled-courses tr', 1, 'Course was successfully dropped');
+              //     });
+              // });
+          },
+          function() {
+            test.fail('Drop course modal doesn\'t disappear on cancellation');
+          });
+        },
+        function() {
+          test.fail('Drop course modal doesn\'t become visible');
+      });
+    });
   });
 
   casper.run(function() {
@@ -220,5 +254,20 @@ casper.test.begin('Profile page functional', function suite(test) {
 });
 
 casper.test.begin('Deleting account', function suite(test) {
+  casper.start(siteUrl + 'accounts/profile', function() {
+    this.click('.deactivate-button');
+    casper.waitUntilVisible('#deactivate-account', function() {
+      this.click('#confirmDeactivate');
+    });
+  });
 
+  navigationTest(
+    test,
+    siteUrl,
+    'Successfully deactivated account'
+  );
+
+  casper.run(function() {
+    test.done();
+  });
 });

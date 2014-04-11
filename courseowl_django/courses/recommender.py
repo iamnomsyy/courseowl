@@ -2,6 +2,42 @@ from courses.models import Subject, Provider, Course, Source
 from accounts.models import UserProfile
 from collections import defaultdict
 
+# ######
+# P U B L I C   I N T E R F A C E S
+# ######
+
+
+def get_all_subject_recommendations(user):
+    """
+    Entry point to get all subject-based recommendations
+    """
+    all_user_subjects = set()
+    all_user_subjects.update(get_interest_subjects(user))
+    all_user_subjects.update(get_enrolled_subjects(user))
+    return get_recs_from_subjects(all_user_subjects)
+
+
+def get_all_user_recommendations(user):
+    '''
+    Entry point to get all user-based recommendations
+    '''
+    best_user = get_most_similar_user(user)
+    recommended_list = set()
+    if not best_user:
+        return recommended_list
+    recommended_list.update(set(best_user.enrolled.all()))
+    recommended_list.update(set(best_user.completed.all()))
+
+    #Might as well get interest recommendation from this guy
+    recommended_list.update(get_recs_from_subjects(set(best_user.interests.all())))
+
+    return recommended_list
+
+
+# ######
+# H E L P E R   F U N C T I O N S
+# ######
+
 
 def get_interest_subjects(user):
     """
@@ -50,16 +86,6 @@ def get_enrolled_subjects(user):
     for course in prefs.completed.all():
         subject_set.extend(course.subjects.all())
     return subject_set
-
-
-def get_all_subject_recommendations(user):
-    """
-    Entry point to get all subject-based recommendations
-    """
-    all_user_subjects = set()
-    all_user_subjects.update(get_interest_subjects(user))
-    all_user_subjects.update(get_enrolled_subjects(user))
-    return get_recs_from_subjects(all_user_subjects)
 
 
 def get_similar_user_interests(user):
@@ -158,20 +184,3 @@ def get_most_similar_user(user):
             best_user = similar_user
             max_score = score
     return best_user
-
-
-def get_all_user_recommendations(user):
-    """
-    Entry point to get all user-based recommendations
-    """
-    best_user = get_most_similar_user(user)
-    recommended_list = set()
-    if not best_user:
-        return recommended_list
-    recommended_list.update(set(best_user.enrolled.all()))
-    recommended_list.update(set(best_user.completed.all()))
-
-    #Might as well get interest recommendation from this guy
-    recommended_list.update(get_recs_from_subjects(set(best_user.interests.all())))
-
-    return recommended_list

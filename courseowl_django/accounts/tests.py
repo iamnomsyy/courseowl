@@ -58,6 +58,14 @@ class AccountsTest(TestCase):
         self.assertFalse(user1_not_unique)
         self.assertTrue(user2_unique)
 
+    def login_with_password(self, password):
+        """
+        login as demo_user with various passwords
+        on success: logs in and returns true
+        on failure: returns false
+        """
+        return self.client.login(username='demo_user', password=password)
+
     def test_change_password(self):
         """
         Change password should succeed only if password == password_confirm
@@ -65,28 +73,22 @@ class AccountsTest(TestCase):
         """
 
         # user can log in
-        login_successful = self.client.login(username='demo_user', password='qwerty123')
-        self.assertTrue(login_successful)
+        self.assertTrue(self.login_with_password('qwerty123'))
 
         # user changes password
         self.client.post('/accounts/change_password/', data={'password': '123qwerty', 'password_confirm': '123qwerty'})
 
         # user can log in with new password, but not the old
-        login_successful = self.client.login(username='demo_user', password='qwerty123')
-        self.assertFalse(login_successful)
-        login_successful = self.client.login(username='demo_user', password='123qwerty')
-        self.assertTrue(login_successful)
+        self.assertFalse(self.login_with_password('qwerty123'))
+        self.assertTrue(self.login_with_password('123qwerty'))
 
         # user changes password but fails confirm
         self.client.post('/accounts/change_password/', data={'password': 'abc123def', 'password_confirm': 'qwerty123'})
 
         # user didn't change password; can still log in with old password
-        login_successful = self.client.login(username='demo_user', password='abc123def')
-        self.assertFalse(login_successful)
-        login_successful = self.client.login(username='demo_user', password='qwerty123')
-        self.assertFalse(login_successful)
-        login_successful = self.client.login(username='demo_user', password='123qwerty')
-        self.assertTrue(login_successful)
+        self.assertFalse(self.login_with_password('abc123def'))
+        self.assertFalse(self.login_with_password('qwerty123'))
+        self.assertTrue(self.login_with_password('123qwerty'))
 
     def test_change_email(self):
         """

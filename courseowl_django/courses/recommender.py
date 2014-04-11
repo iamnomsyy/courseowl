@@ -60,7 +60,6 @@ def get_recs_from_subjects(subjects):
         print "length of set is " + str(len(matching_subs))
         for related_sub in matching_subs:
             for course in Course.objects.filter(subjects=related_sub):
-                print "Appending: " + course.name
                 subject_course_recs.add(course)
     return subject_course_recs
 

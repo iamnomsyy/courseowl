@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from courses.models import Subject, Course
 from accounts.models import UserProfile
-from django.http import HttpResponse
 import json
 
 
@@ -64,6 +63,3 @@ def course_preferences(request):
         'enrolled': user_profile.enrolled.all().order_by('name')
     }
     return render(request, 'website/personalize_courses.html', context)
-
-
-

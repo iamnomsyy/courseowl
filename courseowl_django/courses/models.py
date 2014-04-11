@@ -24,6 +24,7 @@ class Source(models.Model):
 
 class Course(models.Model):
     name = models.CharField(max_length=1000)
+    url = models.CharField(max_length=1000, blank=True)
     subjects = models.ManyToManyField(Subject)
     provider = models.ForeignKey(Provider, null=True, blank=True)
     description = models.CharField(max_length=3000)

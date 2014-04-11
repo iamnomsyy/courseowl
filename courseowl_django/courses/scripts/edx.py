@@ -1,4 +1,4 @@
-from ..models import *
+from courses.models import *
 import urllib2
 from bs4 import BeautifulSoup
 import re
@@ -32,12 +32,15 @@ all_subjects = [
     'statistics-data-analysis'
 ]
 
+
+# quite un-pythonic, but works.. --kz 2014-04-10
+
 int_list = list()
 uni_list = list()
 title_list = list()
 desc_list = list()
 sub_list = list()
-
+url_list = list()
 
 def run():
     populate_lists()
@@ -64,6 +67,7 @@ def populate_lists(subject_list=None):
                     title_list.append(course_info.a.contents[0].rstrip('\n'))
                     desc_list.append(course_info.div.contents[0].rstrip('\n'))
                     sub_list.append(subject)
+                    url_list.append(course_info.a['href'])
                 except:
                     pass
 
@@ -84,7 +88,7 @@ def add_to_django():
             print "Adding " + title_list[i] + " course: " + str(i)
         except:
             pass
-        c, created = Course.objects.get_or_create(name=title_list[i], description=desc_list[i], instructor=int_list[i])
+        c, created = Course.objects.get_or_create(name=title_list[i], description=desc_list[i], instructor=int_list[i], url=url_list[i])
         c.provider = edx_provider
         c.source, created = Source.objects.get_or_create(name=uni_list[i])
         c.save()

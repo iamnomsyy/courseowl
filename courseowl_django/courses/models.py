@@ -2,28 +2,41 @@ from django.db import models
 
 
 class Subject(models.Model):
-    name = models.CharField(max_length=1000)
+    """
+    Subject, i.e. Economics.
+    """
+    name = models.CharField(max_length=100)
 
     def __unicode__(self):
         return self.name
 
 
 class Provider(models.Model):
-    name = models.CharField(max_length=1000)
+    """
+    The MOOC website provider, i.e. Coursera, edX.
+    """
+    name = models.CharField(max_length=100)
 
     def __unicode__(self):
         return self.name
 
 
 class Source(models.Model):
-    name = models.CharField(max_length=1000)
+    """
+    The university/creator of the course, i.e. UIUC, which can put courses on Coursera.
+    """
+    name = models.CharField(max_length=150)
 
     def __unicode__(self):
         return self.name
 
 
 class Course(models.Model):
+    """
+    Course model, i.e. Pottery II.
+    """
     name = models.CharField(max_length=1000)
+    url = models.CharField(max_length=1000, blank=True)
     subjects = models.ManyToManyField(Subject)
     provider = models.ForeignKey(Provider, null=True, blank=True)
     description = models.CharField(max_length=3000)

@@ -96,7 +96,7 @@ def get_all_courses(urls=None):
         desc = get_desc(page)  # string
         subj = get_subj(page)  # list of strings
 
-        all_courses[name] = {'name': name, 'instr': instr, 'desc': desc, 'subj': subj}
+        all_courses[name] = {'name': name, 'instr': instr, 'desc': desc, 'subj': subj, 'url': url}
 
         print("obtained data for course: " + name)
 
@@ -109,7 +109,7 @@ def run():
     udacity_provider, created = Provider.objects.get_or_create(name='Udacity')
 
     for name, course in all_courses.iteritems():
-        c, created = Course.objects.get_or_create(name=course['name'], description=course['desc'], instructor=course['instr'])
+        c, created = Course.objects.get_or_create(name=course['name'], description=course['desc'], instructor=course['instr'], url=course['url'])
         c.provider = udacity_provider
         # source university not easily available in udacity
         # c.source, created = ....

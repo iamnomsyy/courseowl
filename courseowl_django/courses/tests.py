@@ -186,7 +186,7 @@ class IversityScriptTests(TestCase):
         iversity.create_course(sample_div, provider)
 
         # Make sure the Engineering subject was created:
-        new_subject = Subject.objects.get(name='Engineering')
+        new_subject = Subject.objects.get(name='engineering')
         self.assertIsNotNone(new_subject)
 
         # Make sure the course itself was created:
@@ -204,4 +204,4 @@ class IversityScriptTests(TestCase):
         self.assertEqual('Univ.-Prof. Dr.-Ing. Martin Meywerk', new_course.instructor)
 
         # Make sure the course description is set properly:
-        self.assertEqual('From Bugatti Veyron to Volkswagen Beetle, from racing to passenger car: study about their acceleration and braking and learn from two applications from automotive mechatronics. ', new_course.description)
+        self.assertEqual('From Bugatti Veyron to Volkswagen Beetle, from racing to passenger car: study about their acceleration and braking and learn from two applications from automotive mechatronics.', new_course.description)

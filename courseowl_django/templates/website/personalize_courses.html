@@ -1,5 +1,5 @@
-{% include 'header.html' %}
-
+{% extends "base.html" %}
+{% block content %}
 <div class="jumbotron">
     <div class="container">
         <h1><b>One last step</b></h1>
@@ -12,32 +12,41 @@
       <div class="col-md-12">
         <form method="post">
           {% csrf_token %}
-          <input type="submit" value="Submit preferences" class="btn btn-success">
-          <ul class="list-group">
-          {% for course in courses %}
-            <a class="list-group-item">
-              <input type="checkbox" data-course-id="{{ course.id }}">
+          <input type="submit" id="submit-courses" value="Submit preferences" class="btn btn-success pull-right">
+          <h2>Selected courses</h2>
+          <ul class="list-group enrolled-courses">
+            {% for course in enrolled %}
+            <a class="list-group-item" data-course-id="{{ course.id }}">
               {{ course.name|capfirst }}
             </a>
-          {% endfor %}
+            {% endfor %}
+          </ul>
+          <h2>Available courses</h2>
+          <ul class="list-group other-courses">
+            {% for course in courses %}
+            <a class="list-group-item" data-course-id="{{ course.id }}">
+              {{ course.name|capfirst }}
+            </a>
+            {% endfor %}
           </ul>
         </form>
       </div>
     </div>
 </div>
 
+<script src="/static/js/personalize_helper.js"></script>
 <script>
   $(function() {
-    // add a hidden input for the selected subjects
-    $('input[type="submit"]').on('click', function(event) {
-      var ids = [];
-      $checkedBoxes = $(':checked');
-      for (var i=0, length = $checkedBoxes.length; i < length; i++) {
-        ids.push($($checkedBoxes[i]).data('course-id'));
-      }
-      $('form').append($('<input type="hidden" value="' + JSON.stringify(ids) + '" name="course_ids">'));
+    // Sets animations/listeners for moving items between lists on click
+    setSwitchActions('.other-courses', '.enrolled-courses');
+
+    bundleSelectionsOnSubmit({
+      'buttonID': '#submit-courses',
+      'selectedItemsSelector': '.enrolled-courses a',
+      'dataID': 'course-id',
+      'inputName': 'course_ids'
     });
   });
 </script>
 
-{% include 'footer.html' %}
+{% endblock %}

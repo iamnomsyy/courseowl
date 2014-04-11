@@ -66,15 +66,16 @@ def like_subject(request):
     """
     if request.method == 'POST':
         success = True
-        subject_name = request.POST.get('liked_subject')
+        subject_id = request.POST.get('liked_subject')
         user_profile = UserProfile.objects.get(user=request.user)
         try:
-            user_profile.interests.add(Subject.objects.get(name=subject_name))
+            user_profile.interests.add(Subject.objects.get(id=subject_id))
         except:
             success = False
         return HttpResponse(json.dumps({'success': success}), content_type='application/json')
     else:
         return HttpResponse(json.dumps({'success': False}), content_type='application/json')
+
 
 @login_required
 def dislike_course(request):
@@ -84,15 +85,16 @@ def dislike_course(request):
     """
     if request.method == 'POST':
         success = True
-        course_name = request.POST.get('disliked_course')
+        course_id = request.POST.get('disliked_course')
         user_profile = UserProfile.objects.get(user=request.user)
         try:
-            user_profile.disliked.add(Course.objects.get(name=course_name))
+            user_profile.disliked.add(Course.objects.get(id=course_id))
         except:
             success = False
         return HttpResponse(json.dumps({'success': success}), content_type='application/json')
     else:
         return HttpResponse(json.dumps({'success': False}), content_type='application/json')
+
 
 @login_required
 def complete_course(request):
@@ -102,10 +104,10 @@ def complete_course(request):
     """
     if request.method == 'POST':
         success = True
-        course_name = request.POST.get('completed_course')
+        course_id = request.POST.get('completed_course')
         user_profile = UserProfile.objects.get(user=request.user)
         try:
-            user_profile.completed.add(Course.objects.get(name=course_name))
+            user_profile.completed.add(Course.objects.get(id=course_id))
         except:
             success = False
         return HttpResponse(json.dumps({'success': success}), content_type='application/json')
@@ -119,10 +121,10 @@ def json_random_courses(request):
     """
     random_courses = []
     if request.method == 'POST':
-        randCourseOrder = Course.objects.order_by('?')
-        numRandCourses = 5
-        for i in range(numRandCourses):
-            random_courses.append(randCourseOrder[i])
+        rand_course_order = Course.objects.order_by('?')
+        num_rand_courses = 5
+        for i in range(num_rand_courses):
+            random_courses.append(rand_course_order[i])
     return HttpResponse(json.dumps(random_courses), mimetype='application/json')
 
 
@@ -132,7 +134,7 @@ def add_course(request):
         try:
             user_profile = UserProfile.objects.get(user=request.user)
             course_to_add = request.POST.get('course_to_add')
-            the_course = Course.objects.get(name=course_to_add)
+            the_course = Course.objects.get(id=course_to_add)
             user_profile.enrolled.add(the_course)
             user_profile.save()
             return HttpResponse(json.dumps({'success': True}), content_type='application/json')
@@ -148,7 +150,7 @@ def drop_course(request):
         try:
             user_profile = UserProfile.objects.get(user=request.user)
             course_to_drop = request.POST.get('course_to_drop')
-            the_course = Course.objects.get(name=course_to_drop)
+            the_course = Course.objects.get(id=course_to_drop)
             user_profile.enrolled.remove(the_course)
             user_profile.save()
             return HttpResponse(json.dumps({'success': True}), content_type='application/json')
@@ -158,20 +160,16 @@ def drop_course(request):
         return HttpResponse(json.dumps({'success': False}), content_type='application/json')
 
 
-def sample_courses_for_subject(request):
-    """
-    POST here with 'subject' to get 3 sample courses and all their information back.
-    Method: POST, {"subject": "name of subject"}
-    Returns: {"Course name": ["course description", "course provider"], "2nd course name": ["2nd desc"...
-    """
-    sample_courses = {}
-    if request.method == 'POST':
-        subject_name = request.POST.get('subject')
+@login_required
+def course_info(request):
+    if request.method == "POST":
         try:
-            subject_obj = Subject.objects.get(name=subject_name)
-        except:
-            return HttpResponse(json.dumps({}), content_type='application/json')
-        sample_course_list = list(Course.objects.filter(subjects=subject_obj))
-        for i in range(0, 3):
-            sample_courses[sample_course_list[i].name] = [sample_course_list[i].description, sample_course_list[i].provider]
-    return HttpResponse(json.dumps(sample_courses), content_type='application/json')
+            course_id = request.POST.get('course_id')
+            the_course = Course.objects.get(id=course_id)
+            course_info = {'description': the_course.description, 'provider': the_course.provider.name,
+                           'instructor': the_course.instructor, 'name': the_course.name}
+            return HttpResponse(json.dumps({'success': True, 'info': course_info}), content_type='application/json')
+        except ObjectDoesNotExist:
+            return HttpResponse(json.dumps({'success': False}), content_type='application/json')
+    else:
+        return HttpResponse(json.dumps({'success': False}), content_type='application/json')

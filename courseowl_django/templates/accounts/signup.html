@@ -1,4 +1,5 @@
-{% include 'header.html' %}
+{% extends "base.html" %}
+{% block content %}
 {% load socialaccount %}
 {% providers_media_js %}
 
@@ -12,29 +13,41 @@
                         <form class="form-horizontal" method="POST" action="/accounts/signup/">{% csrf_token %}
                         <div class="form-group">
                             <div class="col-md-6">
-                                <input type="text" class="form-control" placeholder="Email" name="email">
+                                <input type="text" class="form-control" placeholder="Email" name="email" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-6">
-                                <input type="password" placeholder="Password" class="form-control" name="password">
+                                <input type="password" placeholder="Password" class="form-control" name="password" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-6">
-                                <input type="password" placeholder="Password (confirm)" class="form-control" name="password_confirm">
+                                <input type="password" placeholder="Password (confirm)" class="form-control" name="password_confirm" required>
                             </div>
                         </div>
+                          <p>
                         <div class="form-group">
                             <div class="col-md-9 col-md-offset-3">
-                                <button type="submit" class="btn btn-default">Sign up</button>
+                                <button type="submit" class="btn btn-success">Sign up</button>
                             </div>
-                        </div>
+                        </div></p>
                         </form>
                     </div>
                 </div>
+                Sign up using:
+                <a href="{% provider_login_url "facebook" method="js_sdk" %}">
+                    <button class="btn btn-facebook">
+                        <i class="fa fa-facebook"></i>
+                    </button>
+                </a>
+                <a href = "{% provider_login_url "google" %}">
+                    <button class="btn btn-google-plus">
+                        <i class="fa fa-google-plus"></i>
+                    </button>
+                </a>
             </div>
         </div>
     </div>
 
-{% include 'footer.html' %}
+{% endblock %}

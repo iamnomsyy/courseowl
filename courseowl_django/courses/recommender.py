@@ -1,5 +1,5 @@
-import courses.models
-import accounts.models
+from courses.models import Subject, Provider, Course, Source
+from accounts.models import UserProfile
 from collections import defaultdict
 
 
@@ -19,15 +19,15 @@ def get_recs_from_subjects(subjects):
     """
     subject_course_recs = set()
     for subject in subjects:
-        for related_sub in get_fuzzy_subject_maching(subject):
-            for course in Course.objects.filter(subjects=subject, allowed=True):
+        for related_sub in get_fuzzy_subject_matching(subject):
+            for course in Course.objects.filter(subjects=subject):
                 print "Appending: " + course.name
                 subject_course_recs.add(course)
     return subject_course_recs
 
 
 
-def get_fuzzy_subject_maching(subject):
+def get_fuzzy_subject_matching(subject):
     """
     Removes dashes in subject name and searches for related subjects
     """

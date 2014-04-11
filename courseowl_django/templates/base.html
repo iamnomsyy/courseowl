@@ -1,0 +1,121 @@
+{% load bootstrap3 %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <link rel="shortcut icon" href="">
+        <link rel="stylesheet" href="/static/main.css">
+        <title>CourseOwl</title>
+        {% bootstrap_css %}
+        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        {% bootstrap_javascript %}
+        <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.0/jquery.cookie.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.2/typeahead.bundle.min.js"></script>
+        <script>
+            // This script element sets up csrf token passing for jquery ajax requests
+            var csrfToken = $.cookie('csrftoken');
+            function csrfSafeMethod(method) {
+                // these HTTP methods do not require CSRF protection
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+            $.ajaxSetup({
+                crossDomain: false, // obviates need for sameOrigin test
+                beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type)) {
+                        xhr.setRequestHeader("X-CSRFToken", csrfToken);
+                    }
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-static-top" role="navigation" style="margin-bottom: auto; height: 30px">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">CourseOwl</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    {% if user.is_authenticated %}
+                        <div class="col-md-6 col-md-offset-1">
+                            <form class="navbar-form" role="search" action='/search' method='GET'>
+                                <div class="input-group" id="search-box">
+                                    <input type="text" class="form-control" placeholder="Search for courses, providers, universities..." name="q" id="q">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <script type="text/javascript">
+                            var states;
+                            $.getJSON("/api/courses/", function(json){
+                                states = json;
+                                console.log(json);
+                                var states2 = new Bloodhound({
+                                  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+                                  queryTokenizer: Bloodhound.tokenizers.whitespace,
+                                  // `states` is an array of state names defined in "The Basics"
+                                  local: $.map(states, function(state) { return { value: state }; })
+                            });
+
+                            // kicks off the loading/processing of `local` and `prefetch`
+                            states2.initialize();
+
+                            $('input#q').typeahead({
+                                  hint: true,
+                                  highlight: true,
+                                  minLength: 1
+                              },
+                              {
+                                  name: 'states2',
+                                  displayKey: 'value',
+                                  // `ttAdapter` wraps the suggestion engine in an adapter that
+                                  // is compatible with the typeahead jQuery plugin
+                                  source: states2.ttAdapter()
+                              });
+                            });
+                        </script>
+                    {% endif %}
+                    <ul class="nav navbar-nav navbar-right navbar-form">
+                        {% if user.is_authenticated %}
+                            <a href="/accounts/profile/" class="btn btn-success">My Courses</a>
+                            <a href="/accounts/logout/" class="btn btn-success">Sign out</a>
+                        {% else %}
+                            <p><a href="/accounts/login/" id="signin-button" class="btn btn-success" style="background: none">Sign in</a></p>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% bootstrap_messages %}
+        {% block content %}{% endblock %}
+        <div id="page-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2>CourseOwl</h2>
+                        <p class="muted"><small>© 2014 CourseOwl. All rights reserved.</small></p>
+                    </div>
+                    <div style="padding-top: 10px" class="col-md-3 pull-right">
+                        <ul class="list-unstyled">
+                            <li><strong>About</strong><li>
+                            <li><a href="#">Terms of Service</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

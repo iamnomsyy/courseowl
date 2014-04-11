@@ -3,6 +3,8 @@ env:
   - OWL_ENV="local"
 script:
   - cd courseowl_django
+  - npm install
+  - ./node_modules/casperjs/bin/casperjs test ./frontend-tests/tests.js
   - psql -c "create database owl;" -U postgres -h 127.0.0.1
   - psql -c "create user owl with password 'qwerty123';" -U postgres -h 127.0.0.1
   - psql -c "alter user owl CREATEDB;" -U postgres -h 127.0.0.1

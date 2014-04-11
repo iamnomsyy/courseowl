@@ -6,3 +6,9 @@ local_settings.py
 # IDE config files
 .idea/
 *.iml
+
+# Mac OS X:
+.DS_Store
+
+# Node lib folder
+node_modules/

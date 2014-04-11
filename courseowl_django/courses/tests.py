@@ -1,9 +1,11 @@
 from django.test import TestCase
 from courses.models import Subject, Provider, Source, Course
+from django.contrib.auth.models import User
 import json
 import os
-
+from accounts.models import UserProfile
 from courses.scripts.coursera import addCourses as courseraAddCourses
+from courses.recommender import *
 import courses.scripts.udacity as udacity
 import scripts.edx as edx
 
@@ -83,11 +85,49 @@ class EdxScriptTests(TestCase):
         self.assertTrue(len(list(Course.objects.all())) > 50)
         self.assertEquals(len(list(Subject.objects.all())), 25)
 
-class RecommenderTests(TestCase):
-    math_sub = Subject()
-    sic_sub = Sect()
+class RecommenderTestsNormalCase(TestCase):
+    def setUp(self):
+        #Create two fake users and fake courses
+        subject_math = Subject()
+        subject_math.name = "math"
+        subject_math.save()
+
+        subject_english = Subject()
+        subject_english.name = "english"
+        subject_english.save()
+
+        subject_math2 = Subject()
+        subject_math2.name = "math-calculus"
+        subject_math2.save()
+
+        course_math = Course()
+        course_math.name = "intro to math"
+        course_math.description = "this is a introduction to math"
+        course_math.save()
+        course_math.subjects.add(subject_math)
+        course_math.save()
+
+        user1 = User.objects.create(username='user1')
+        userProf1 = UserProfile.objects.create(user=user1)
+        userProf1.save()
+        userProf1.interests.add(subject_math2)
+        userProf1.save()
 
 
+    def test_fuzzy_matching_subject(self):
+        subject_math3 = Subject()
+        subject_math3.name = "math-algebra"
+        subject_math3.save()
+
+        subject_set = get_fuzzy_subject_maching(subject_math3)
+        self.assertEqual(len(subject_set), 3)
+
+    def test_get_recs_from_subjects(self):
+        test_subs = set()
+        test_subs.add(Subject.objects.get(name="math-calculus"))
+        subjSet = get_recs_from_subjects(test_subs)
+        self.assertEqual(len(subjSet), 2)
+        
 
 
 

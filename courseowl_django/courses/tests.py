@@ -139,9 +139,9 @@ class RecommenderTestsNormalCase(TestCase):
         self.userProf3 = UserProfile.objects.create(user=self.user3)
         self.userProf3.save()
         self.userProf3.interests.add(self.subject_english)
-        self.userProf2.disliked.add(self.course_math)
-        self.userProf2.completed.add(self.course_math)
-        self.userProf2.completed.add(self.course_english)
+        self.userProf3.disliked.add(self.course_math)
+        self.userProf3.completed.add(self.course_math)
+        self.userProf3.completed.add(self.course_english)
         self.userProf3.save()
 
 
@@ -161,8 +161,6 @@ class RecommenderTestsNormalCase(TestCase):
         self.assertEqual(subjSet.pop().name, "intro to math")
 
     def test_get_enrolled_subjects(self):
-        self.userProf1.enrolled.add(self.course_math)
-        self.userProf1.completed.add(self.course_english)
         self.assertEqual(len(get_enrolled_subjects(self.userProf1)), 2)
 
     def test_get_similar_user_interests(self):
@@ -177,6 +175,7 @@ class RecommenderTestsNormalCase(TestCase):
 
     def test_get_similar_user_completed(self):
         simUser, numb = get_similar_user_completed(self.user1)
+        print simUser.user.username
         self.assertEqual(simUser, self.userProf3)
         self.assertEqual(numb, 2)
 

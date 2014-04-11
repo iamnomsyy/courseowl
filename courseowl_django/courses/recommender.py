@@ -131,13 +131,13 @@ def get_similar_user_completed(user):
     most_similar_user = None
 
     prefs = UserProfile.objects.get(user=user)
-    my_dislikes = set(prefs.completed.all())
+    my_completed = set(prefs.completed.all())
     for other_user in UserProfile.objects.all():
         if other_user == prefs:
             continue
-        similar_dislikes = my_dislikes.intersection(set(other_user.completed.all()))
-        if len(similar_dislikes) > max_similar:
-            max_similar = len(similar_dislikes)
+        similar_completed = my_completed.intersection(set(other_user.completed.all()))
+        if len(similar_completed) > max_similar:
+            max_similar = len(my_completed)
             most_similar_user = other_user
     return most_similar_user, max_similar
 

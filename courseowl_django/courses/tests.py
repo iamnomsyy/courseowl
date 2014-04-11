@@ -4,7 +4,9 @@ import json
 import os
 from courses.scripts.coursera import add_courses as coursera_add_courses
 import courses.scripts.udacity as udacity
-import scripts.edx as edx
+import courses.scripts.iversity as iversity
+import courses.scripts.edx as edx
+from bs4 import BeautifulSoup
 
 
 class SubjectTests(TestCase):
@@ -81,6 +83,35 @@ class EdxScriptTests(TestCase):
         edx.add_to_django()
         edge_course = Course.objects.filter(name='The Analytics Edge')
         self.assertTrue(edge_course.exists())
+
+
+class IversityScriptTests(TestCase):
+    def test_add_to_django(self):
+        provider, created = Provider.objects.get_or_create(name='iversity')
+        sample_div = "<article class='courses-list-item'><div class='ribbon-content'>Engineering</div></div><div class='course-body'><header><h2 class='truncate'><a href='https://iversity.org/courses/vehicle-dynamics-i-accelerating-and-braking'>Vehicle Dynamics I: Accelerating and Braking</a></h2><p class='instructors truncate'>Univ.-Prof. Dr.-Ing. Martin Meywerk</p></header><p class='description'>From Bugatti Veyron to Volkswagen Beetle, from racing to passenger car: study about their acceleration and braking and learn from two applications from automotive mechatronics. </p></div></div></div></div></div></div></div></article>"
+        sample_div = BeautifulSoup(sample_div)
+        iversity.create_course(sample_div, provider)
+
+        # Make sure the Engineering subject was created:
+        new_subject = Subject.objects.get(name='Engineering')
+        self.assertIsNotNone(new_subject)
+
+        # Make sure the course itself was created:
+        new_course = Course.objects.get(name='Vehicle Dynamics I: Accelerating and Braking', provider=provider,
+                                        subjects=new_subject)
+        self.assertIsNotNone(new_course)
+
+        # Make sure the course name is set properly:
+        self.assertEqual('Vehicle Dynamics I: Accelerating and Braking', new_course.name)
+
+        # Make sure the course URL is set properly:
+        self.assertEqual('https://iversity.org/courses/vehicle-dynamics-i-accelerating-and-braking', new_course.url)
+
+        # Make sure the course instructor is set properly:
+        self.assertEqual('Univ.-Prof. Dr.-Ing. Martin Meywerk', new_course.instructor)
+
+        # Make sure the course description is set properly:
+        self.assertEqual('From Bugatti Veyron to Volkswagen Beetle, from racing to passenger car: study about their acceleration and braking and learn from two applications from automotive mechatronics. ', new_course.description)
 
 
 class RecommenderTests(TestCase):

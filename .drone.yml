@@ -9,9 +9,8 @@ script:
   - psql -c "grant all privileges on database owl to owl;" -U postgres -h 127.0.0.1
   - pip install -r requirements.txt --use-mirrors
   - ./manage.py test
-  - ./manage.py runserver &
   - npm install
-  - ./node_modules/casperjs/bin/casperjs test ./frontend-tests/tests.js
+  - ./node_modules/casperjs/bin/casperjs test ./frontend-tests/tests.js --url=http://courseowl.com/
 services:
   - postgres:9.1
 notify:

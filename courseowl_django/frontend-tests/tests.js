@@ -1,5 +1,5 @@
 var siteUrl = casper.cli.get('url'); // not sure how to deal with production vs dev, TODO use Node env variables
-console.log(siteUrl);
+//console.log(siteUrl);
 var timeoutTime = 3000;
 
 function navigationTest(test, url, assertionName) {

@@ -1,4 +1,4 @@
-from ..models import *
+from courses.models import *
 import urllib2
 from bs4 import BeautifulSoup
 import re

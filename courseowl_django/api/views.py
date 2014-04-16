@@ -179,7 +179,6 @@ def course_info(request):
             for word in the_course.name.split(' '):
                 helpouturl += word + '%20OR%20'
             helpouturl = helpouturl[:-8]
-            print 'TESTING HELPOUTS HEREEEE', helpouturl
 
             courseinfo = {'description': the_course.description, 'provider': the_course.provider.name,
                           'subjects': subject_list, 'instructor': the_course.instructor,

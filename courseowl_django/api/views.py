@@ -174,9 +174,15 @@ def course_info(request):
             course_id = request.POST.get('course_id')
             the_course = Course.objects.get(id=course_id)
             subject_list = [subj.name for subj in the_course.subjects.all()]
+            helpouturl = 'https://helpouts.google.com/search?q='
+
+            for word in the_course.name.split(' '):
+                helpouturl += word + '%20OR%20'
+            helpouturl = helpouturl[:-8]
+
             courseinfo = {'description': the_course.description, 'provider': the_course.provider.name,
                           'subjects': subject_list, 'instructor': the_course.instructor,
-                          'name': the_course.name, 'url': the_course.url}
+                          'name': the_course.name, 'url': the_course.url, 'helpouturl': helpouturl}
             return HttpResponse(json.dumps({'success': True, 'info': courseinfo}), content_type='application/json')
         except ObjectDoesNotExist:
             return HttpResponse(json.dumps({'success': False}), content_type='application/json')

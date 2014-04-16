@@ -1,84 +1,38 @@
-
 {% extends "base.html" %}
-
 {% block content %}
-
-    {% if query %}
-       <div class="container">
-                 <div class="row vertical-center-row row-md-offset-4">
-                  <div class="form">
-                     </div></div></div>
-
-        <div class="col-md-12">
-                <table class="table table-striped table-bordered">
-        <tr>
-            <th><h3><strong>Results for {{ query }}:</strong></h3></th>
-        </tr>
-
-        {% for result in page.object_list %}
-        <tr data-course-id="{{ result.object.id }}">
-            <td><h4> <strong>{{ result.object.name }}</strong></h4>
-
-                <ul class="nav nav-tabs">
-                    <li class = "active"><a data-toggle="tab" href="#info">Course Info</a></li>
-                    <!-- trying something do not remove any commented out code -->
-                    <li><a class="text-warning"><strong> Provider: </strong>{{ result.object.provider }}</a></li>
-
-                </ul>
-             <div class="tab-content">
-                <div id="info">
-                        <p>{{ result.object.description }} .....  <a class='info-button' data-toggle="modal" data-target="#courseinfo"> more info.</a></p>
-                </div>
-            <!-- do not remove for future
-                <div id="instr" class="tab-pane fade">
-                    <h4>{{ result.object.instructor }} </h4>
-                </div> div/label-->
-
-              </div>
-                 <p class="navbar-text">
-                <button class='btn-small btn-success btn add-button'><i class="glyphicon glyphicon-plus"></i> Add</button>
-                <button class='btn-small btn-primary btn taken-button'><i class="glyphicon glyphicon-thumbs-up"></i> Taken</button>
-                <button class='btn-small btn-danger btn hide-button'><i class="glyphicon glyphicon-thumbs-down"></i> Hide</button>
-                </p>
-            </td>
-
-        </tr>
-        {% empty %}
-            <tr><td>No results found.</td></tr>
-        {% endfor %}
-
-        </table>
-        </div>
-    {% else %}
-        <div class="container">
-            <br/>
-            <h4>To search, type something in the search box above.</h4>
-        </div>
-    {% endif %}
-
-    <div class="modal fade" id="courseinfo" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="modalLabel">Course Information</h4>
-      </div>
-      <div class="modal-body" >
-
-       <p><strong>Course: </strong><label id = "course_name"></label></p>
-       <p><strong>Provider: </strong> <label id = "provider"></label> </p>
-       <p><strong>Instructor: </strong><label id = "course_ins"></label></p>
-       <strong>Description:</strong><p id = "course_desc"></p>
-       <p><strong>Cost: Free</strong></p>
-       <p><strong>Visit course at :</strong> <a id = "address" target="_blank" href = ""><strong id = "course_new_url"></strong> </a></p>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-      </div>
-    </div>
+<div class="container search-results-container">
+{% if query %}
+  <div class="col-md-12">
+    <table class="table table-striped table-bordered">
+      <tr><th><h3>Results for {{ query }}:</h3></th></tr>
+      {% for result in page.object_list %}
+      <tr data-id="{{ result.object.id }}">
+        <td>
+          <h4>{{ result.object.name }}</h4>
+            <ul class="nav nav-tabs">
+              <li class = "active"><a data-toggle="tab" href="#info">Course Info</a></li>
+              <li><a class="text-warning"><strong> Provider: </strong>{{ result.object.provider }}</a></li>
+            </ul>
+          <div class="tab-content">
+            <p>{{ result.object.description }}&nbsp;<a class='info-button' data-toggle="modal" data-target="#courseinfo">More Info</a></p>
+          </div>
+          <button class='btn-small btn-success btn add-button'><i class="glyphicon glyphicon-plus"></i> Add</button>
+          <button class='btn-small btn-primary btn taken-button'><i class="glyphicon glyphicon-thumbs-up"></i> Taken</button>
+          <button class='btn-small btn-danger btn hide-button'><i class="glyphicon glyphicon-thumbs-down"></i> Hide</button>
+        </td>
+      </tr>
+      {% empty %}
+          <tr><td>No results found.</td></tr>
+      {% endfor %}
+    </table>
   </div>
+{% else %}
+      <br/>
+      <h4>To search, type something in the search box above.</h4>
+{% endif %}
 </div>
+
+{% include "accounts/course_info_modal.html" %}
 <script>
     $(function() {
         function setActionListener(actionSelector, apiEndpoint, dataKey) {
@@ -101,29 +55,8 @@
         setActionListener('.add-button', '/api/enroll', 'course_to_add');
         setActionListener('.hide-button', '/api/complete_course', 'completed_course');
         setActionListener('.taken-button', '/api/dislike_course', 'disliked_course');
+
+        setInfoModalListener();
     });
-
-$(function display_info() {
-      $('.info-button').on('click', function(event) {
-          var courseID = $(this).closest('tr').data('course-id');
-
-          $.post(
-            '/api/course_info',
-                 { course_id : courseID }
-          ).done(function(res){
-              $('#course_name').text(res.info.name);
-              $('#provider').text(res.info.provider);
-              $('#course_ins').text(res.info.instructor);
-              $('#course_desc').text(res.info.description);
-              $('#course_new_url').text(res.info.newurl);
-              $('#url').attr('href',res.info.newurl);
-          });
-
-            display_info();
-
-      });
-   });
-
-
 </script>
 {% endblock %}

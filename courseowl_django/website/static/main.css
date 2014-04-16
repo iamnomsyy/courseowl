@@ -2,9 +2,13 @@ body {
 	padding-top: 0;
 }
 @media screen and (max-width: 768px) {
-  body { 
-    padding-top: 0; 
+  body {
+    padding-top: 0;
   }
+}
+
+.search-results-container {
+    margin-top: 10px;
 }
 
 form .list-group-item {
@@ -14,6 +18,10 @@ form .list-group-item {
 div#page-footer {
 	background-color: #F7F9F4;
 	margin-top: 20px;
+}
+
+.info-button {
+    cursor: pointer;
 }
 
 /* Typeahead styling */

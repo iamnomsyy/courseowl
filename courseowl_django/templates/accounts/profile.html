@@ -75,125 +75,61 @@
 
 {% include "accounts/drop_course_modal.html" %}
 {% include "accounts/credentials_modal.html" %}
+{% include "accounts/deactivate_account_modal.html" %}
+{% include "accounts/course_info_modal.html" %}
 
 
-<div class="modal fade" id="courseinfo" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="modalLabel">Course Information</h4>
-      </div>
-      <div class="modal-body" >
-
-       <strong>Course: </strong><p id="course_name"></p>
-       <strong>Provider: </strong><p id="provider"></p>
-       <strong>Subject: </strong><p id="subject"></p>
-       <strong>Instructor: </strong><p id="course_ins"></p>
-       <strong>Description: </strong><p id="course_desc"></p>
-       <strong>URL: </strong> <a id="url" target="_blank" href=""><p id="urltext"></p></a>
-       <a id="helpout-url" target="_blank" href=""><p>Get help from Google Helpouts!</p></a>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Deactivate account confirmation modal -->
-<div class="modal fade" id="deactivate-account" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="modalLabel">Deactivate Account</h4>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to deactivate your CourseOwl account?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">No, I changed my mind</button>
-                <a id="confirmDeactivate" type="button" class="btn btn-danger" href="/accounts/deactivate_account/">Yes, deactivate</a>
-            </div>
-        </div>
-    </div>
-</div>
-    <script>
-        function setAddCourseListener() {
-            $('.add-course').on('click', function(event) {
-                var courseID = $(this).closest('tr').data('id');
-                // Enroll in backend
-                $.post(
-                        '/api/enroll',
-                        { course_to_add: courseID }
-                ).done(function(res) {
-                            // on successful adding, move table row to enrolled table
-                            $recommended = $('tr[data-id="' + courseID + '"]');
-                            $recommended.fadeOut(function() {
-                                $dropButton = $('<div>', {
-                                    'class': 'btn btn-small btn-danger drop-button',
-                                    'data-toggle': 'modal'
-                                }).text('Drop course');
-                                $recommended.find('.add-course').replaceWith($dropButton);
-                                $recommended.appendTo('.enrolled-courses');
-                                $recommended.fadeIn();
-                            });
-                        });
-            });
-        }
+<script>
+function setAddCourseListener() {
+  $('.add-course').on('click', function(event) {
+    var courseID = $(this).closest('tr').data('id');
+    // Enroll in backend
+    $.post(
+      '/api/enroll',
+      { course_to_add: courseID }
+    ).done(function(res) {
+      // on successful adding, move table row to enrolled table
+      $recommended = $('tr[data-id="' + courseID + '"]');
+      $recommended.fadeOut(function() {
+        $dropButton = $('<div>', {
+          'class': 'btn btn-small btn-danger drop-button',
+          'data-toggle': 'modal'
+        }).text('Drop course');
+        $recommended.find('.add-course').replaceWith($dropButton);
+        $recommended.appendTo('.enrolled-courses');
+        $recommended.fadeIn();
+      });
+    });
+  });
+}
 
 
-        $(function() {
-            var dropCourseID;
-            // Allows dropping courses
-            $('.enrolled-courses').on('click', '.drop-button', function(event) {
-                event.preventDefault();
-                var courseID = $(this).closest('tr').data('id');
-                dropCourseID = courseID;
-                $('#dropCourse').modal('show');
-            });
+$(function() {
+  var dropCourseID;
+    // Allows dropping courses
+    $('.enrolled-courses').on('click', '.drop-button', function(event) {
+      event.preventDefault();
+      var courseID = $(this).closest('tr').data('id');
+      dropCourseID = courseID;
+      $('#dropCourse').modal('show');
+    });
 
-            $('#confirmDrop').on('click', function(event) {
-                $('#dropCourse').modal('hide');
-                $.post(
-                        "/api/drop",
-                        { course_to_drop: dropCourseID }
-                ).done(function(res) {
-                            var $courseRow = $('[data-id="' + dropCourseID + '"]');
-                            $($courseRow).fadeOut(function() {
-                                $($courseRow).remove();
-                            });
-                        });
-            });
-
-            setAddCourseListener();
-
+    $('#confirmDrop').on('click', function(event) {
+      $('#dropCourse').modal('hide');
+      $.post(
+        "/api/drop",
+        { course_to_drop: dropCourseID }
+      ).done(function(res) {
+        var $courseRow = $('[data-id="' + dropCourseID + '"]');
+        $($courseRow).fadeOut(function() {
+          $($courseRow).remove();
         });
+      });
+    });
 
+    setAddCourseListener();
 
-        $(function display_info() {
-            $('.info-button').on('click', function(event) {
-                var courseID = $(this).closest('tr').data('id');
-
-                $.post(
-                        '/api/course_info',
-                        { course_id : courseID }
-                ).done(function(res){
-                    $('#course_name').text(res.info.name);
-                    $('#provider').text(res.info.provider);
-                    $('#subject').text(res.info.subjects);
-                    $('#course_ins').text(res.info.instructor);
-                    $('#course_desc').text(res.info.description);
-                    $('#urltext').text(res.info.url);
-                    $('#url').attr('href', res.info.url);
-                    $('#helpout-url').attr('href', res.info.helpouturl);
-            });
-            display_info();
-        });
-   });
-
-
-
+    setInfoModalListener();
+});
 </script>
 {% endblock %}

@@ -92,7 +92,17 @@
        <strong>Instructor: </strong><p id="course_ins"></p>
        <strong>Description: </strong><p id="course_desc"></p>
        <strong>URL: </strong> <a id="url" target="_blank" href=""><p id="url"></p></a>
-
+       <br><br>
+       <strong>Similar Courses:</strong> 
+          <a id="similar_course_1_link" href="">
+            <div id="similar_course_1"></div>
+          </a>
+          <a id="similar_course_2_link" href="">
+            <div id="similar_course_2"></div>
+          </a>
+          <a id="similar_course_3_link" href="">
+            <div id="similar_course_3"></div>
+          </a>
 
       </div>
       <div class="modal-footer">
@@ -187,6 +197,14 @@
                     $('#course_desc').text(res.info.description);
                     $('#url').text(res.info.url);
                     $('#url').attr('href', res.info.url);
+
+                    $('#similar_course_1').text(res.info.similar_courses_names[0])
+                    $('#similar_course_1_link').attr('href', res.info.similar_courses_links[0])
+                    $('#similar_course_2').text(res.info.similar_courses_names[1])
+                    $('#similar_course_2_link').attr('href', res.info.similar_courses_links[1])
+                    $('#similar_course_3').text(res.info.similar_courses_names[2])
+                    $('#similar_course_3_link').attr('href', res.info.similar_courses_links[2])
+
             });
             display_info();
         });

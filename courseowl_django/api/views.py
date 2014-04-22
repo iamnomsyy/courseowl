@@ -162,6 +162,12 @@ def drop_course(request):
     else:
         return HttpResponse(json.dumps({'success': False}), content_type='application/json')
 
+def get_similar_courses(course):
+    '''
+    given a Course, return a list of 3 Courses that are similar
+    '''
+    subject = course.subjects.all()[0]
+    return Course.objects.filter(subjects__name=subject.name)[:3]
 
 @login_required
 def course_info(request):
@@ -174,9 +180,18 @@ def course_info(request):
             course_id = request.POST.get('course_id')
             the_course = Course.objects.get(id=course_id)
             subject_list = [subj.name for subj in the_course.subjects.all()]
+            
+            similar_courses = get_similar_courses(the_course)
+
+            similar_courses_names = [course.name for course in similar_courses]
+            similar_courses_links = [course.url  for course in similar_courses]
+
             courseinfo = {'description': the_course.description, 'provider': the_course.provider.name,
                           'subjects': subject_list, 'instructor': the_course.instructor,
-                          'name': the_course.name, 'url': the_course.url}
+                          'name': the_course.name, 'url': the_course.url, 
+                          'similar_courses_names': similar_courses_names, 
+                          'similar_courses_links': similar_courses_links,
+                          }
             return HttpResponse(json.dumps({'success': True, 'info': courseinfo}), content_type='application/json')
         except ObjectDoesNotExist:
             return HttpResponse(json.dumps({'success': False}), content_type='application/json')

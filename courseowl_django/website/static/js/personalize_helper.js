@@ -41,7 +41,13 @@ function setInfoModalListener() {
       $('#course_name').text(res.info.name);
       $('#provider').text(res.info.provider);
       $('#subject').text(res.info.subjects);
-      $('#course_ins').text(res.info.instructor);
+      // Checks if the instructor is truthy, aka exists
+      if (!!res.info.instructor) {
+        $('#instr-info').css('display', 'block');
+        $('#course_ins').text(res.info.instructor);
+      } else {
+        $('#instr-info').css('display', 'none');
+      }
       $('#course_desc').text(res.info.description);
       $('#url').text(res.info.url);
       $('#url').attr('href', res.info.url);

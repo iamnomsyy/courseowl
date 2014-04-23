@@ -8,14 +8,18 @@ from accounts.views import *
 
 class TestAPI(TestCase):
     def setUp(self):
+        """
+        Set up a test user and user profile
+        """
         self.client = Client()
         self.user = User.objects.create_user(username='bob12345', email='bob@bob.com', password='bob123456',
                                              first_name='', last_name='')
-        self.user.save()
-        self.user_profile = UserProfile(user=self.user)
-        self.user_profile.save()
+        self.user_profile = UserProfile.objects.create(user=self.user)
 
     def test_json_subjects(self):
+        """
+        Test the /api/subjects/ endpoint
+        """
         temp_subject = Subject(name='Pottery')
         temp_subject.save()
 
@@ -24,6 +28,9 @@ class TestAPI(TestCase):
         self.assertTrue('Pottery' in response.content)
 
     def test_json_courses(self):
+        """
+        Test the /api/courses/ endpoint
+        """
         temp_course = Course(name='Advanced Pottery III')
         temp_course.save()
 
@@ -32,6 +39,9 @@ class TestAPI(TestCase):
         self.assertTrue('Advanced Pottery III' in response.content)
 
     def test_json_enrolled_courses(self):
+        """
+        Test the /api/enrolled_courses/ endpoint for a logged in user
+        """
         temp_course = Course(name='Advanced Pottery III', description='Learn pottery like you never imagined possible.',
                              instructor='Bob Smith')
         temp_course.save()
@@ -125,7 +135,6 @@ class TestAPI(TestCase):
         test_course = Course.objects.get(name="Test course")
 
         request = HttpRequest()
-        request.POST = request.POST.copy()
         request.POST['course_to_add'] = test_course.id
         request.user = user_profile.user
         request.method = 'POST'
@@ -159,15 +168,15 @@ class TestAPI(TestCase):
         temp_course.subjects.add(temp_subject)
         temp_course.save()
 
-        helpouturl = 'https://helpouts.google.com/search?q='
+        helpout_url = 'https://helpouts.google.com/search?q='
 
         for word in temp_course.name.split(' '):
-            helpouturl += word + '%20OR%20'
-        helpouturl = helpouturl[:-8]
+            helpout_url += word + '%20OR%20'
+        helpout_url = helpout_url[:-8]  # remove trailing %20OR%20
 
         course_info = {'description': 'Test description', 'provider': 'Test provider',
                        'instructor': 'Test instructor', 'name': 'Pottery', 'url': '',
-                       'subjects': ['Test subject'], 'helpouturl': helpouturl}
+                       'subjects': ['Test subject'], 'helpouturl': helpout_url}
         expected_content = {'success': True, 'info': course_info}
 
         response = self.client.post('/api/course_info/', data={'course_id': temp_course.id})

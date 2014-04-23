@@ -168,7 +168,7 @@ def get_similar_courses(course):
     given a Course, return a list of 3 Courses that are similar
     """
     subject = course.subjects.all()[0]
-    return Course.objects.filter(subjects__name=subject.name)[:3]
+    return Course.objects.filter(subjects__name=subject.name).exclude(id=course.id)[:3]
 
 
 @login_required

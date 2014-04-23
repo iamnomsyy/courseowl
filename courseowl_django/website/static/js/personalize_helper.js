@@ -40,7 +40,7 @@ function setInfoModalListener() {
     ).done(function(res){
       $('#course_name').text(res.info.name);
       $('#provider').text(res.info.provider);
-      $('#subject').text(res.info.subjects);
+      $('#subject').text(res.info.subjects.join(', '));
       // Checks if the instructor is truthy, aka exists
       if (!!res.info.instructor) {
         $('#instr-info').css('display', 'block');

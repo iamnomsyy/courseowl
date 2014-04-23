@@ -173,7 +173,7 @@ def course_info(request):
         try:
             course_id = request.POST.get('course_id')
             the_course = Course.objects.get(id=course_id)
-            subject_list = [subj.name for subj in the_course.subjects.all()]
+            subject_list = [subj.name.capitalize() for subj in the_course.subjects.all()]
             helpouturl = 'https://helpouts.google.com/search?q='
 
             for word in the_course.name.split(' '):

@@ -34,12 +34,10 @@ function bundleSelectionsOnSubmit(values) {
 function setInfoModalListener() {
   $('.info-button').on('click', function(event) {
     var courseID = $(this).closest('tr').data('id');
-    console.log("Course ID: ", courseID);
     $.post(
       '/api/course_info',
       { course_id : courseID }
     ).done(function(res){
-      console.dir(res);
       $('#course_name').text(res.info.name);
       $('#provider').text(res.info.provider);
       $('#subject').text(res.info.subjects);

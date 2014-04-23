@@ -216,7 +216,7 @@ casper.test.begin('Profile page functional', function suite(test) {
 
     test.assertExists('div .add-course', 'Add course button exists');
     this.click('.add-course');
-    this.wait(500, function() {
+    this.wait(5000, function() {
       test.assertElementCount('.enrolled-courses tr', 2, 'User successfully added recommended course');
 
       // Now we click drop course and cancel

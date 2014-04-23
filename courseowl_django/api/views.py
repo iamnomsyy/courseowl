@@ -163,6 +163,14 @@ def drop_course(request):
         return HttpResponse(json.dumps({'success': False}), content_type='application/json')
 
 
+def get_similar_courses(course):
+    """
+    given a Course, return a list of 3 Courses that are similar
+    """
+    subject = course.subjects.all()[0]
+    return Course.objects.filter(subjects__name=subject.name)[:3]
+
+
 @login_required
 def course_info(request):
     """
@@ -173,17 +181,27 @@ def course_info(request):
         try:
             course_id = request.POST.get('course_id')
             the_course = Course.objects.get(id=course_id)
-            subject_list = [subj.name.capitalize() for subj in the_course.subjects.all()]
-            helpouturl = 'https://helpouts.google.com/search?q='
+            helpout_url = 'https://helpouts.google.com/search?q='
 
             for word in the_course.name.split(' '):
-                helpouturl += word + '%20OR%20'
-            helpouturl = helpouturl[:-8]
+                helpout_url += word + '%20OR%20'
+            helpout_url = helpout_url[:-8]  # cutting off the last %20OR%20
 
-            courseinfo = {'description': the_course.description, 'provider': the_course.provider.name,
+            subject_list = [subj.name.capitalize() for subj in the_course.subjects.all()]
+            similar_courses = get_similar_courses(the_course)
+
+            similar_courses_names = [course.name for course in similar_courses]
+            similar_courses_links = [course.url for course in similar_courses]
+
+            course_data = {'description': the_course.description, 'provider': the_course.provider.name,
                           'subjects': subject_list, 'instructor': the_course.instructor,
-                          'name': the_course.name, 'url': the_course.url, 'helpouturl': helpouturl}
-            return HttpResponse(json.dumps({'success': True, 'info': courseinfo}), content_type='application/json')
+                          'name': the_course.name, 'url': the_course.url, 
+                          'similar_courses_names': similar_courses_names, 
+                          'similar_courses_links': similar_courses_links,
+                          'helpouturl': helpout_url
+            }
+
+            return HttpResponse(json.dumps({'success': True, 'info': course_data}), content_type='application/json')
         except ObjectDoesNotExist:
             return HttpResponse(json.dumps({'success': False}), content_type='application/json')
     else:

@@ -51,7 +51,7 @@ def get_name(page):
 def get_instr(page):
     instr = []
 
-    anchor = page.index('Instructors & Partners')
+    anchor = page.index('Course Instructors')
 
     for i in range(anchor, len(page)):
         if page[i] == 'Instructor':
@@ -61,7 +61,7 @@ def get_instr(page):
 
 
 def get_desc(page):
-    anchor = page.index('Course Summary')
+    anchor = page.index('Class Summary')
     return page[anchor+1]
 
 

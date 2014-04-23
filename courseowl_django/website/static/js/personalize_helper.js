@@ -46,6 +46,12 @@ function setInfoModalListener() {
       $('#url').text(res.info.url);
       $('#url').attr('href', res.info.url);
       $('#helpout-url').attr('href', res.info.helpouturl);
+      $('#similar_course_1').text(res.info.similar_courses_names[0])
+      $('#similar_course_1_link').attr('href', res.info.similar_courses_links[0])
+      $('#similar_course_2').text(res.info.similar_courses_names[1])
+      $('#similar_course_2_link').attr('href', res.info.similar_courses_links[1])
+      $('#similar_course_3').text(res.info.similar_courses_names[2])
+      $('#similar_course_3_link').attr('href', res.info.similar_courses_links[2])
     });
   });
 }

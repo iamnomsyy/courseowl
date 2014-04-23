@@ -16,6 +16,31 @@ class TestAPI(TestCase):
                                              first_name='', last_name='')
         self.user_profile = UserProfile.objects.create(user=self.user)
 
+        # to avoid conflict with a test written before this setup
+        # append '2' to provider and subject names
+        self.test_provider = Provider(name='Test provider 2')
+        self.test_provider.save()
+        self.test_subject = Subject(name='Test subject 2')
+        self.test_subject.save()
+
+        self.test_course_1 = Course(name='Pottery 1', description="Test description 1", provider=self.test_provider,
+                             instructor="Test instructor 1", url='http://www.example.com/1')
+        self.test_course_1.save()
+        self.test_course_1.subjects.add(self.test_subject)
+        self.test_course_1.save()
+
+        self.test_course_2 = Course(name='Pottery 2', description="Test description 2", provider=self.test_provider,
+                             instructor="Test instructor 2", url='http://www.example.com/2')
+        self.test_course_2.save()
+        self.test_course_2.subjects.add(self.test_subject)
+        self.test_course_2.save()
+
+        self.test_course_3 = Course(name='Pottery 3', description="Test description 3", provider=self.test_provider,
+                             instructor="Test instructor 3", url='http://www.example.com/3')
+        self.test_course_3.save()
+        self.test_course_3.subjects.add(self.test_subject)
+        self.test_course_3.save()
+
     def test_json_subjects(self):
         """
         Test the /api/subjects/ endpoint
@@ -176,7 +201,8 @@ class TestAPI(TestCase):
 
         course_info = {'description': 'Test description', 'provider': 'Test provider',
                        'instructor': 'Test instructor', 'name': 'Pottery', 'url': '',
-                       'subjects': ['Test subject'], 'helpouturl': helpout_url}
+                       'subjects': ['Test subject'], 'helpouturl': helpout_url,
+                       'similar_courses_names': [], 'similar_courses_links': []}
         expected_content = {'success': True, 'info': course_info}
 
         response = self.client.post('/api/course_info/', data={'course_id': temp_course.id})
@@ -186,3 +212,9 @@ class TestAPI(TestCase):
         response = self.client.post('/api/complete_course/', data={'course_id': 1234567890})
         self.assertEqual(response.status_code, 200)
         self.assertEqual('{"success": false}', response.content)
+
+    def test_similar_courses(self):
+        similar_courses = get_similar_courses(self.test_course_1)
+        self.assertEqual(len(similar_courses), 2)
+        self.assertIn(self.test_course_2, similar_courses)
+        self.assertIn(self.test_course_3, similar_courses)

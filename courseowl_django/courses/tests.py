@@ -56,7 +56,7 @@ class CourseraScriptTests(TestCase):
             the_course_subjects = the_course.subjects.all()
             self.assertEquals(len(the_course_subjects), 2)
             self.assertEquals(the_course_subjects[0].name, 'stats')
-            self.assertEquals(the_course_subjects[1].name, 'cs-ai')
+            self.assertEquals(the_course_subjects[1].name, 'cs')
 
 
 class UdacityScriptTests(TestCase):

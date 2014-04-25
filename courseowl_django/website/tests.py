@@ -5,6 +5,7 @@ from django.test.utils import override_settings
 from django.conf import settings
 import haystack
 
+
 TEST_INDEX = {
     'default': {
         'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
@@ -72,4 +73,3 @@ class SearchTests(TestCase):
         response = self.c.get('/search/', {'q': 'udacity'})
         self.assertEquals(response.status_code, 200)
         self.assertTrue('Artificial Intelligence for Robotics' in response.content)
-        

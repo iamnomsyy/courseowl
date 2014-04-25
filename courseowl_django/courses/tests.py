@@ -92,27 +92,27 @@ class RecommenderTestsNormalCase(TestCase):
     def setUp(self):
         # Create three fake users and two fake courses
         self.subject_math = Subject()
-        self.subject_math.name = "math"
+        self.subject_math.name = 'math'
         self.subject_math.save()
 
         self.subject_english = Subject()
-        self.subject_english.name = "english"
+        self.subject_english.name = 'english'
         self.subject_english.save()
 
         self.subject_math2 = Subject()
-        self.subject_math2.name = "math-calculus"
+        self.subject_math2.name = 'math-calculus'
         self.subject_math2.save()
 
         self.course_math = Course()
-        self.course_math.name = "intro to math"
-        self.course_math.description = "this is a introduction to math"
+        self.course_math.name = 'intro to math'
+        self.course_math.description = 'this is a introduction to math'
         self.course_math.save()
         self.course_math.subjects.add(self.subject_math)
         self.course_math.save()
 
         self.course_english = Course()
-        self.course_english.name = "Literature 100"
-        self.course_english.description = "Learn how to read!"
+        self.course_english.name = 'Literature 100'
+        self.course_english.description = 'Learn how to read!'
         self.course_english.save()
         self.course_english.subjects.add(self.subject_english)
         self.course_english.save()
@@ -127,7 +127,7 @@ class RecommenderTestsNormalCase(TestCase):
         self.user_profile_1.completed.add(self.course_english)
         self.user_profile_1.save()
 
-        self.user_2 = User.objects.create(username="user2")
+        self.user_2 = User.objects.create(username='user2')
         self.user_profile_2 = UserProfile.objects.create(user=self.user_2)
         self.user_profile_2.save()
         self.user_profile_2.interests.add(self.subject_math2)
@@ -135,7 +135,7 @@ class RecommenderTestsNormalCase(TestCase):
         self.user_profile_2.disliked.add(self.course_math)
         self.user_profile_2.save()
 
-        self.user_3 = User.objects.create(username="user3")
+        self.user_3 = User.objects.create(username='user3')
         self.user_profile_3 = UserProfile.objects.create(user=self.user_3)
         self.user_profile_3.save()
         self.user_profile_3.interests.add(self.subject_english)

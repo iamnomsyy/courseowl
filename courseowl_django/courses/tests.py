@@ -11,6 +11,7 @@ import courses.scripts.iversity as iversity
 import courses.scripts.edx as edx
 from bs4 import BeautifulSoup
 
+from courses.scripts.utilities import unify_subject_name
 
 class SubjectTests(TestCase):
     def test_create_subject(self):
@@ -205,3 +206,15 @@ class IversityScriptTests(TestCase):
 
         # Make sure the course description is set properly:
         self.assertEqual('From Bugatti Veyron to Volkswagen Beetle, from racing to passenger car: study about their acceleration and braking and learn from two applications from automotive mechatronics.', new_course.description)
+
+class UnifySubjectNameTests(TestCase):
+    def test_unify_subject_names(self):
+        name_1 = 'cs-ai'
+        name_2 = 'social science'
+        name_3 = 'physical-education stuff'
+        name_4 = 'beatles pop-song'
+        self.assertEqual(unify_subject_name(name_1), 'cs')
+        self.assertEqual(unify_subject_name(name_2), 'social')
+        self.assertEqual(unify_subject_name(name_3), 'physical')
+        self.assertEqual(unify_subject_name(name_4), 'beatles')
+

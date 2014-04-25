@@ -12,3 +12,6 @@ local_settings.py
 
 # Node lib folder
 node_modules/
+
+# Test folders:
+test_index/

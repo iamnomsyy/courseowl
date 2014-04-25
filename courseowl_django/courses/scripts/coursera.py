@@ -2,6 +2,7 @@ from courses.models import *
 import json
 import urllib2
 
+from courses.scripts.utilities import unify_subject_name
 
 def run():
     print("Adding Cousera courses....")
@@ -27,7 +28,8 @@ def add_courses(json_dict):
         c.source, created = Source.objects.get_or_create(name=course['universities'][0]['name'])
         c.save()
         for category_id in course['category-ids']:
-            subject, created = Subject.objects.get_or_create(name=category_id)
+            better_subject_name = unify_subject_name(category_id)
+            subject, created = Subject.objects.get_or_create(name=better_subject_name)
             c.subjects.add(subject)
         c.save()
 

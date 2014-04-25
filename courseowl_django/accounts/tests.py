@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.test.client import Client
-from accounts.views import *
+from accounts.models import UserProfile, User
+from accounts.views import check_valid_password, valid_email_address, username_md5, unique_user
 
 
 class AccountsTest(TestCase):

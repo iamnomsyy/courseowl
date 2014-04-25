@@ -1,9 +1,11 @@
 from django.http import HttpRequest
 from django.test import TestCase
 from django.test.client import Client
-from api.views import *
-from courses.models import *
-from accounts.views import *
+import json
+from api.views import add_course, drop_course, get_similar_courses
+from courses.models import Provider, Subject, Course
+from accounts.models import UserProfile, User
+from accounts.views import username_md5
 
 
 class TestAPI(TestCase):
@@ -24,19 +26,19 @@ class TestAPI(TestCase):
         self.test_subject.save()
 
         self.test_course_1 = Course(name='Pottery 1', description="Test description 1", provider=self.test_provider,
-                             instructor="Test instructor 1", url='http://www.example.com/1')
+                                    instructor="Test instructor 1", url='http://www.example.com/1')
         self.test_course_1.save()
         self.test_course_1.subjects.add(self.test_subject)
         self.test_course_1.save()
 
         self.test_course_2 = Course(name='Pottery 2', description="Test description 2", provider=self.test_provider,
-                             instructor="Test instructor 2", url='http://www.example.com/2')
+                                    instructor="Test instructor 2", url='http://www.example.com/2')
         self.test_course_2.save()
         self.test_course_2.subjects.add(self.test_subject)
         self.test_course_2.save()
 
         self.test_course_3 = Course(name='Pottery 3', description="Test description 3", provider=self.test_provider,
-                             instructor="Test instructor 3", url='http://www.example.com/3')
+                                    instructor="Test instructor 3", url='http://www.example.com/3')
         self.test_course_3.save()
         self.test_course_3.subjects.add(self.test_subject)
         self.test_course_3.save()

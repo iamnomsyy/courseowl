@@ -1,7 +1,5 @@
 import json
-
 from django.core.exceptions import ObjectDoesNotExist
-
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from accounts.models import UserProfile
@@ -124,7 +122,7 @@ def json_random_courses(request):
         rand_course_order = Course.objects.order_by('?')
         num_rand_courses = 5
         for i in range(num_rand_courses):
-            random_courses.append(rand_course_order[i])
+            random_courses.append(rand_course_order[i])  # append here since rand_course_order is a query, not a list
     return HttpResponse(json.dumps(random_courses), mimetype='application/json')
 
 
@@ -194,11 +192,11 @@ def course_info(request):
             similar_courses_links = [course.url for course in similar_courses]
 
             course_data = {'description': the_course.description, 'provider': the_course.provider.name,
-                          'subjects': subject_list, 'instructor': the_course.instructor,
-                          'name': the_course.name, 'url': the_course.url, 
-                          'similar_courses_names': similar_courses_names, 
-                          'similar_courses_links': similar_courses_links,
-                          'helpouturl': helpout_url
+                           'subjects': subject_list, 'instructor': the_course.instructor,
+                           'name': the_course.name, 'url': the_course.url,
+                           'similar_courses_names': similar_courses_names,
+                           'similar_courses_links': similar_courses_links,
+                           'helpouturl': helpout_url
             }
 
             return HttpResponse(json.dumps({'success': True, 'info': course_data}), content_type='application/json')

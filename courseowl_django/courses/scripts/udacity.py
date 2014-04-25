@@ -1,6 +1,7 @@
 import urllib2
 from bs4 import BeautifulSoup
 from courses.models import Provider, Course, Subject
+from courses.scripts.utilities import unify_subject_name
 
 
 def get_urls():
@@ -112,8 +113,9 @@ def run():
         # source university not easily available in udacity
         # c.source, created = ....
         c.save()
-        for category_id in course['subj']:
-            subject, created = Subject.objects.get_or_create(name=category_id)
+        for subject_name in course['subj']:
+            better_subject_name = unify_subject_name(subject_name)
+            subject, created = Subject.objects.get_or_create(name=better_subject_name)
             c.subjects.add(subject)
         c.save()
 

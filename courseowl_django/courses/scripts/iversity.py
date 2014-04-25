@@ -2,6 +2,7 @@ from courses.models import Provider, Course, Subject
 import urllib2
 from bs4 import BeautifulSoup
 
+from courses.scripts.utilities import unify_subject_name
 
 def run():
     print("Adding courses from iversity (this will take a minute)...")
@@ -19,6 +20,7 @@ def scrape():
 
 def create_course(item, provider):
     subject = item.find('div', class_='ribbon-content').text.strip().lower()  # subjects are stored lowercase in the DB
+    subject = unify_subject_name(subject)
     course_info = item.find('div', class_='course-body')
     title = course_info.a.text
     instructor_description_paragraphs = item.find_all('p')

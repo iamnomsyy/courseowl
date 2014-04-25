@@ -94,7 +94,6 @@ def add_to_django():
         c.source, created = Source.objects.get_or_create(name=uni_list[i])
         c.save()
         better_subject_name = unify_subject_name(sub_list[i])
-        print(better_subject_name)
         subject, created = Subject.objects.get_or_create(name=better_subject_name)
         c.subjects.add(subject)
         c.save()

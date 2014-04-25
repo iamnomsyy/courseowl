@@ -52,6 +52,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
 )
 
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'templates'),
+)
+
 # Allauth settings
 LOGIN_REDIRECT_URL = '/accounts/profile/'
 SOCIALACCOUNT_QUERY_EMAIL = True
@@ -71,9 +75,9 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 
+# Django settings:
 ROOT_URLCONF = 'courseowl_django.urls'
 WSGI_APPLICATION = 'courseowl_django.wsgi.application'
-
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True

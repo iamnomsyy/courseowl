@@ -3,6 +3,7 @@ import urllib2
 from bs4 import BeautifulSoup
 import re
 
+from courses.scripts.utilities import unify_subject_name
 
 all_subjects = [
     'business-management',
@@ -92,7 +93,9 @@ def add_to_django():
         c.provider = edx_provider
         c.source, created = Source.objects.get_or_create(name=uni_list[i])
         c.save()
-        subject, created = Subject.objects.get_or_create(name=sub_list[i])
+        better_subject_name = unify_subject_name(sub_list[i])
+        print(better_subject_name)
+        subject, created = Subject.objects.get_or_create(name=better_subject_name)
         c.subjects.add(subject)
         c.save()
     print("Done!")

@@ -1,10 +1,6 @@
-from courses.models import Subject, Provider, Course, Source
+from courses.models import Subject, Course
 from accounts.models import UserProfile
 from collections import defaultdict
-
-# ######
-# P U B L I C   I N T E R F A C E S
-# ######
 
 
 def get_all_subject_recommendations(user):
@@ -27,16 +23,9 @@ def get_all_user_recommendations(user):
         return recommended_list
     recommended_list.update(set(best_user_profile.enrolled.all()))
     recommended_list.update(set(best_user_profile.completed.all()))
-
-    #Might as well get interest recommendation from this guy
     recommended_list.update(get_recs_from_subjects(set(best_user_profile.interests.all())))
 
     return recommended_list
-
-
-# ######
-# H E L P E R   F U N C T I O N S
-# ######
 
 
 def get_interest_subjects(user):
@@ -57,7 +46,6 @@ def get_recs_from_subjects(subjects):
     subject_course_recs = set()
     for subject in subjects:
         matching_subs = get_fuzzy_subject_matching(subject)
-        print "length of set is " + str(len(matching_subs))
         for related_sub in matching_subs:
             for course in Course.objects.filter(subjects=related_sub):
                 subject_course_recs.add(course)
@@ -71,7 +59,6 @@ def get_fuzzy_subject_matching(subject):
     sub_set = set()
     base_sub = str(subject.name).split('-')[0]
     related_subs = Subject.objects.filter(name__icontains=base_sub)
-    print "related subs in fuzzy:"
     for subject in related_subs:
         print subject.name
         sub_set.add(subject)

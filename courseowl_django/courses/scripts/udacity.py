@@ -1,10 +1,10 @@
 import urllib2
 from bs4 import BeautifulSoup
-from courses.models import *
+from courses.models import Provider, Course, Subject
 
 
 def get_urls():
-    url = "http://www.udacity.com/wiki/frontpage"
+    url = 'http://www.udacity.com/wiki/frontpage'
     request = urllib2.Request(url)
     response = urllib2.urlopen(request)
     page = response.read()
@@ -66,8 +66,6 @@ def get_desc(page):
 
 
 def get_subj(page):
-    subj = []
-
     try:
         anchor_x = page.index('This Course is a Part Of')
         anchor_y = page.index('Course Instructors')

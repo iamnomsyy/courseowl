@@ -26,14 +26,6 @@ def create_course(item, provider):
     description = instructor_description_paragraphs[1].text.strip()
     url = item.a.attrs['href']
 
-    # print('Adding course:')
-    # print('Subject: ' + subject)
-    # print('Title: ' + title)
-    # print('Instructor: ' + instructor)
-    # print('Description: ' + description)
-    # print('URL: ' + url)
-    # print('===========================================')
-
     course, created = Course.objects.get_or_create(name=title, url=url, description=description, instructor=instructor, provider=provider)
     subject, created = Subject.objects.get_or_create(name=subject)
     course.subjects.add(subject)

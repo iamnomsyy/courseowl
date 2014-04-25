@@ -1,4 +1,4 @@
-from courses.models import *
+from courses.models import Provider, Course, Source, Subject
 import urllib2
 from bs4 import BeautifulSoup
 import re
@@ -33,14 +33,13 @@ all_subjects = [
 ]
 
 
-# quite un-pythonic, but works.. --kz 2014-04-10
+int_list = []
+uni_list = []
+title_list = []
+desc_list = []
+sub_list = []
+url_list = []
 
-int_list = list()
-uni_list = list()
-title_list = list()
-desc_list = list()
-sub_list = list()
-url_list = list()
 
 def run():
     populate_lists()
@@ -48,7 +47,7 @@ def run():
 
 
 def populate_lists(subject_list=None):
-    print("Adding courses from edX (this will take a minute)...")
+    print('Adding courses from edX (this will take a minute)...')
     
     if subject_list is None:
         subjects = all_subjects
@@ -85,7 +84,7 @@ def add_to_django():
     edx_provider, created = Provider.objects.get_or_create(name='edX')
     for i in range(len(title_list)):
         try:
-            print "Adding " + title_list[i] + " course: " + str(i)
+            print('Adding ' + title_list[i] + ' course: ' + str(i))
         except:
             pass
         c, created = Course.objects.get_or_create(name=title_list[i], description=desc_list[i], instructor=int_list[i], url=url_list[i])
@@ -95,8 +94,8 @@ def add_to_django():
         subject, created = Subject.objects.get_or_create(name=sub_list[i])
         c.subjects.add(subject)
         c.save()
-    print("Done!")
-    print(str(len(title_list)) + " courses added!")
+    print('Done!')
+    print(str(len(title_list)) + ' courses added!')
 
 
 if __name__ == '__main__':

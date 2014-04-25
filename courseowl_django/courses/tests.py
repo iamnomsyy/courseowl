@@ -1,15 +1,15 @@
 from django.test import TestCase
-from courses.models import Subject, Provider, Source, Course
-from django.contrib.auth.models import User
 import json
 import os
-from accounts.models import UserProfile
-from courses.recommender import *
+from bs4 import BeautifulSoup
+from courses.recommender import get_fuzzy_subject_matching, get_enrolled_subjects, get_similar_user_interests, \
+    get_similar_user_dislikes, get_recs_from_subjects, get_similar_user_completed
 from courses.scripts.coursera import add_courses as coursera_add_courses
 import courses.scripts.udacity as udacity
 import courses.scripts.iversity as iversity
 import courses.scripts.edx as edx
-from bs4 import BeautifulSoup
+from courses.models import Subject, Provider, Course
+from accounts.models import UserProfile, User
 
 
 class SubjectTests(TestCase):
@@ -87,10 +87,10 @@ class EdxScriptTests(TestCase):
         edge_course = Course.objects.filter(name='The Analytics Edge')
         self.assertTrue(edge_course.exists())
 
-class RecommenderTestsNormalCase(TestCase):
 
+class RecommenderTestsNormalCase(TestCase):
     def setUp(self):
-        #Create three fake users and two fake courses
+        # Create three fake users and two fake courses
         self.subject_math = Subject()
         self.subject_math.name = "math"
         self.subject_math.save()
@@ -118,31 +118,31 @@ class RecommenderTestsNormalCase(TestCase):
         self.course_english.save()
 
         self.user1 = User.objects.create(username='user1')
-        self.userProf1 = UserProfile.objects.create(user=self.user1)
-        self.userProf1.save()
-        self.userProf1.interests.add(self.subject_math2)
-        self.userProf1.disliked.add(self.course_math)
-        self.userProf1.disliked.add(self.course_english)
-        self.userProf1.completed.add(self.course_math)
-        self.userProf1.completed.add(self.course_english)
-        self.userProf1.save()
+        self.user_profile_1 = UserProfile.objects.create(user=self.user1)
+        self.user_profile_1.save()
+        self.user_profile_1.interests.add(self.subject_math2)
+        self.user_profile_1.disliked.add(self.course_math)
+        self.user_profile_1.disliked.add(self.course_english)
+        self.user_profile_1.completed.add(self.course_math)
+        self.user_profile_1.completed.add(self.course_english)
+        self.user_profile_1.save()
 
-        self.user2 = User.objects.create(username="user2")
-        self.userProf2 = UserProfile.objects.create(user=self.user2)
-        self.userProf2.save()
-        self.userProf2.interests.add(self.subject_math2)
-        self.userProf2.disliked.add(self.course_english)
-        self.userProf2.disliked.add(self.course_math)
-        self.userProf2.save()
+        self.user_2 = User.objects.create(username="user2")
+        self.user_profile_2 = UserProfile.objects.create(user=self.user_2)
+        self.user_profile_2.save()
+        self.user_profile_2.interests.add(self.subject_math2)
+        self.user_profile_2.disliked.add(self.course_english)
+        self.user_profile_2.disliked.add(self.course_math)
+        self.user_profile_2.save()
 
-        self.user3 = User.objects.create(username="user3")
-        self.userProf3 = UserProfile.objects.create(user=self.user3)
-        self.userProf3.save()
-        self.userProf3.interests.add(self.subject_english)
-        self.userProf3.disliked.add(self.course_math)
-        self.userProf3.completed.add(self.course_math)
-        self.userProf3.completed.add(self.course_english)
-        self.userProf3.save()
+        self.user_3 = User.objects.create(username="user3")
+        self.user_profile_3 = UserProfile.objects.create(user=self.user_3)
+        self.user_profile_3.save()
+        self.user_profile_3.interests.add(self.subject_english)
+        self.user_profile_3.disliked.add(self.course_math)
+        self.user_profile_3.completed.add(self.course_math)
+        self.user_profile_3.completed.add(self.course_english)
+        self.user_profile_3.save()
 
     def test_fuzzy_matching_subject(self):
         subject_math3 = Subject()
@@ -155,28 +155,29 @@ class RecommenderTestsNormalCase(TestCase):
     def test_get_recs_from_subjects(self):
         test_subs = set()
         test_subs.add(Subject.objects.get(name="math-calculus"))
-        subjSet = get_recs_from_subjects(test_subs)
-        self.assertEqual(len(subjSet), 1)
-        self.assertEqual(subjSet.pop().name, "intro to math")
+        subject_set = get_recs_from_subjects(test_subs)
+        self.assertEqual(len(subject_set), 1)
+        self.assertEqual(subject_set.pop().name, "intro to math")
 
     def test_get_enrolled_subjects(self):
         self.assertEqual(len(get_enrolled_subjects(self.user1)), 2)
 
     def test_get_similar_user_interests(self):
-        simUser, numb = get_similar_user_interests(self.user1)
-        self.assertEqual(simUser, self.userProf2)
+        similar_user, numb = get_similar_user_interests(self.user1)
+        self.assertEqual(similar_user, self.user_profile_2)
         self.assertEqual(numb, 1)
 
     def test_get_similar_user_dislikes(self):
-        simUser, numb = get_similar_user_dislikes(self.user1)
-        self.assertEqual(simUser, self.userProf2)
+        similar_user, numb = get_similar_user_dislikes(self.user1)
+        self.assertEqual(similar_user, self.user_profile_2)
         self.assertEqual(numb, 2)
 
     def test_get_similar_user_completed(self):
-        simUser, numb = get_similar_user_completed(self.user1)
-        print simUser.user.username
-        self.assertEqual(simUser, self.userProf3)
+        similar_user, numb = get_similar_user_completed(self.user1)
+        print similar_user.user.username
+        self.assertEqual(similar_user, self.user_profile_3)
         self.assertEqual(numb, 2)
+
 
 class IversityScriptTests(TestCase):
     def test_add_to_django(self):

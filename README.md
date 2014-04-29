@@ -15,4 +15,5 @@ This will generate a folder of HTML documentation based on the comment
 strings in the application:
 
     cd courseowl_django
+    export DJANGO_SETTINGS_MODULE=courseowl_django.settings
     fab generate_html_docs

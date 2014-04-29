@@ -33,8 +33,12 @@ def deploy():
         extra_opts=extra_opts,
     )
 
+    migrate_prompt = prompt('Run manage.py migrate? (y/N) ')
     collectstatic_prompt = prompt('Collectstatic? (y/N) ')
     uwsgi_supervisord = prompt('Restart uwsgi? (y/N) ')
+
+    if migrate_prompt == 'y':
+        migrate()
 
     if collectstatic_prompt == 'y':
         collectstatic()
@@ -49,6 +53,14 @@ def uwsgi_supervisord_restart():
     """
     require('root', provided_by='courseowl_http')
     run('sudo /usr/bin/supervisorctl restart courseowl_uwsgi')
+
+
+def migrate():
+    """
+    Run manage.py migrate on the production server.
+    """
+    run('OWL_ENV="production_http" /home/deploy/.virtualenvs/owl/bin/python '
+        '/var/www/courseowl_django/courseowl_django/manage.py migrate')
 
 
 def collectstatic():

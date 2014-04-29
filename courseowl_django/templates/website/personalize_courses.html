@@ -17,18 +17,18 @@
           These are courses you're interested in. Click on a course to remove it from the list.
         <ul class="list-group enrolled-courses">
           {% for course in enrolled %}
-          <a class="list-group-item" data-course-id="{{ course.id }}">
-          {{ course.name|capfirst }}
-          </a>
+            <a class="list-group-item" data-course-id="{{ course.id }}">
+              {{ course.name|capfirst }}
+            </a>
           {% endfor %}
         </ul>
         <h2>Available courses</h2>
           These are the all courses on CourseOwl. Click on a course to add it to your list of favorites.
         <ul class="list-group other-courses">
           {% for course in courses %}
-          <a class="list-group-item" data-course-id="{{ course.id }}">
-            {{ course.name|capfirst }}
-          </a>
+            <a class="list-group-item" data-course-id="{{ course.id }}">
+              {{ course.name|capfirst }}
+            </a>
           {% endfor %}
         </ul>
       </form>

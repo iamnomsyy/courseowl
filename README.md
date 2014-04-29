@@ -9,3 +9,11 @@ Wiki: https://wiki.engr.illinois.edu/display/cs428sp14/CourseOwl
 ### Installation
 
 See this: https://wiki.engr.illinois.edu/display/cs428sp14/CourseOwl+Development+Environment+Setup
+
+### Generating Documentation with epydoc
+This will generate a folder of HTML documentation based on the comment
+strings in the application:
+
+    cd courseowl_django
+    export DJANGO_SETTINGS_MODULE=courseowl_django.settings
+    fab generate_html_docs

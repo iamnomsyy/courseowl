@@ -9,3 +9,4 @@ django-allauth==0.15.0
 beautifulsoup4==4.3.2
 django-haystack==2.1.0
 Whoosh==2.6.0
+epydoc==3.0.1

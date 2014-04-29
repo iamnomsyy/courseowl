@@ -33,3 +33,10 @@ def remove_pyc():
     Remove .pyc files in the project directory.
     """
     local('find . -name "*.pyc" -exec rm -f "{}" \;')
+
+
+def generate_html_docs():
+    """
+    Generate epydoc HTML documentation.
+    """
+    local('epydoc --html --parse-only --docformat plaintext accounts api courseowl_django courses website')

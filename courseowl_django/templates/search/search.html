@@ -22,32 +22,30 @@
         </td>
       </tr>
       {% empty %}
-          <tr><td>No results found.</td></tr>
+        <tr><td>No results found.</td></tr>
       {% endfor %}
     </table>
   </div>
 {% else %}
-      <br/>
-      <h4>To search, type something in the search box above.</h4>
+  <br/>
+  <h4>To search, type something in the search box above.</h4>
 {% endif %}
 </div>
-
 {% include "accounts/course_info_modal.html" %}
 <script>
-    $(function() {
-        function setActionListener(actionSelector, apiEndpoint, dataKey) {
-            $(actionSelector).on('click', function(event) {
-                var $button = $(this);
-                var $result = $button.closest('tr');
-                var data = {};
-                data[dataKey] = $result.data('course-id');
-
-                $.post(
-                    apiEndpoint,
-                    data
+  $(function() {
+    function setActionListener(actionSelector, apiEndpoint, dataKey) {
+             $(actionSelector).on('click', function(event) {
+               var $button = $(this);
+               var $result = $button.closest('tr');
+               var data = {};
+               data[dataKey] = $result.data('course-id');
+               $.post(
+                 apiEndpoint,
+                 data
                 ).done(function(res) {
-                    if (!!res.success) {
-                        $result.fadeOut();
+                  if (!!res.success) {
+                   $result.fadeOut();
                     }
                 });
             });

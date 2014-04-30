@@ -45,11 +45,17 @@ def get_page(url):
 
 
 def get_name(page):
+    """
+    Gets the name of the course from the page
+    """
     anchor = page.index('View Trailer')
     return page[anchor+1]
 
 
 def get_instr(page):
+    """
+    Gets instructor field of the page
+    """
     instr = []
 
     anchor = page.index('Course Instructors')
@@ -62,6 +68,9 @@ def get_instr(page):
 
 
 def get_desc(page):
+    """
+    Gets the description field of the page
+    """
     anchor = page.index('Class Summary')
     return page[anchor+1]
 
@@ -83,6 +92,9 @@ def get_subj(page):
 
 
 def get_all_courses(urls=None):
+    """
+    Gets all courses from a given url
+    """
     course_urls = urls
     if urls is None:
         course_urls = get_urls()
@@ -103,6 +115,9 @@ def get_all_courses(urls=None):
 
 
 def run():
+    """
+    Main function
+    """
     all_courses = get_all_courses()
 
     udacity_provider, created = Provider.objects.get_or_create(name='Udacity')

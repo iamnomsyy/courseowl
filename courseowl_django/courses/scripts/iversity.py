@@ -5,11 +5,17 @@ from bs4 import BeautifulSoup
 from courses.scripts.utilities import unify_subject_name
 
 def run():
+    """
+    Main function
+    """
     print("Adding courses from iversity (this will take a minute)...")
     scrape()
 
 
 def scrape():
+    """
+    Scrapes information from the provider website
+    """
     provider, created = Provider.objects.get_or_create(name='iversity')
     iversity_web = BeautifulSoup(urllib2.urlopen('https://iversity.org/courses').read())
     course_divs = iversity_web.find_all('article', class_='courses-list-item')
@@ -19,6 +25,9 @@ def scrape():
 
 
 def create_course(item, provider):
+    """
+    Creates courses in database based on data parsed from provider
+    """
     subject = item.find('div', class_='ribbon-content').text.strip().lower()  # subjects are stored lowercase in the DB
     subject = unify_subject_name(subject)
     course_info = item.find('div', class_='course-body')

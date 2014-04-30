@@ -5,6 +5,9 @@ import urllib2
 from courses.scripts.utilities import unify_subject_name
 
 def run():
+    """
+    Main function of the script. Gets JSON, parses, and adds the information to database
+    """
     print('Adding Cousera courses....')
     coursera_json_url = 'https://www.coursera.org/maestro/api/topic/list?full=1%20or%20https://www.coursera.org/maestro/api/topic/list2'
     coursera_dict = get_and_parse_json(coursera_json_url)
@@ -13,12 +16,18 @@ def run():
 
 
 def get_and_parse_json(url):
+    """
+    Gets JSON of all courses from provider and returns it as a dictionary
+    """
     coursera_json_list = urllib2.urlopen(url)
     coursera_json_dict = json.loads(coursera_json_list.read())
     return coursera_json_dict
 
 
 def add_courses(json_dict):
+    """
+    Adds courses from JSON into the database
+    """
     coursera_provider, created = Provider.objects.get_or_create(name='Coursera')
 
     for course in json_dict:

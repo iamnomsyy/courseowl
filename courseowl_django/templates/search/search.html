@@ -1,60 +1,71 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="container search-results-container">
-{% if query %}
-  <div class="col-md-12">
-    <table class="table table-striped table-bordered">
-      <tr><th><h3>Results for {{ query }}:</h3></th></tr>
-      {% for result in page.object_list %}
-      <tr data-id="{{ result.object.id }}">
-        <td>
-          <h4>{{ result.object.name }}</h4>
-            <ul class="nav nav-tabs">
-              <li class = "active"><a data-toggle="tab" href="#info">Course Info</a></li>
-              <li><a class="text-warning"><strong> Provider: </strong>{{ result.object.provider }}</a></li>
-            </ul>
-          <div class="tab-content">
-            <p>{{ result.object.description }}&nbsp;<a class='info-button' data-toggle="modal" data-target="#courseinfo">More Info</a></p>
-          </div>
-          <button class='btn-small btn-success btn add-button'><i class="glyphicon glyphicon-plus"></i> Add</button>
-          <button class='btn-small btn-primary btn taken-button'><i class="glyphicon glyphicon-thumbs-up"></i> Taken</button>
-          <button class='btn-small btn-danger btn hide-button'><i class="glyphicon glyphicon-thumbs-down"></i> Hide</button>
-        </td>
-      </tr>
-      {% empty %}
-        <tr><td>No results found.</td></tr>
-      {% endfor %}
-    </table>
+  <div class="container search-results-container">
+    {% if query %}
+      <div class="col-md-12">
+        <table class="table table-striped table-bordered">
+          <tr>
+            <th><h3>Results for {{ query }}:</h3></th>
+          </tr>
+          {% for result in page.object_list %}
+            <tr data-id="{{ result.object.id }}">
+              <td>
+                <h4>{{ result.object.name }}</h4>
+                <ul class="nav nav-tabs">
+                  <li class="active"><a data-toggle="tab" href="#info">Course Info</a></li>
+                  <li><a class="text-warning"><strong> Provider: </strong>{{ result.object.provider }}</a></li>
+                </ul>
+                <div class="tab-content">
+                  <p>{{ result.object.description }}&nbsp;<a class='info-button' data-toggle="modal"
+                                                             data-target="#courseinfo">More Info</a></p>
+                </div>
+                <button class='btn-small btn-success btn add-button'><i class="glyphicon glyphicon-plus"></i> Add
+                </button>
+                <button class='btn-small btn-primary btn taken-button'><i class="glyphicon glyphicon-thumbs-up"></i>
+                  Taken
+                </button>
+                <button class='btn-small btn-danger btn hide-button'><i class="glyphicon glyphicon-thumbs-down"></i>
+                  Hide
+                </button>
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td>No results found.</td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+    {% else %}
+      <br/>
+      <h4>To search, type something in the search box above.</h4>
+    {% endif %}
   </div>
-{% else %}
-  <br/>
-  <h4>To search, type something in the search box above.</h4>
-{% endif %}
-</div>
-{% include "accounts/course_info_modal.html" %}
-<script>
-  $(function() {
-    function setActionListener(actionSelector, apiEndpoint, dataKey) {
-             $(actionSelector).on('click', function(event) {
-               var $button = $(this);
-               var $result = $button.closest('tr');
-               var data = {};
-               data[dataKey] = $result.data('course-id');
-               $.post(
-                 apiEndpoint,
-                 data
-                ).done(function(res) {
-                  if (!!res.success) {
-                   $result.fadeOut();
-                    }
-                });
-            });
-        }
-        setActionListener('.add-button', '/api/enroll', 'course_to_add');
-        setActionListener('.hide-button', '/api/complete_course', 'completed_course');
-        setActionListener('.taken-button', '/api/dislike_course', 'disliked_course');
+  {% include "accounts/course_info_modal.html" %}
+  <script>
+    $(function () {
+      function setActionListener(actionSelector, apiEndpoint, dataKey) {
+        $(actionSelector).on('click', function (event) {
+          var $button = $(this);
+          var $result = $button.closest('tr');
+          var data = {};
+          data[dataKey] = $result.data('course-id');
+          $.post(
+                  apiEndpoint,
+                  data
+              ).done(function (res) {
+                if (!!res.success) {
+                  $result.fadeOut();
+                }
+              });
+        });
+      }
 
-        setInfoModalListener();
+      setActionListener('.add-button', '/api/enroll', 'course_to_add');
+      setActionListener('.hide-button', '/api/complete_course', 'completed_course');
+      setActionListener('.taken-button', '/api/dislike_course', 'disliked_course');
+
+      setInfoModalListener();
     });
-</script>
+  </script>
 {% endblock %}

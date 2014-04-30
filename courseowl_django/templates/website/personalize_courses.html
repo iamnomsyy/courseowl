@@ -1,53 +1,55 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="jumbotron">
-  <div class="container">
-    <h1><b>One last step</b></h1>
-      <p>Choose courses to add to your CourseOwl profile.</p>
-  </div>
-</div>
+  <div class="jumbotron">
+    <div class="container">
+      <h1><b>One last step</b></h1>
 
-<div class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <form method="post">
-        {% csrf_token %}
-        <input type="submit" id="submit-courses" value="Finish" class="btn btn-success pull-right">
-        <h2>Selected courses</h2>
-          These are courses you're interested in. Click on a course to remove it from the list.
-        <ul class="list-group enrolled-courses">
-          {% for course in enrolled %}
-            <a class="list-group-item" data-course-id="{{ course.id }}">
-              {{ course.name|capfirst }}
-            </a>
-          {% endfor %}
-        </ul>
-        <h2>Available courses</h2>
-          These are the all courses on CourseOwl. Click on a course to add it to your list of favorites.
-        <ul class="list-group other-courses">
-          {% for course in courses %}
-            <a class="list-group-item" data-course-id="{{ course.id }}">
-              {{ course.name|capfirst }}
-            </a>
-          {% endfor %}
-        </ul>
-      </form>
+      <p>Choose courses to add to your CourseOwl profile.</p>
     </div>
   </div>
-</div>
 
-<script>
-  $(function() {
-    // Sets animations/listeners for moving items between lists on click
-    setSwitchActions('.other-courses', '.enrolled-courses');
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <form method="post">
+          {% csrf_token %}
+          <input type="submit" id="submit-courses" value="Finish" class="btn btn-success pull-right">
 
-    bundleSelectionsOnSubmit({
-      'buttonID': '#submit-courses',
-      'selectedItemsSelector': '.enrolled-courses a',
-      'dataID': 'course-id',
-      'inputName': 'course_ids'
+          <h2>Selected courses</h2>
+          These are courses you're interested in. Click on a course to remove it from the list.
+          <ul class="list-group enrolled-courses">
+            {% for course in enrolled %}
+              <a class="list-group-item" data-course-id="{{ course.id }}">
+                {{ course.name|capfirst }}
+              </a>
+            {% endfor %}
+          </ul>
+          <h2>Available courses</h2>
+          These are the all courses on CourseOwl. Click on a course to add it to your list of favorites.
+          <ul class="list-group other-courses">
+            {% for course in courses %}
+              <a class="list-group-item" data-course-id="{{ course.id }}">
+                {{ course.name|capfirst }}
+              </a>
+            {% endfor %}
+          </ul>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $(function () {
+      // Sets animations/listeners for moving items between lists on click
+      setSwitchActions('.other-courses', '.enrolled-courses');
+
+      bundleSelectionsOnSubmit({
+        'buttonID': '#submit-courses',
+        'selectedItemsSelector': '.enrolled-courses a',
+        'dataID': 'course-id',
+        'inputName': 'course_ids'
+      });
     });
-  });
-</script>
+  </script>
 
 {% endblock %}

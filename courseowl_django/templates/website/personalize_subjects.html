@@ -1,53 +1,55 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="jumbotron">
+  <div class="jumbotron">
     <div class="container">
-        <h1><b>Tell us about yourself</b></h1>
-        <p>What subjects are you interested in?</p>
-    </div>
-</div>
+      <h1><b>Tell us about yourself</b></h1>
 
-<div class="container">
+      <p>What subjects are you interested in?</p>
+    </div>
+  </div>
+
+  <div class="container">
     <div class="row">
       <div class="col-md-12">
         <form method="post">
           {% csrf_token %}
           <input type="submit" id="submit-subjects" value="Proceed to courses" class="btn btn-primary pull-right">
+
           <h2>Currently liked subjects</h2>
-            These are subjects you're interested in. Click on a subject to remove it from the list.
+          These are subjects you're interested in. Click on a subject to remove it from the list.
           <ul class="list-group liked-subjects">
             {% for sub in liked_subjects %}
-            <a class="list-group-item" data-subject-id="{{ sub.id }}">
-              {{ sub.name|capfirst }}
-            </a>
+              <a class="list-group-item" data-subject-id="{{ sub.id }}">
+                {{ sub.name|capfirst }}
+              </a>
             {% endfor %}
           </ul>
           <h2>Subjects available</h2>
-            These are the all subjects on CourseOwl. Click on a subject to add it to your list of favorites.
-            <ul class="list-group other-subjects">
-              {% for sub in subjects %}
-                <a class="list-group-item" data-subject-id="{{ sub.id }}">
-                  {{ sub.name|capfirst }}
-                </a>
-              {% endfor %}
-            </ul>
+          These are the all subjects on CourseOwl. Click on a subject to add it to your list of favorites.
+          <ul class="list-group other-subjects">
+            {% for sub in subjects %}
+              <a class="list-group-item" data-subject-id="{{ sub.id }}">
+                {{ sub.name|capfirst }}
+              </a>
+            {% endfor %}
+          </ul>
         </form>
       </div>
     </div>
-</div>
+  </div>
 
-<script>
-  $(function() {
-    // Sets listeners/animations for switching between liked and other
-    setSwitchActions('.other-subjects', '.liked-subjects');
+  <script>
+    $(function () {
+      // Sets listeners/animations for switching between liked and other
+      setSwitchActions('.other-subjects', '.liked-subjects');
 
-    bundleSelectionsOnSubmit({
-      'buttonID': '#submit-subjects',
-      'selectedItemsSelector': '.liked-subjects a',
-      'dataID': 'subject-id',
-      'inputName': 'subject_ids'
+      bundleSelectionsOnSubmit({
+        'buttonID': '#submit-subjects',
+        'selectedItemsSelector': '.liked-subjects a',
+        'dataID': 'subject-id',
+        'inputName': 'subject_ids'
+      });
     });
-  });
-</script>
+  </script>
 
 {% endblock %}

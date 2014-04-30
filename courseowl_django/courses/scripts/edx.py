@@ -43,11 +43,17 @@ url_list = []
 
 
 def run():
+    """
+    Main function
+    """
     populate_lists()
     add_to_django()
 
 
 def populate_lists(subject_list=None):
+    """
+    Parses data from provider with BeautifulSoup into lists
+    """
     print('Adding courses from edX (this will take a minute)...')
     
     if subject_list is None:
@@ -82,6 +88,9 @@ def populate_lists(subject_list=None):
 
 
 def add_to_django():
+    """
+    Adds the data from the lists into appropriate fields of the database
+    """
     edx_provider, created = Provider.objects.get_or_create(name='edX')
     for i in range(len(title_list)):
         try:

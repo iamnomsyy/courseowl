@@ -84,6 +84,9 @@ class TestAPI(TestCase):
         self.assertEqual('["Advanced Pottery III"]', response.content)
 
     def test_json_liked_subjects(self):
+        """
+        Test the /api/liked_subjects/ endpoint for a logged in user
+        """
         temp_subject = Subject(name='Computer Science')
         temp_subject.save()
 
@@ -101,6 +104,9 @@ class TestAPI(TestCase):
         self.assertEqual('["Computer Science", "Computer Engineering"]', response.content)
 
     def test_json_like_subject(self):
+        """
+        Test the /api/like_subject/ endpoint for a logged in user
+        """
         login_successful = self.client.login(username='bob12345', password='bob123456')
         self.assertTrue(login_successful)
 
@@ -114,6 +120,9 @@ class TestAPI(TestCase):
         self.assertEqual('{"success": false}', response.content)
 
     def test_json_dislike_course(self):
+        """
+        Test the /api/dislike_course/ endpoint for a logged in user
+        """
         login_successful = self.client.login(username='bob12345', password='bob123456')
         self.assertTrue(login_successful)
 
@@ -127,6 +136,9 @@ class TestAPI(TestCase):
         self.assertEqual('{"success": false}', response.content)
 
     def test_json_complete_course(self):
+        """
+        Test the /api/complete_course/ endpoint for a logged in user
+        """
         login_successful = self.client.login(username='bob12345', password='bob123456')
         self.assertTrue(login_successful)
 
@@ -140,6 +152,9 @@ class TestAPI(TestCase):
         self.assertEqual('{"success": false}', response.content)
 
     def create_fake_userprofile(self):
+        """
+        Helper function to create a fake user profile for tests
+        """
         email = "abc@xyz.com"
         password = "qwerty123"
         user = User.objects.create_user(username_md5(email), email, password, first_name="", last_name="")
@@ -156,6 +171,9 @@ class TestAPI(TestCase):
         return user_profile
 
     def test_add_remove_course(self):
+        """
+        Test the /api/remove_course/ endpoint for a logged in user
+        """
         user_profile = self.create_fake_userprofile()
         self.client.login(username='abc@xyz.com', password='qwerty123')
 
@@ -182,6 +200,9 @@ class TestAPI(TestCase):
         self.assertEqual(len(all_courses), 0)
 
     def test_course_info(self):
+        """
+        Test the /api/course_info/ endpoint for a logged in user
+        """
         login_successful = self.client.login(username='bob12345', password='bob123456')
         self.assertTrue(login_successful)
 
@@ -216,6 +237,9 @@ class TestAPI(TestCase):
         self.assertEqual('{"success": false}', response.content)
 
     def test_similar_courses(self):
+        """
+        Test the /api/similar_courses/ endpoint for a logged in user
+        """
         similar_courses = get_similar_courses(self.test_course_1)
         self.assertEqual(len(similar_courses), 2)
         self.assertIn(self.test_course_2, similar_courses)

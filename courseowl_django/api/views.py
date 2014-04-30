@@ -128,6 +128,9 @@ def json_random_courses(request):
 
 @login_required
 def add_course(request):
+    """
+    Adds a course to the user's profile
+    """
     if request.method == "POST":
         try:
             user_profile = UserProfile.objects.get(user=request.user)
@@ -145,7 +148,7 @@ def add_course(request):
 @login_required
 def drop_course(request):
     """
-    Drops a course from the user
+    Drops a course from the user's profile
     """
     if request.method == "POST":
         try:
@@ -163,7 +166,7 @@ def drop_course(request):
 
 def get_similar_courses(course):
     """
-    given a Course, return a list of 3 Courses that are similar
+    Given a Course, return a list of 3 Courses that are similar
     """
     subject = course.subjects.all()[0]
     return Course.objects.filter(subjects__name=subject.name).exclude(id=course.id)[:3]

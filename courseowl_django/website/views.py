@@ -6,10 +6,16 @@ import json
 
 
 def index(request):
+    """
+    Renders the homepage
+    """
     return render(request, 'website/index.html')
 
 
 def error404(request):
+    """
+    Renders the 404 page
+    """
     return render(request, 'website/error404.html')
 
 

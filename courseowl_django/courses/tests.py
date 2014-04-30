@@ -13,8 +13,12 @@ from accounts.models import UserProfile, User
 
 from courses.scripts.utilities import unify_subject_name
 
+
 class SubjectTests(TestCase):
     def test_create_subject(self):
+        """
+        Creates a Subject model object and tests if it can be manipulated properly
+        """
         subject = Subject()
         subject.name = 'CS'
         subject.save()
@@ -62,10 +66,16 @@ class CourseraScriptTests(TestCase):
 
 class UdacityScriptTests(TestCase):
     def test_get_urls(self):
+        """
+        Tests if get_urls() returns a non empty list
+        """
         l = udacity.get_urls()
         self.assertTrue(len(l) > 0)
 
     def test_get_all_courses(self):
+        """
+        Tests if we can get all courses properly
+        """
         urls = ['https://www.udacity.com/course/cs046']
         all_courses = udacity.get_all_courses(urls)
         itp = all_courses['Intro to Programming']  # itp for 'Intro to Programming'
@@ -78,11 +88,17 @@ class UdacityScriptTests(TestCase):
 
 class EdxScriptTests(TestCase):
     def test_populate_lists(self):
+        """
+        Tests if lists are properly populated
+        """
         edx.populate_lists(['business-management'])
         self.assertEquals(len(edx.all_subjects), 25)
         self.assertTrue('The Analytics Edge' in edx.title_list)
 
     def test_add_to_django(self):
+        """
+        Test if data from lists are properly added to Django database
+        """
         edx.populate_lists(['business-management'])
         edx.add_to_django()
         edge_course = Course.objects.filter(name='The Analytics Edge')
@@ -182,6 +198,9 @@ class RecommenderTestsNormalCase(TestCase):
 
 class IversityScriptTests(TestCase):
     def test_add_to_django(self):
+        """
+        Tests if we can properly add courses to Django and the database
+        """
         provider, created = Provider.objects.get_or_create(name='iversity')
         sample_div = "<article class='courses-list-item'><div class='ribbon-content'>Engineering</div></div><div class='course-body'><header><h2 class='truncate'><a href='https://iversity.org/courses/vehicle-dynamics-i-accelerating-and-braking'>Vehicle Dynamics I: Accelerating and Braking</a></h2><p class='instructors truncate'>Univ.-Prof. Dr.-Ing. Martin Meywerk</p></header><p class='description'>From Bugatti Veyron to Volkswagen Beetle, from racing to passenger car: study about their acceleration and braking and learn from two applications from automotive mechatronics. </p></div></div></div></div></div></div></div></article>"
         sample_div = BeautifulSoup(sample_div)
@@ -208,8 +227,12 @@ class IversityScriptTests(TestCase):
         # Make sure the course description is set properly:
         self.assertEqual('From Bugatti Veyron to Volkswagen Beetle, from racing to passenger car: study about their acceleration and braking and learn from two applications from automotive mechatronics.', new_course.description)
 
+
 class UnifySubjectNameTests(TestCase):
     def test_unify_subject_names(self):
+        """
+        Test if we properly get the first word from a subject
+        """
         name_1 = 'cs-ai'
         name_2 = 'social science'
         name_3 = 'physical-education stuff'

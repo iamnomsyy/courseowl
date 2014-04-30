@@ -1,134 +1,140 @@
 {% extends "base.html" %}
 {% block content %}
-{% load socialaccount %}
+  {% load socialaccount %}
 
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-<div class="container">
- <div class="row vertical-center-row row-md-offset-4">
-   <h2>Welcome </h2>
-   <h4><i class="glyphicon glyphicon-user"></i> {{ email }}</h4>
- </div>
- <div class="row">
-    <h2>Active Courses</h2>
-    <table class='table table-striped'>
-      <thead>
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+  <div class="container">
+    <div class="row vertical-center-row row-md-offset-4">
+      <h2>Welcome </h2>
+      <h4><i class="glyphicon glyphicon-user"></i> {{ email }}</h4>
+    </div>
+    <div class="row">
+      <h2>Active Courses</h2>
+      <table class='table table-striped'>
+        <thead>
         <tr>
           <th class="col-sm-4">Course</th>
           <th class="col-md-2 col-sm-1">Provider</th>
           <th class="col-sm-3">Instructor</th>
           <th class="col-md-3 col-sm-4">Action</th>
         </tr>
-      </thead>
-      <tbody class="enrolled-courses">
-        {%for course in enrolled_list %}
-        <tr data-id="{{course.id}}">
-          <td>{{ course.name }}</td>
-          <td>{{ course.provider }}</td>
-          <td>{{ course.instructor }}</td>
-          <td>
-            <button class='btn btn-small btn-info info-button' data-toggle="modal" data-target="#courseinfo">Course info</button>
-            <div class='btn btn-small btn-danger drop-button' data-toggle="drop-modal">
-              Drop course
-            </div>
-          </td>
-        </tr>
+        </thead>
+        <tbody class="enrolled-courses">
+        {% for course in enrolled_list %}
+          <tr data-id="{{ course.id }}">
+            <td>{{ course.name }}</td>
+            <td>{{ course.provider }}</td>
+            <td>{{ course.instructor }}</td>
+            <td>
+              <button class='btn btn-small btn-info info-button' data-toggle="modal" data-target="#courseinfo">Course
+                info
+              </button>
+              <div class='btn btn-small btn-danger drop-button' data-toggle="drop-modal">
+                Drop course
+              </div>
+            </td>
+          </tr>
         {% endfor %}
-      </tbody>
-    </table>
-  </div>
-  <div class="row">
-    <h2>Recommendations</h2>
-    <table class='table table-striped'>
-      <thead>
+        </tbody>
+      </table>
+    </div>
+    <div class="row">
+      <h2>Recommendations</h2>
+      <table class='table table-striped'>
+        <thead>
         <tr>
           <th class="col-sm-4">Course</th>
           <th class="col-md-2 col-sm-1">Provider</th>
           <th class="col-sm-3">Instructor</th>
           <th class="col-md-3 col-sm-4">Action</th>
         </tr>
-      </thead>
-      <tbody class="recommended-courses">
+        </thead>
+        <tbody class="recommended-courses">
         <!-- Check again -->
-        {%for course in recommend_list %}
-        <tr data-id="{{ course.id }}">
-          <td>{{course.name}}</td>
-          <td>{{course.provider}}</td>
-          <td>{{course.instructor}}</td>
-          <td>
-            <div class='btn btn-small btn-info info-button' data-toggle="modal" data-target="#courseinfo">Course info</div>
-            <div class='btn btn-small btn-success add-course'>Add Course</div>
-          </td>
-        </tr>
+        {% for course in recommend_list %}
+          <tr data-id="{{ course.id }}">
+            <td>{{ course.name }}</td>
+            <td>{{ course.provider }}</td>
+            <td>{{ course.instructor }}</td>
+            <td>
+              <div class='btn btn-small btn-info info-button' data-toggle="modal" data-target="#courseinfo">Course
+                info
+              </div>
+              <div class='btn btn-small btn-success add-course'>Add Course</div>
+            </td>
+          </tr>
         {% endfor %}
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
+    <div class="row">
+      <h2>Settings</h2>
+      <a href='/personalize' class='btn btn-success btn-large'>Add more subjects and courses</a>
+      <br/><br/>
+      <a class="btn btn-success change-credentials-button" data-toggle="drop-modal"
+         onclick="$('#change-credentials').modal('show');">Change your email or password</a>
+      <br/><br/>
+      <a class="btn btn-danger deactivate-button" data-toggle="drop-modal"
+         onclick="$('#deactivate-account').modal('show');">Deactivate account</a>
+    </div>
   </div>
-  <div class="row">
-    <h2>Settings</h2>
-    <a href='/personalize' class='btn btn-success btn-large'>Add more subjects and courses</a>
-    <br /><br />
-    <a class="btn btn-success change-credentials-button" data-toggle="drop-modal" onclick="$('#change-credentials').modal('show');">Change your email or password</a>
-    <br /><br />
-    <a class="btn btn-danger deactivate-button" data-toggle="drop-modal" onclick="$('#deactivate-account').modal('show');">Deactivate account</a>
-  </div>
-</div>
 
-{% include "accounts/drop_course_modal.html" %}
-{% include "accounts/credentials_modal.html" %}
-{% include "accounts/deactivate_account_modal.html" %}
-{% include "accounts/course_info_modal.html" %}
+  {% include "accounts/drop_course_modal.html" %}
+  {% include "accounts/credentials_modal.html" %}
+  {% include "accounts/deactivate_account_modal.html" %}
+  {% include "accounts/course_info_modal.html" %}
 
 
-<script>
-function setAddCourseListener() {
-  $('.add-course').on('click', function(event) {
-    var courseID = $(this).closest('tr').data('id');
-    // Enroll in backend
-    $.post(
-      '/api/enroll',
-      { course_to_add: courseID }
-    ).done(function(res) {
-      // on successful adding, move table row to enrolled table
-      $recommended = $('tr[data-id="' + courseID + '"]');
-      $recommended.fadeOut(function() {
-        $dropButton = $('<div>', {
-          'class': 'btn btn-small btn-danger drop-button',
-          'data-toggle': 'modal'
-        }).text('Drop course');
-        $recommended.find('.add-course').replaceWith($dropButton);
-        $recommended.appendTo('.enrolled-courses');
-        $recommended.fadeIn();
+  <script>
+    function setAddCourseListener() {
+      $('.add-course').on('click', function (event) {
+        var courseID = $(this).closest('tr').data('id');
+        // Enroll in backend
+        $.post(
+            '/api/enroll',
+            { course_to_add: courseID }
+        ).done(function (res) {
+              // on successful adding, move table row to enrolled table
+              $recommended = $('tr[data-id="' + courseID + '"]');
+              $recommended.fadeOut(function () {
+                $dropButton = $('<div>', {
+                  'class': 'btn btn-small btn-danger drop-button',
+                  'data-toggle': 'modal'
+                }).text('Drop course');
+                $recommended.find('.add-course').replaceWith($dropButton);
+                $recommended.appendTo('.enrolled-courses');
+                $recommended.fadeIn();
+              });
+            });
       });
-    });
-  });
-}
+    }
 
 
-$(function() {
-  var dropCourseID;
-    // Allows dropping courses
-    $('.enrolled-courses').on('click', '.drop-button', function(event) {
-      event.preventDefault();
-      var courseID = $(this).closest('tr').data('id');
-      dropCourseID = courseID;
-      $('#dropCourse').modal('show');
-    });
-
-    $('#confirmDrop').on('click', function(event) {
-      $('#dropCourse').modal('hide');
-      $.post(
-        "/api/drop",
-        { course_to_drop: dropCourseID }
-      ).done(function(res) {
-        var $courseRow = $('[data-id="' + dropCourseID + '"]');
-        $($courseRow).fadeOut(function() {
-          $($courseRow).remove();
-        });
+    $(function () {
+      var dropCourseID;
+      // Allows dropping courses
+      $('.enrolled-courses').on('click', '.drop-button', function (event) {
+        event.preventDefault();
+        var courseID = $(this).closest('tr').data('id');
+        dropCourseID = courseID;
+        $('#dropCourse').modal('show');
       });
-    });
 
-    setAddCourseListener();
-    setInfoModalListener();
-});
-</script>
+      $('#confirmDrop').on('click', function (event) {
+        $('#dropCourse').modal('hide');
+        $.post(
+            "/api/drop",
+            { course_to_drop: dropCourseID }
+        ).done(function (res) {
+              var $courseRow = $('[data-id="' + dropCourseID + '"]');
+              $($courseRow).fadeOut(function () {
+                $($courseRow).remove();
+              });
+            });
+      });
+
+      setAddCourseListener();
+      setInfoModalListener();
+    });
+  </script>
 {% endblock %}

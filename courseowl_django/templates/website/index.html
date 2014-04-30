@@ -1,36 +1,42 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="jumbotron" style="padding-left: 8%; height: 350px; background-image: url('/static/index_header.jpg'); background-size: 100%;">
-        <div class="container col-md-5">
-            <h1><b style="color: #FFFFFF;">CourseOwl</b></h1>
-            <p style="color: #FFFFFF">A recommendation system
-                to <b>track</b> and <b>discover</b> online courses from multiple providers.
-            </p>
-            {% if user.is_authenticated %}
-                <p><a href="/accounts/profile/" class="btn btn-success btn-lg" role="button">My Courses &raquo;</a></p>
-            {% else %}
-                <p><a href="/accounts/signup/" id="signup-button" class="btn btn-primary btn-lg" role="button">Get started! &raquo;</a></p>
-            {% endif %}
-        </div>
+  <div class="jumbotron"
+       style="padding-left: 8%; height: 350px; background-image: url('/static/index_header.jpg'); background-size: 100%;">
+    <div class="container col-md-5">
+      <h1><b style="color: #FFFFFF;">CourseOwl</b></h1>
+
+      <p style="color: #FFFFFF">A recommendation system
+        to <b>track</b> and <b>discover</b> online courses from multiple providers.
+      </p>
+      {% if user.is_authenticated %}
+        <p><a href="/accounts/profile/" class="btn btn-success btn-lg" role="button">My Courses &raquo;</a></p>
+      {% else %}
+        <p><a href="/accounts/signup/" id="signup-button" class="btn btn-primary btn-lg" role="button">Get
+          started! &raquo;</a></p>
+      {% endif %}
     </div>
-    <div class="container">
-        <div class="row">
-            <h2><b>Discover New Courses</b></h2>
-            <p>
-                Ever wanted to learn about photosynthesis or black holes but couldn't find a good place to start learning?
-                CourseOwl will help you in your quest for knowledge with its large database of courses from all over the world.
-                We have a multitude of courses on topics ranging from animal care to the intricate mechanics of physics, all at your fingertips.
-            </p>
-            <h2><b>Providers</b></h2>
-            <h4>Coursera</h4>
-            Over 600 courses from over 100 partners.
-            <h4>edX</h4>
-            Over 150 courses from universities around the world.
-            <h4>Udacity</h4>
-            Specialized courses with videos, exercises, personalized support, and verified certificates.
-            <h4>iversity</h4>
-            Video, feedback, and peer-to-peer forums for a variety of courses in English and German.
-        </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <h2><b>Discover New Courses</b></h2>
+
+      <p>
+        Ever wanted to learn about photosynthesis or black holes but couldn't find a good place to start learning?
+        CourseOwl will help you in your quest for knowledge with its large database of courses from all over the world.
+        We have a multitude of courses on topics ranging from animal care to the intricate mechanics of physics, all at
+        your fingertips.
+      </p>
+
+      <h2><b>Providers</b></h2>
+      <h4>Coursera</h4>
+      Over 600 courses from over 100 partners.
+      <h4>edX</h4>
+      Over 150 courses from universities around the world.
+      <h4>Udacity</h4>
+      Specialized courses with videos, exercises, personalized support, and verified certificates.
+      <h4>iversity</h4>
+      Video, feedback, and peer-to-peer forums for a variety of courses in English and German.
     </div>
+  </div>
 
 {% endblock %}

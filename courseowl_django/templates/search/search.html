@@ -49,15 +49,15 @@
           var $button = $(this);
           var $result = $button.closest('tr');
           var data = {};
-          data[dataKey] = $result.data('course-id');
+          data[dataKey] = $result.data('id');
           $.post(
-                  apiEndpoint,
-                  data
-              ).done(function (res) {
-                if (!!res.success) {
-                  $result.fadeOut();
-                }
-              });
+            apiEndpoint,
+            data
+          ).done(function (res) {
+            if (!!res.success) {
+              $result.fadeOut();
+            }
+          });
         });
       }
 

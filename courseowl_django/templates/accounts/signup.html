@@ -28,14 +28,11 @@
                          required>
                 </div>
               </div>
-              <p>
-
               <div class="form-group">
-                <div class="col-md-9 col-md-offset-3">
+                <div class="col-md-9">
                   <button type="submit" class="btn btn-success">Sign up</button>
                 </div>
               </div>
-              </p>
             </form>
           </div>
         </div>
@@ -45,8 +42,12 @@
             <i class="fa fa-google-plus"></i>
           </button>
         </a>
+        <a href="{% provider_login_url "facebook" method="js_sdk" %}">
+          <button class="btn btn-facebook">
+            <i class="fa fa-facebook"></i>
+          </button>
+        </a>
       </div>
     </div>
   </div>
-
 {% endblock %}

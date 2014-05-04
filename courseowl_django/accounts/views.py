@@ -84,7 +84,7 @@ def email_signup(request):
 @receiver(user_signed_up)
 def create_user_profile_for_socialaccount(sender, **kwargs):
     """
-    Create a UserProfile object for users created by the social auth application
+    Create a UserProfile object for users created by the allauth application
     """
     user = kwargs['user']
     user.username = username_md5(user.email)

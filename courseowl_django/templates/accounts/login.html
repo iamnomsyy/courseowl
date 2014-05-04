@@ -30,11 +30,15 @@
                 </div>
               </div>
             </form>
-            Don't have an account?
             <a href="{% provider_login_url "google" %}">
               <button class="btn btn-google-plus">
                 <i class="fa fa-google-plus"></i></button>
               <br>
+            </a>
+            <a href="{% provider_login_url "facebook" method="js_sdk" %}">
+              <button class="btn btn-facebook">
+                <i class="fa fa-facebook"></i>
+              </button>
             </a>
             <a href="/accounts/signup/">Sign up using email</a>
           </div>

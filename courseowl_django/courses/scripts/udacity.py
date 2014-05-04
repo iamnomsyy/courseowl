@@ -58,7 +58,7 @@ def get_instr(page):
     """
     instr = []
 
-    anchor = page.index('Course Instructors')
+    anchor = page.index('Instructors & Partners')
 
     for i in range(anchor, len(page)):
         if page[i] == 'Instructor':
@@ -71,7 +71,7 @@ def get_desc(page):
     """
     Gets the description field of the page
     """
-    anchor = page.index('Class Summary')
+    anchor = page.index('Course Summary')
     return page[anchor+1]
 
 
